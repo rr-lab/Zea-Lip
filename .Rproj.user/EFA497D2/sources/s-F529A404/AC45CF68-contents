@@ -1,0 +1,114 @@
+---
+title: "field_data"
+author: "Rubén Rellán Álvarez"
+date: "20/10/2017"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+
+Load the packages that we wil use.
+```{r}
+library(ggplot2)
+library(tidyr)
+library(dplyr)
+library(magrittr)
+library(readr)
+library(tidyverse)
+library(ggfortify)
+library(cowplot)
+```
+
+Embed plots, for example:
+
+```{r}
+# read in the raw data
+
+data_field <- read_csv("data/field_data_short.csv")
+
+
+# sums of different classes of lipids 
+
+data <- data_field %>%
+  mutate(LPCs = rowSums(data_field[,34:38])) %>%
+  mutate(PCs = rowSums(data_field[,52:74])) %>%
+  mutate(PEs = rowSums(data_field[,75:79])) %>%
+  mutate(PGs = rowSums(data_field[,80:85])) %>%
+  mutate(SQDGs = rowSums(data_field[,92:98])) %>%
+  mutate(TGs = rowSums(data_field[,99:116])) %>%
+  mutate(DGs = rowSums(data_field[,11:30])) %>%
+  mutate(MGDGs = rowSums(data_field[,39:51])) 
+
+# ratios
+  
+data <- data %>%
+  mutate(PCLPC = PCs/LPCs) %>%
+  mutate(PELPC = PEs/LPCs) %>%
+  mutate(PEPC = PEs/PCs)
+
+data <- data[, c(1:5, 11:133)]
+
+# make long data frame.
+
+data_long <- data %>%
+  gather(metabolite, intensity, -ID, -GENOTYPE)
+
+write_csv(data_long,"output/data_field_long.csv")
+
+```
+
+
+
+
+
+```{r}
+
+# but is faster to iterate over all the column variables.
+# to do this we first generate a list of the variables we want to plot
+list <- colnames(data[, 3:128])
+
+# and then we run this code
+
+pdf(file=paste0("output/by_genotype_field.pdf"))
+   lapply(list, function(i)ggplot(data, aes_string(x="GENOTYPE", y= i, color = "GENOTYPE")) + geom_jitter(width = 0.25))
+dev.off()
+
+#some summary analysis
+
+co.var <- function(x) (100*sd(x)/mean(x))
+
+data_sum_geno_field <- data %>%
+  group_by(GENOTYPE) %>%
+  summarise_each(funs(mean, sd, var, co.var))
+
+
+write_csv(data_sum_geno_field, "output/data_sum_geno_field.csv")
+
+
+# lets now run some pca analysis
+
+# we first create a new data frame just with the numerical values
+
+pca_data_field <- data[, c(3:122)]
+
+# we can save the results in another df
+
+res.pca <- prcomp(pca_data_field)
+
+# and here we get the loadings (the contributions of each variable to each of the PCs)
+
+loadings <- res.pca$rotation
+
+as.data.frame(as.table(loadings))
+
+write.csv(loadings, "output/loadings_field.csv")
+
+# using autoplot we can color based on variables of the original dataset.
+
+autoplot(prcomp(pca_data_field), data = data, colour = "GENOTYPE", x = 1, y = 2) + 
+  ggsave("output/PCA_wo_outliers.pdf")
+
+```
+
+

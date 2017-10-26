@@ -1,0 +1,66 @@
+---
+title: "quality_controls"
+author: "Rubén Rellán Álvarez"
+date: "20/10/2017"
+output: html_document
+---
+
+Load the packages that we wil use.
+```{r}
+library(ggplot2)
+library(tidyr)
+library(dplyr)
+library(magrittr)
+library(readr)
+library(tidyverse)
+library(ggfortify)
+library(cowplot)
+```
+
+Embed plots, for example:
+
+```{r}
+# read in the raw data
+
+qc <- read_csv("data/qc.csv")
+
+qc_long <- qc %>%
+  gather(metabolite, intensity, -pool_id) %>%
+  separate(pool_id, c("to_delete", "pool_id"), sep = "_") %>%
+  select(pool_id, metabolite, intensity)
+
+
+#some summary analysis
+
+co.var <- function(x) (100*sd(x)/mean(x))
+
+qc_covar <- qc %>%
+  summarise_each(funs(co.var))
+
+qc_sum <- qc_long %>%
+  group_by(metabolite)
+  summarise_each(funs(mean, sd, var))
+
+
+qc_covar_t <- t(qc_covar)
+
+qc_covar_t <- qc_covar_t [2:171, ]
+
+qc_covar_t <- as.data.frame(qc_covar_t)
+
+colnames(qc_covar_t) <- c("covar")
+
+write_csv(qc_covar_t, "output/qc_covar_t.csv")
+
+```
+Now some plots 
+
+```{r}
+qc_long %>%
+  filter(metabolite == "LPC _18_2") %>%
+  ggplot(aes(x = pool_id, y = intensity)) +
+  geom_point() +
+  geom_smooth()
+
+```
+

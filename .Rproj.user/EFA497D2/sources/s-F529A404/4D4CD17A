@@ -1,0 +1,29 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1509045932486.000,
+    "dirty" : false,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "4D4CD17A",
+    "lastKnownWriteTime" : 4294967302,
+    "last_content_update" : 1509045932486,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "cacheKey" : "34E47F29",
+        "caption" : "data_sum_geno_field",
+        "contentUrl" : "grid_resource/gridviewer.html?env=&obj=data_sum_geno_field&cache_key=34E47F29",
+        "displayedObservations" : 3,
+        "environment" : "",
+        "object" : "data_sum_geno_field",
+        "preview" : 0,
+        "totalObservations" : 3,
+        "variables" : 509
+    },
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_dataframe"
+}

@@ -1,0 +1,12 @@
+"0","data_field <- read_csv(""data/field_data_short.csv"")
+"
+"2","Duplicated column names deduplicated: 'MGDG_36:6__18:3_18:3' => 'MGDG_36:6__18:3_18:3_1' [29], 'MGDG_36:6__18:3_18:3' => 'MGDG_36:6__18:3_18:3_2' [35], 'DGDG_34:4__16:1_18:3' => 'DGDG_34:4__16:1_18:3_1' [42], 'MGDG_34:4__16:1_18:3' => 'MGDG_34:4__16:1_18:3_1' [58], 'MGDG_36:6__18:3_18:3' => 'MGDG_36:6__18:3_18:3_3' [79], 'TG_54:4' => 'TG_54:4_1' [121]"
+"2","Parsed with column specification:
+cols(
+  .default = col_integer(),
+  FIELD = col_character(),
+  GENOTYPE = col_character()
+)
+"
+"2","See spec(...) for full column specifications.
+"

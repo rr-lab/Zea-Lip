@@ -1,0 +1,238 @@
+---
+title: "zea_lip_base"
+output: 
+  html_document: 
+    fig_caption: yes
+editor_options: 
+  chunk_output_type: inline
+---
+
+
+Load the packages that we wil use.
+```{r}
+library(ggplot2)
+library(tidyr)
+library(dplyr)
+library(magrittr)
+library(readr)
+library(tidyverse)
+library(ggfortify)
+library(cowplot)
+```
+
+Embed plots, for example:
+
+```{r}
+# read in the raw data
+data <- read_csv("data/data_dev_stages.csv")
+
+data_field <- read_csv("data/field_data_short.csv")
+
+qc <- read_csv("data/qc.csv")
+
+qc_long <- qc %>%
+  gather(metabolite, intensity, -pool_id) %>%
+  separate(pool_id, c("to_delete", "pool_id"), sep = "_") %>%
+  select(pool_id, metabolite, intensity)
+
+# create some new variables
+  # different developmental stages groups
+
+data <- data %>%
+  mutate(dev_group = ifelse(dev_stage > 3 & dev_stage < 7, "4-6",
+                     ifelse(dev_stage > 7 & dev_stage < 10, "7-9", ">9")))
+
+# sums of different classes of lipids 
+
+data <- data %>%
+  mutate(LPCs = rowSums(data[,57:62])) %>%
+  mutate(PCs = rowSums(data[,76:101])) %>%
+  mutate(PEs = rowSums(data[,102:112])) %>%
+  mutate(PGs = rowSums(data[,113:120])) %>%
+  mutate(SQDGs = rowSums(data[,129:135])) %>%
+  mutate(TGs = rowSums(data[,136:187])) %>%
+  mutate(DGs = rowSums(data[,25:52])) %>%
+  mutate(MGDGs = rowSums(data[,63:74])) 
+
+# ratios
+  
+data <- data %>%
+  mutate(PCLPC = PCs/LPCs) %>%
+  mutate(PELPC = PEs/LPCs) %>%
+  mutate(PEPC = PEs/PCs)
+
+data <- data[, c(1:16, 25:199)]
+
+# make long data frame.
+
+data_long <- data %>%
+  gather(metabolite, intensity, -sample_id, -genotype, -block_number, -replica_number, -dev_stage, -dev_group, -leaf_number, -leaf_zone, -dag, -tissue_designation, -developmental_stage_dap, -dev_group)
+
+write_csv(data_long,"output/data_long.csv")
+
+
+# now let´s plot some of of summary data
+# this is how you do it for one single variable
+
+data_leaf_zones <- data %>%
+  filter(leaf_zone != "Along") %>%
+  ggplot(aes(x = leaf_zone, y = PCLPC, colour = genotype)) +
+  geom_jitter(width = 0.25) +
+  ggtitle("PCLPC") +
+  ggsave("output/SQDG_42_1_16_0_16_0.pdf")    
+
+
+data %>%
+  ggplot(aes(x = PCs, y = LPCs, colour = genotype)) +
+  geom_point() +
+  facet_grid(.~genotype) +
+  ggtitle("PCs-LPCs") +
+  ggsave("output/PCs-LPCs.pdf")    
+
+```
+
+
+
+
+
+```{r}
+
+# but is faster to iterate over all the column variables.
+# to do this we first generate a list of the variables we want to plot
+list <- colnames(data[, 11:191])
+
+# and then we run this code
+
+pdf(file=paste0("output/by_genotype.pdf"))
+   lapply(list, function(i)ggplot(data, aes_string(x="genotype", y= i, color = "genotype")) + geom_jitter(width = 0.25))
+dev.off()
+
+pdf(file=paste0("output/by_dev_group.pdf"))
+   lapply(list, function(i)ggplot(data, aes_string(x="dev_group", y= i, color = "genotype")) + geom_jitter(width = 0.25))
+dev.off()
+
+
+pdf(file=paste0("output/by_leaf_zone.pdf"))
+   lapply(list, function(i)ggplot(data, aes_string(x="leaf_zone", y= i, color = "genotype")) + geom_jitter(width = 0.25))
+dev.off()
+
+pdf(file=paste0("output/by_leaf_number.pdf"))
+   lapply(list, function(i)ggplot(data, aes_string(x="leaf_number", y= i, color = "genotype")) + geom_jitter(width = 0.25))
+dev.off()
+
+#some summary analysis
+
+co.var <- function(x) (100*sd(x)/mean(x))
+
+data_sum_geno <- data %>%
+  group_by(genotype) %>%
+  summarise_each(funs(mean, sd, var, co.var))
+
+data_sum_covar_geno <- data %>%
+  group_by(genotype) %>%
+  summarise_each(funs(co.var))
+
+data_sum_covar <- data %>%
+  summarise_each(funs(co.var))
+
+data_sum_covar_t <- t(data_sum_covar)
+
+data_sum_covar_t <- data_sum_covar_t[11:191, ]
+
+data_sum_covar_t <- as.data.frame(data_sum_covar_t)
+
+write_csv(data_sum_covar_t, "output/data_sum_covar_t.csv")
+
+qc_covar <- qc %>%
+  summarise_each(funs(co.var))
+
+qc_covar_t <- t(qc_covar)
+
+qc_covar_t <- qc_covar_t [2:171, ]
+
+qc_covar_t <- as.data.frame(qc_covar_t)
+
+colnames(qc_covar_t) <- c("covar")
+
+write_csv(qc_covar_t, "output/qc_covar_t.csv")
+
+colnames(data_sum_covar_geno_t) <- c("B73", "CML312", "PT")
+
+data_sum_covar_geno_t <- data_sum_covar_geno_t[11:191, ]
+
+write_csv(data_sum_covar_geno_t, "output/data_sum_covar_geno_t.csv")
+
+write_csv(data_sum, "output/sum_data_geno_leaf_number.csv")
+
+# with field data
+
+data_sum_geno_field <- data_field %>%
+  group_by(GENOTYPE) %>%
+  summarise_each(funs(mean, sd))
+
+data_sum_geno_field_covar <- data_field %>%
+  group_by(GENOTYPE) %>%
+  summarise_each(funs(co.var))
+
+data_sum_geno_field_covar_t <- t(data_sum_geno_field_covar)
+
+data_sum_geno_field_covar_t <- as.data.frame(data_sum_geno_field_covar_t)
+
+colnames(data_sum_geno_field_covar_t) <- c("B73", "CML312", "PT")
+
+data_sum_geno_field_covar_t <- data_sum_geno_field_covar_t[2:122, ]
+
+write_csv(data_sum_geno_field_covar_t, "output/data_sum_geno_field_covar_t.csv")
+
+# lets now run some pca analysis
+
+# we first create a new data frame just with the numerical values
+
+pca_data <- data[, c(11:178)]
+
+pca_data_leaf_zones <- data_leaf_zones[, c(11:178)] 
+# delete outliers
+
+pca_data_short <- pca_data[-c(1, 11, 24, 119, 120, 121, 124),]
+data_short <- data[-c(1, 11, 24, 119, 120, 121, 124),]
+
+as.factor(pca_data$leaf_number)
+
+# we can save the results in another df
+
+res.pca <- prcomp(pca_data)
+
+res.pca.short <- prcomp(pca_data_short)
+
+# and here we get the loadings (the contributions of each variable to each of the PCs)
+
+loadings_short <- res.pca.short$rotation
+
+as.data.frame(as.table(loadings_short))
+
+write.csv(loadings_short, "output/loadings_short.csv")
+
+# using autoplot we can color based on variables of the original dataset.
+
+autoplot(prcomp(pca_data), data = data, colour = "dag")
+
+autoplot(prcomp(pca_data), data = data, colour = "genotype")
+
+autoplot(prcomp(pca_data), data = data, colour = "genotype")
+
+autoplot(prcomp(pca_data_short), data = data_short, colour = "genotype")
+
+autoplot(prcomp(pca_data_short), data = data_short, colour = "leaf_number")
+
+autoplot(prcomp(pca_data_short), data = data_short, colour = "leaf_zone")
+
+autoplot(prcomp(pca_data_leaf_zones), data = ata_leaf_zones, colour = "genotype")
+
+# different PCs can be specified using the x = , y = argument
+
+autoplot(prcomp(pca_data_short), data = data_short, colour = "genotype", x = 1, y = 3) +
+  ggsave("output/PCA_wo_outliers.pdf")
+
+```
+
+
