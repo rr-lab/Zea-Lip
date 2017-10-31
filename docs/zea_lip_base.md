@@ -20,7 +20,130 @@ In previous studies of maize global RNA sequencing it has been reported that the
 ## Materials and Methods  
 
 ### Plant material and growth conditions
+
 The plant material used in this study consisted of Mexi 5 Palomero Toluqueño (mexican highland landrace), B73 and CML312, the latter being a tropical line developed by CIMMYT. All seeds were weighed before planting. These varieties of maize were planted in a greenhouse in four different blocks, each block with 10 days of difference in between sowing dates and each block had two replicates of each genotype. A randomized block design was employed. The plants were watered with 500 mL of tap water every third day.
-After germination, the growth was daily measured in terms of number of emerging leaves and fully expanded leaves by plant (Figure A). The vegetative stage used describes the number of leaf counting the coleoptiles as the first one (Sharman 1942).
-All blocks were harvested 50 days after germination (dag) of block 1, harvested tissue was immediately frozen in liquid nitrogen and stored at -80°C until extraction.
-From block 1, leaves were sampled in three different zones: base (B), center (C) and tip (T ), see Figure X. From each zone 50 mg of fresh blade tissue were collected for lipid extraction, excluding the mid rib.
+After germination, the growth was daily measured in terms of number of emerging leaves and fully expanded leaves by plant (Figure A). The vegetative stage used describes the number of leaf counting the coleoptiles as the first one (Sharman 1942).  
+All blocks were harvested 50 days after germination (dag) of block 1, harvested tissue was immediately frozen in liquid nitrogen and stored at -80°C until extraction.  
+From block 1, leaves were sampled in three different zones: base (B), center (C) and tip (T ), see Figure X. From each zone 50 mg of fresh blade tissue were collected for lipid extraction, excluding the mid rib. A list of all tissues sampled is listed in Table 1.
+
+** Table 1 **
+
+| Genotype | Sampled leaf | DAG | Developmental Stage | Replicates |
+|----------|--------------|-----|---------------------|------------|
+| B73      | 11           | 57  | V11                 | 3          |
+| B73      | 11           | 57  | V12                 | 3          |
+| B73      | 11           | 49  | V9                  | 2          |
+| B73      | 13           | 57  | V11                 | 3          |
+| B73      | 13           | 57  | V12                 | 3          |
+| B73      | 13           | 49  | V9                  | 2          |
+| B73      | 4            | 49  | V10                 | 1          |
+| B73      | 4            | 27  | V4                  | 2          |
+| B73      | 4            | 40  | V6                  | 2          |
+| B73      | 4            | 49  | V9                  | 1          |
+| B73      | 5            | 57  | V11                 | 1          |
+| B73      | 5            | 57  | V12                 | 3          |
+| B73      | 5            | 27  | V4                  | 2          |
+| B73      | 5            | 40  | V6                  | 2          |
+| B73      | 5            | 49  | V9                  | 2          |
+| B73      | 7            | 57  | V11                 | 3          |
+| B73      | 7            | 57  | V12                 | 3          |
+| B73      | 7            | 40  | V6                  | 2          |
+| B73      | 7            | 49  | V9                  | 2          |
+| B73      | 9            | 57  | V11                 | 3          |
+| B73      | 9            | 57  | V12                 | 3          |
+| B73      | 9            | 49  | V9                  | 2          |
+| CML312   | 11           | 49  | V10                 | 2          |
+| CML312   | 11           | 57  | V11                 | 3          |
+| CML312   | 11           | 57  | V14                 | 3          |
+| CML312   | 13           | 49  | V10                 | 1          |
+| CML312   | 13           | 57  | V11                 | 4          |
+| CML312   | 13           | 57  | V14                 | 3          |
+| CML312   | 4            | 49  | V10                 | 1          |
+| CML312   | 4            | 49  | V11                 | 1          |
+| CML312   | 4            | 26  | V5                  | 1          |
+| CML312   | 4            | 26  | V6                  | 1          |
+| CML312   | 4            | 40  | V8                  | 2          |
+| CML312   | 5            | 49  | V10                 | 1          |
+| CML312   | 5            | 49  | V11                 | 1          |
+| CML312   | 5            | 57  | V14                 | 3          |
+| CML312   | 5            | 26  | V5                  | 1          |
+| CML312   | 5            | 26  | V6                  | 1          |
+| CML312   | 5            | 40  | V8                  | 1          |
+| CML312   | 7            | 49  | V10                 | 1          |
+| CML312   | 7            | 57  | V11                 | 4          |
+| CML312   | 7            | 57  | V14                 | 3          |
+| CML312   | 7            | 26  | V5                  | 1          |
+| CML312   | 7            | 26  | V6                  | 1          |
+| CML312   | 7            | 40  | V8                  | 2          |
+| CML312   | 9            | 49  | V10                 | 1          |
+| CML312   | 9            | 57  | V11                 | 4          |
+| CML312   | 9            | 57  | V14                 | 3          |
+| CML312   | 9            | 40  | V8                  | 2          |
+| PT       | 11           | 49  | V12                 | 1          |
+| PT       | 11           | 57  | V14                 | 6          |
+| PT       | 11           | 49  | V8                  | 1          |
+| PT       | 13           | 57  | V14                 | 6          |
+| PT       | 13           | 49  | V8                  | 1          |
+| PT       | 4            | 49  | V12                 | 1          |
+| PT       | 4            | 28  | V4                  | 1          |
+| PT       | 4            | 27  | V5                  | 1          |
+| PT       | 4            | 40  | V7                  | 1          |
+| PT       | 4            | 49  | V8                  | 2          |
+| PT       | 5            | 49  | V12                 | 1          |
+| PT       | 5            | 28  | V4                  | 1          |
+| PT       | 5            | 27  | V5                  | 1          |
+| PT       | 5            | 40  | V7                  | 1          |
+| PT       | 5            | 49  | V8                  | 2          |
+| PT       | 7            | 49  | V12                 | 1          |
+| PT       | 7            | 57  | V14                 | 6          |
+| PT       | 7            | 27  | V5                  | 1          |
+| PT       | 7            | 40  | V7                  | 1          |
+| PT       | 7            | 49  | V8                  | 2          |
+| PT       | 9            | 49  | V12                 | 1          |
+| PT       | 9            | 57  | V14                 | 6          |
+| PT       | 9            | 40  | V7                  | 1          |
+| PT       | 9            | 49  | V8                  | 2          |
+
+Field samples were collected from plants grown in a CIMMYT experimental field located in Metepec, Mexico State, (19°13'28.7"N 99°32'51.6"W) within the Trans-Mexican Volcanic Belt. The experimental field is 2610 masl, the range of average monthly temperatures along the year go from 5 °C to 21.5 °C with an average annual of 13.6 °C. Its average annual precipitation is around 809 mm. Plants were planted in on April 5th, 2016 and were sampled for lipid analysis by June 9th 2016, when the plants were around the V5 developmental stage. Samples were taken from the tip of the S2 leaf (two leaves younger of the last leaf with a fully developed collar). Eight plants per genotype were sampled.  
+The average GDD for Metepec was 5.52 and the total GDD (over the length of the growing season) was 364.25. On the other hand, during this period the average daily precipitation (mm) was 1.6 while the total precipitation was 96.5 mm.
+
+
+
+### Lipid extraction  
+
+Leaf tissue was collected when the plant was, in average, in the V3 - V6 stage. We tested using 50 mg wet weight leaf tissue for lipidome profiling, as this amount was deemed appropriate for Arabidopsis(Degenkolbe et al. 2012). Frozen material was homogenized in a tissue grinder Retsch (Haan, Germany) during 40 seconds at 30 1/s. After grinding all tubes were stored in liquid nitrogen.
+
+Lipid extraction used was reported by Matyash and collaborators (Matyash et al. 2008). First 225 μL of cold methanol (MeOH), previously prepared with a Quality Control (QC) mix, was added to each sample, always keeping MeOH on ice during the extraction. Each sample was vortexed for 10 seconds, keeping the rest of materials on ice. Then 750 μL of cold methyl tert-butyl ether (MTBE) were added, keeping MTBE on ice along all the process. Again each sample had to be vortexed for 10 seconds, followed by shaking each for 6 minutes at 4°C in the orbital mixer. After that, 188 μL of LC/MS grade water at room temperature (RT) were added, vortexing all the samples for 20 seconds.
+
+In order to separate the phases, all samples were centrifuged for 2 min at 14, 000 rcf (12, 300 rpm). The upper phase is the organic one and it was possible to remove around 700 μL of supernatant, so it was split into two aliquots of 350 μL, one serving as back up and for the preparation of pools. Finally, samples were dried using a speed vacuum concentration system and stored at room temperature (RT) but protected against light.  
+
+### Lipid Profiling
+
+Dry samples were resuspended in 110 μL of MeOH-Toluene 90:10 (with CUDA 50 ng/mL). The rack of samples was vortexed at low speed for 20 seconds and then all tubes were sonicated at RT for 5 min. Aliquots of 50 µL per sample were transferred into an insert within an amber glass vial.
+
+Before start running samples a new column was set, it is recommended to change the column (Acquity UPLC C18 1.7μm 2.1x100 mm Column) (Waters; Milford, MA, USA) every 1000 samples. After the column change, the new one must be purged for 5 min to take air out. The UPLC column is coupled to a VanGuard pre-column (Acquity UPLC C18 1.7μm 2.1x5 mm Pre-column Waters), which is replaced after ~330 sample injections. Six “no sample injections” were injected at the beginning of each run to condition the column, followed by ten samples, one pool (made out of the mix of the second aliquot of all the samples contained per UPLC plate) and one blank.
+
+According to the diversity and amount of lipid species identified under ESI (+) and (-) during an optimization of lipid extraction and lipid analysis, we selected ESI positive mode on Agilent® Ultra-Performance Liquid Chromatography and Quadrupole Time of Flight Mass Spectrometry (UPLC-QTOF MS/MS). The UPLC-QTOF MS/MS utilized was Agilent 6530 ESI (+) injects into UPLC-QTOF MS/MS 1.67 μL per sample, the running time per sample is 15 min.
+
+## Results
+
+A total of 171 lipid species were identified with lipid profiling. The lipid classes found are: cholesterol esters (CE), diacylglycerols (DG), non-hydroxyacyl sphingosines (CerNS), digalactosyldiacylglycerols (DGDG), glycosphingolipids (GlcCerNS), lysophosphatidylcholines (LPC), monogalactosyldiacylglycerols (MGDG), phosphatidylcholines (PC), phosphoethanolamines (PE), phosphatidylglycerols (PG), plasmenyl phosphatidylcholines (plasmenylPC), sphingomyelins (SM), sulfoquinovosyl diacylglycerols (SQDG) and triaglycerides (TG). See Table 1.
+
+**Table 1** Table S. Number of lipid species identified, within each lipid class, using UPLC-QTOF MS/MS positive mode ESI.
+
+| Lipid classes                   | Number of species |
+|---------------------------------|-------------------|
+| Cholesterol esters              | 1                 |
+| Diacylglycerols                 | 7                 |
+| Non-hydroxyacyl sphingosine     | 2                 |
+| Digalactosyldiacylglycerols     | 21                |
+| Glycosphingolipids              | 4                 |
+| Lysophosphatidylcholines        | 6                 |
+| Monogalactosyldiacylglycerol    | 13                |
+| Phosphatidylcholines            | 26                |
+| Phosphoethanolamines            | 11                |
+| Phosphatidylglycerols           | 8                 |
+| Plasmenyl phosphatidylcholines  | 3                 |
+| Sphingomyelins                  | 5                 |
+| Sulfoquinovosyl diacylglycerols | 7                 |
+| Triglycerides                   | 52                |

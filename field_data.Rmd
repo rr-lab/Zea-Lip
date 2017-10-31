@@ -18,6 +18,8 @@ library(readr)
 library(tidyverse)
 library(ggfortify)
 library(cowplot)
+library(cluster)
+library(lfda)
 ```
 
 Embed plots, for example:
@@ -108,6 +110,11 @@ write.csv(loadings, "output/loadings_field.csv")
 
 autoplot(prcomp(pca_data_field), data = data, colour = "GENOTYPE", x = 1, y = 2) + 
   ggsave("output/PCA_wo_outliers.pdf")
+
+autoplot(fanny(data[-c(1:2)], 3), frame = TRUE)
+
+model <- lfda(data[-c(1:2)], data[, 2], r = 3, metric="plain")
+autoplot(model, data = data, frame = TRUE, frame.colour = 'GENOTYPE')
 
 ```
 

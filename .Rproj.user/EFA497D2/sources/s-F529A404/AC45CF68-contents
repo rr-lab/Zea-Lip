@@ -18,6 +18,9 @@ library(readr)
 library(tidyverse)
 library(ggfortify)
 library(cowplot)
+library(cluster)
+library(lfda)
+library(viridis)
 ```
 
 Embed plots, for example:
@@ -64,6 +67,11 @@ write_csv(data_long,"output/data_field_long.csv")
 
 ```{r}
 
+data %>%
+  ggplot(aes(x = GENOTYPE, y = LPC_16_0, color = GENOTYPE)) +
+  geom_jitter(width = 0.25, size = 3) 
+  
+
 # but is faster to iterate over all the column variables.
 # to do this we first generate a list of the variables we want to plot
 list <- colnames(data[, 3:128])
@@ -71,7 +79,7 @@ list <- colnames(data[, 3:128])
 # and then we run this code
 
 pdf(file=paste0("output/by_genotype_field.pdf"))
-   lapply(list, function(i)ggplot(data, aes_string(x="GENOTYPE", y= i, color = "GENOTYPE")) + geom_jitter(width = 0.25))
+   lapply(list, function(i)ggplot(data, aes_string(x="GENOTYPE", y= i, color = "GENOTYPE")) + geom_jitter(width = 0.25, size = 3))
 dev.off()
 
 #some summary analysis
@@ -106,8 +114,10 @@ write.csv(loadings, "output/loadings_field.csv")
 
 # using autoplot we can color based on variables of the original dataset.
 
-autoplot(prcomp(pca_data_field), data = data, colour = "GENOTYPE", x = 1, y = 2) + 
-  ggsave("output/PCA_wo_outliers.pdf")
+p <- autoplot(prcomp(pca_data_field), data = data, colour = "GENOTYPE", x = 1, y = 2) + 
+  ggsave("output/PCA_field.pdf")
+
+p <- autoplot(kmeans(pca_data_field, 3), data = pca_data_field)
 
 ```
 
