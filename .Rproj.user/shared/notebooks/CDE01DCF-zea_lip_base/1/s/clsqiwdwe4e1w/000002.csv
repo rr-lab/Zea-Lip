@@ -1,7 +1,0 @@
-"0","qc_long <- qc %>%
-  gather(metabolite, intensity, -pool_id) %>%
-  separate(pool_id, into = c(to_delete, pool_id), sep = ""_"")
-"
-"2","Error in simplifyPieces(pieces, n, fill == ""left"") : 
-  object 'to_delete' not found
-"

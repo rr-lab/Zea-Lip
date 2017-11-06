@@ -108,7 +108,6 @@ Field samples were collected from plants grown in a CIMMYT experimental field lo
 The average GDD for Metepec was 5.52 and the total GDD (over the length of the growing season) was 364.25. On the other hand, during this period the average daily precipitation (mm) was 1.6 while the total precipitation was 96.5 mm.
 
 
-
 ### Lipid extraction  
 
 Leaf tissue was collected when the plant was, in average, in the V3 - V6 stage. We tested using 50 mg wet weight leaf tissue for lipidome profiling, as this amount was deemed appropriate for Arabidopsis(Degenkolbe et al. 2012). Frozen material was homogenized in a tissue grinder Retsch (Haan, Germany) during 40 seconds at 30 1/s. After grinding all tubes were stored in liquid nitrogen.
@@ -126,6 +125,9 @@ Before start running samples a new column was set, it is recommended to change t
 According to the diversity and amount of lipid species identified under ESI (+) and (-) during an optimization of lipid extraction and lipid analysis, we selected ESI positive mode on Agilent® Ultra-Performance Liquid Chromatography and Quadrupole Time of Flight Mass Spectrometry (UPLC-QTOF MS/MS). The UPLC-QTOF MS/MS utilized was Agilent 6530 ESI (+) injects into UPLC-QTOF MS/MS 1.67 μL per sample, the running time per sample is 15 min.
 
 ## Results
+
+In total we analyzed 150 samples from three genotypes at 10 different developmental stages from V4 to V14. From these tissue was collected from leaves of 6 different ages. Most of the samples were collected along the leaf, but in a subset of them samples were collected at defined locations of the leave (base, mid and leaf tip) See Figure 1.
+In total around 2500 data points were collected and analyzed. We also analyzed set of 24 plants (8 per genotype) grown in the field and sampled at around V5 developmental stage.
 
 A total of 171 lipid species were identified with lipid profiling. The lipid classes found are: cholesterol esters (CE), diacylglycerols (DG), non-hydroxyacyl sphingosines (CerNS), digalactosyldiacylglycerols (DGDG), glycosphingolipids (GlcCerNS), lysophosphatidylcholines (LPC), monogalactosyldiacylglycerols (MGDG), phosphatidylcholines (PC), phosphoethanolamines (PE), phosphatidylglycerols (PG), plasmenyl phosphatidylcholines (plasmenylPC), sphingomyelins (SM), sulfoquinovosyl diacylglycerols (SQDG) and triaglycerides (TG). See Table 1.
 
@@ -147,3 +149,5 @@ A total of 171 lipid species were identified with lipid profiling. The lipid cla
 | Sphingomyelins                  | 5                 |
 | Sulfoquinovosyl diacylglycerols | 7                 |
 | Triglycerides                   | 52                |
+
+The average coefficient of variation of the sample pool, analyzed every 10 samples, was in average 9.7% and it ranged between 1.7 and 29.6 %. In the samples analyzed we observed a coefficient of variation  63.9% with a range between 22.7 and 222.8% across all tissues. By genotype, coefficients of variation were 51.9% in the case of B73 with a 14.6-192.8% range, 57.7 with 13.1-223.6% range in CML312 and 58.6% with a 14.0-137.1% range in PT. In the set of plants that were grown in the field coefficients of variation were 25.0% in the case of B73 with a 7.5-60.9% range, 30.6% with a 10.2-76.6% range in CML312 and 28.3 with a 9.1-156.2%.

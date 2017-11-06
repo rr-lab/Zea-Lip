@@ -4,7 +4,7 @@ output:
   html_document: 
     fig_caption: yes
 editor_options: 
-  chunk_output_type: inline
+  chunk_output_type: console
 ---
 
 
@@ -25,15 +25,6 @@ Embed plots, for example:
 ```{r}
 # read in the raw data
 data <- read_csv("data/data_dev_stages.csv")
-
-data_field <- read_csv("data/field_data_short.csv")
-
-qc <- read_csv("data/qc.csv")
-
-qc_long <- qc %>%
-  gather(metabolite, intensity, -pool_id) %>%
-  separate(pool_id, c("to_delete", "pool_id"), sep = "_") %>%
-  select(pool_id, metabolite, intensity)
 
 # create some new variables
   # different developmental stages groups
@@ -143,19 +134,6 @@ data_sum_covar_t <- as.data.frame(data_sum_covar_t)
 
 write_csv(data_sum_covar_t, "output/data_sum_covar_t.csv")
 
-qc_covar <- qc %>%
-  summarise_each(funs(co.var))
-
-qc_covar_t <- t(qc_covar)
-
-qc_covar_t <- qc_covar_t [2:171, ]
-
-qc_covar_t <- as.data.frame(qc_covar_t)
-
-colnames(qc_covar_t) <- c("covar")
-
-write_csv(qc_covar_t, "output/qc_covar_t.csv")
-
 colnames(data_sum_covar_geno_t) <- c("B73", "CML312", "PT")
 
 data_sum_covar_geno_t <- data_sum_covar_geno_t[11:191, ]
@@ -164,25 +142,6 @@ write_csv(data_sum_covar_geno_t, "output/data_sum_covar_geno_t.csv")
 
 write_csv(data_sum, "output/sum_data_geno_leaf_number.csv")
 
-# with field data
-
-data_sum_geno_field <- data_field %>%
-  group_by(GENOTYPE) %>%
-  summarise_each(funs(mean, sd))
-
-data_sum_geno_field_covar <- data_field %>%
-  group_by(GENOTYPE) %>%
-  summarise_each(funs(co.var))
-
-data_sum_geno_field_covar_t <- t(data_sum_geno_field_covar)
-
-data_sum_geno_field_covar_t <- as.data.frame(data_sum_geno_field_covar_t)
-
-colnames(data_sum_geno_field_covar_t) <- c("B73", "CML312", "PT")
-
-data_sum_geno_field_covar_t <- data_sum_geno_field_covar_t[2:122, ]
-
-write_csv(data_sum_geno_field_covar_t, "output/data_sum_geno_field_covar_t.csv")
 
 # lets now run some pca analysis
 
@@ -191,6 +150,7 @@ write_csv(data_sum_geno_field_covar_t, "output/data_sum_geno_field_covar_t.csv")
 pca_data <- data[, c(11:178)]
 
 pca_data_leaf_zones <- data_leaf_zones[, c(11:178)] 
+
 # delete outliers
 
 pca_data_short <- pca_data[-c(1, 11, 24, 119, 120, 121, 124),]
