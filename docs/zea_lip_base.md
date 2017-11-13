@@ -6,7 +6,7 @@
 
 ## Abstract
 
-Glycerolipids are the predominant building block of non-plastidic membranes thus essential for plant growth and development. To better understand how a specific genome sequence results in certain lipid phenotypes we need to explore the temporal and spatial patterns of these metabolites. In this study we present leaf lipid profiles of three   different genotypes (B73, Palomero Toluqueño and CML312) at different developmental stages and along three different leaf zones.  
+Glycerolipids are the predominant building block of plant membranes, are essential for plant growth and development and are involved in a variety of signalling and their relative abundances can change in response to several environmental factors. In a effort to catalog the composition of glycerolipids in an important crop like maize we used ultra high performance liquid chromatography coupled with quadropole time of flight mass spectrometry to characterize the glycerolipid profile of samples of maize plants collected at 10 different vegetative developmental stages and 6 different leaf ages. We analyzed three different genotypes: B73, a temperate inbred, CML312, a tropical inbred and Palomero Toluqueño, an open pollinated variety landrace from the Mexican highlands. We analyzed a total of 150 samples from greenhouse grown plants and another extra 24 samples of a single developmental stage of plants from the three genotypes. Overall, genotype was the major driver of glycerolipid differences. Phosphatydylcholine and lyso-phosphatyilcholine genotypic differences were particularly high between B73 and Palomero Toluqueño. We designed a web interface to easily browse and compare glycerlolipid levels across tissues and genotypes.    
 
 **Keywords**
 Glycerolipids, natural variation, developmental stages,
@@ -126,7 +126,7 @@ According to the diversity and amount of lipid species identified under ESI (+) 
 
 ## Results
 
-In total we analyzed 150 samples from three genotypes at 10 different developmental stages from V4 to V14. From these tissue was collected from leaves of 6 different ages. Most of the samples were collected along the leaf, but in a subset of them samples were collected at defined locations of the leave (base, mid and leaf tip) See Figure 1.
+In total we analyzed 150 samples from three genotypes at 10 different developmental stages from V4 to V14. We collected tissue from leaves of 6 different ages. Most of the samples were collected along the leaf, but in a subset of them samples were collected at defined locations of the leave (base, mid and leaf tip) See Figure 1.
 In total around 2500 data points were collected and analyzed. We also analyzed set of 24 plants (8 per genotype) grown in the field and sampled at around V5 developmental stage.
 
 A total of 171 lipid species were identified with lipid profiling. The lipid classes found are: cholesterol esters (CE), diacylglycerols (DG), non-hydroxyacyl sphingosines (CerNS), digalactosyldiacylglycerols (DGDG), glycosphingolipids (GlcCerNS), lysophosphatidylcholines (LPC), monogalactosyldiacylglycerols (MGDG), phosphatidylcholines (PC), phosphoethanolamines (PE), phosphatidylglycerols (PG), plasmenyl phosphatidylcholines (plasmenylPC), sphingomyelins (SM), sulfoquinovosyl diacylglycerols (SQDG) and triaglycerides (TG). See Table 1.
