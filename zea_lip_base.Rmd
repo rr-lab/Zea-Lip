@@ -4,7 +4,7 @@ output:
   html_document: 
     fig_caption: yes
 editor_options: 
-  chunk_output_type: console
+  chunk_output_type: inline
 ---
 
 
@@ -18,6 +18,9 @@ library(readr)
 library(tidyverse)
 library(ggfortify)
 library(cowplot)
+library(janitor)
+library(ggrepel)
+library(explor)
 ```
 
 Embed plots, for example:
@@ -52,7 +55,7 @@ data <- data %>%
   mutate(PELPC = PEs/LPCs) %>%
   mutate(PEPC = PEs/PCs)
 
-data <- data[, c(1:16, 25:199)]
+data <- data[, c(1:16, 25:198)]
 
 # make long data frame.
 
@@ -65,12 +68,19 @@ write_csv(data_long,"output/data_long.csv")
 # now let´s plot some of of summary data
 # this is how you do it for one single variable
 
-data_leaf_zones <- data %>%
-  filter(leaf_zone != "Along") %>%
-  ggplot(aes(x = leaf_zone, y = PCLPC, colour = genotype)) +
-  geom_jitter(width = 0.25) +
-  ggtitle("PCLPC") +
-  ggsave("output/SQDG_42_1_16_0_16_0.pdf")    
+data %>%
+  ggplot(aes(x = genotype, y = PCLPC, color = genotype)) +
+  geom_jitter(width = 0.25, size = 3) +
+  ylim(0,50) +
+  stat_summary(fun.y = "mean", fun.ymin = "mean", fun.ymax = "mean", size = 0.25,
+               geom = "crossbar")
+  ggsave("output/PCLPC.pdf")  
+  
+  
+data %>%
+  ggplot(aes(x = genotype, y = LPC_18_3, colour = genotype)) +
+  geom_jitter(width = 0.3) +
+  geom_pointrange(aes(ymin = lower, ymax = upper))
 
 
 data %>%
@@ -79,6 +89,15 @@ data %>%
   facet_grid(.~genotype) +
   ggtitle("PCs-LPCs") +
   ggsave("output/PCs-LPCs.pdf")    
+
+data %>%
+  ggplot(aes(x = PCs, y = LPCs)) +
+  geom_point(aes(alpha = 0.3)) +
+  geom_point(data = data_PT, colour = "blue")
+  
+
+data_PT <- data %>% 
+  filter(genotype == "PT")
 
 ```
 
@@ -149,7 +168,7 @@ write_csv(data_sum, "output/sum_data_geno_leaf_number.csv")
 
 pca_data <- data[, c(11:178)]
 
-pca_data_leaf_zones <- data_leaf_zones[, c(11:178)] 
+pca_data <- data.frame(pca_data)
 
 # delete outliers
 
@@ -160,12 +179,15 @@ as.factor(pca_data$leaf_number)
 
 # we can save the results in another df
 
-res.pca <- prcomp(pca_data)
+res.pca <- prcomp(pca_data, center = TRUE,
+              scale. = TRUE)
 
-res.pca.short <- prcomp(pca_data_short)
+res.pca.short <- prcomp(pca_data_short, center = TRUE,
+              scale. = TRUE)
 
 # and here we get the loadings (the contributions of each variable to each of the PCs)
 
+loadings <- res.pca$rotation
 loadings_short <- res.pca.short$rotation
 
 as.data.frame(as.table(loadings_short))
@@ -176,22 +198,43 @@ write.csv(loadings_short, "output/loadings_short.csv")
 
 autoplot(prcomp(pca_data), data = data, colour = "dag")
 
-autoplot(prcomp(pca_data), data = data, colour = "genotype")
+autoplot(prcomp(pca_data, center = TRUE, scale. = TRUE), data = data, colour = "genotype", size = 3, alpha = "leaf_number", x = 1, y = 2) +
+  ggplot2::ggsave("output/PCA_main.pdf", useDingbats = FALSE)
 
 autoplot(prcomp(pca_data), data = data, colour = "genotype")
 
-autoplot(prcomp(pca_data_short), data = data_short, colour = "genotype")
+autoplot(res.pca.short, data = data_short, colour = "genotype", size = "leaf_number", alpha = "leaf_number", x = 1, y = 2)
+
+pca_short_graph +	
+		scale_color_gradient(low = "blue", high = "yellow")
 
 autoplot(prcomp(pca_data_short), data = data_short, colour = "leaf_number")
 
+autoplot(prcomp(pca_data_short), data = data_short, colour = "genotype", size = 3, alpha = "leaf_number", x = 1, y = 2) +
+  ggplot2::ggsave("output/PCA_data_short.pdf", useDingbats = FALSE)
+
 autoplot(prcomp(pca_data_short), data = data_short, colour = "leaf_zone")
 
-autoplot(prcomp(pca_data_leaf_zones), data = ata_leaf_zones, colour = "genotype")
+
 
 # different PCs can be specified using the x = , y = argument
 
 autoplot(prcomp(pca_data_short), data = data_short, colour = "genotype", x = 1, y = 3) +
   ggsave("output/PCA_wo_outliers.pdf")
+
+```
+
+Correlation analysis
+
+```{r}
+
+my_num_data <- my_num_data[, sapply(data, is.numeric)]
+
+my_num_data <- my_num_data[, 7:11]
+
+corr <- round(cor(my_num_data))
+
+corrplot(corr, method = "number")
 
 ```
 
