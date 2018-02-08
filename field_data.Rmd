@@ -4,7 +4,7 @@ author: "Rubén Rellán Álvarez"
 date: "20/10/2017"
 output: html_document
 editor_options: 
-  chunk_output_type: console
+  chunk_output_type: inline
 ---
 
 
@@ -21,6 +21,8 @@ library(cowplot)
 library(cluster)
 library(lfda)
 library(viridis)
+library(MASS)
+library(gridExtra)
 ```
 
 Embed plots, for example:
@@ -67,12 +69,24 @@ write_csv(data_long,"output/data_field_long.csv")
 
 ```{r}
 
+PCLPCs <- data %>%
+  ggplot(aes(x = GENOTYPE, y = PCLPCs, color = GENOTYPE)) +
+  geom_jitter(width = 0.25, size = 3) +
+  stat_summary(fun.y = "mean", fun.ymin = "mean", fun.ymax = "mean", size = 0.3,
+               geom = "crossbar") +
+  ggsave("output/TGs_field.pdf", useDingbats=FALSE)
+
+grid.arrange(LPCs, PCLPCs)
+
 data %>%
-  ggplot(aes(x = GENOTYPE, y = PCLPC, color = GENOTYPE)) +
-  geom_boxplot() +
-  geom_jitter(width = 0.25, size = 3)
+  ggplot(aes(x = PCLPC, y = LPCs, color = GENOTYPE)) +
+  geom_point() +
+  ggsave("output/PCLPC_LPCsfield.pdf", useDingbats=FALSE)
   
-  
+```
+
+```{r}
+
 
 # but is faster to iterate over all the column variables.
 # to do this we first generate a list of the variables we want to plot
@@ -96,15 +110,23 @@ data_sum_geno_field <- data %>%
 write_csv(data_sum_geno_field, "output/data_sum_geno_field.csv")
 
 
+
+```
+
+```{r}
+
 # lets now run some pca analysis
 
 # we first create a new data frame just with the numerical values
 
-pca_data_field <- data[, c(3:122)]
+pca_data_field <- data[, c(3:128)]
+
+pca_data_field2 <- data[, c(2:128)]
 
 # we can save the results in another df
 
-res.pca <- prcomp(pca_data_field)
+res.pca <- prcomp(pca_data_field, center = TRUE,
+              scale. = TRUE)
 
 # and here we get the loadings (the contributions of each variable to each of the PCs)
 
@@ -116,11 +138,48 @@ write.csv(loadings, "output/loadings_field.csv")
 
 # using autoplot we can color based on variables of the original dataset.
 
-autoplot(prcomp(pca_data_field), data = data, colour = "GENOTYPE", size = 3) + 
-  ggsave("output/PCA_field.pdf")
+autoplot(prcomp(pca_data_field, center = TRUE,
+              scale. = TRUE), data = data, colour = "GENOTYPE", size = 3) + 
+  ggsave("output/PCA_field.pdf", useDingbats=FALSE)
 
-p <- autoplot(kmeans(pca_data_field, 3), data = pca_data_field)
 
 ```
+
+Now run LDA
+
+```{r}
+
+
+pca <- prcomp(data[, c(3:128)],
+              center = TRUE,
+              scale. = TRUE) 
+
+prop.pca = pca$sdev^2/sum(pca$sdev^2)
+
+lda <- lda(formula = GENOTYPE ~ ., 
+         data = pca_data_field2, 
+         prior = c(1,1,1)/3)
+
+prop.lda = lda$svd^2/sum(lda$svd^2)
+
+plda <- predict(object = lda,
+                newdata = pca_data_field2)
+
+dataset = data.frame(species = pca_data_field2[,"GENOTYPE"],
+                     pca = pca$x, lda = plda$x)
+
+p1 <- ggplot(dataset) + geom_point(aes(lda.LD1, lda.LD2, colour = GENOTYPE), size = 2.5) + 
+  labs(x = paste("LD1 (", percent(prop.lda[1]), ")", sep=""),
+       y = paste("LD2 (", percent(prop.lda[2]), ")", sep=""))
+
+p2 <- ggplot(dataset) + geom_point(aes(pca.PC1, pca.PC2, colour = GENOTYPE), size = 2.5) +
+  labs(x = paste("PC1 (", percent(prop.pca[1]), ")", sep=""),
+       y = paste("PC2 (", percent(prop.pca[2]), ")", sep=""))
+
+grid.arrange(p1, p2)
+
+```
+
+
 
 

@@ -32,3 +32,6 @@ vignettes/*.pdf
 *.utf8.md
 *.knit.md
 .Rproj.user
+.Rproj.user/shared/notebooks/paths
+.Rproj.user/shared/notebooks/CDE01DCF-zea_lip_base/1/s/chunks.json
+.Rproj.user/shared/notebooks/DF3320EA-field_data/1/s/chunks.json
