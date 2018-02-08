@@ -154,14 +154,7 @@ shinyServer(
     
     # Time plot
     
-    
-    temp <- data %>%
-      mutate(value = scale(value))
-    
-    ggplot(temp, aes(leaf_zone, variable)) + 
-      geom_tile(aes(fill=value),colour = "white") + 
-      scale_fill_gradient(low = "white", high = "steelblue")
-    
+  
     
     output$my_plot <- renderPlot({
 
