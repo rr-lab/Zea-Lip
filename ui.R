@@ -5,7 +5,7 @@ library(shiny)
 shinyUI(fluidPage(
                   
   # Application title
-  navbarPage("Lipidomics",
+  navbarPage("Zea Lip, an atlas of glycerolipid content in maize",
     tabPanel("Load data", id="tab1", icon = icon("upload"),
       fluidRow(
         column(4,
