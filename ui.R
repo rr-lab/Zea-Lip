@@ -6,7 +6,21 @@ shinyUI(fluidPage(
                   
   # Application title
   navbarPage("Zea Lip, an atlas of glycerolipid content in maize",
-    tabPanel("Load data", id="tab1", icon = icon("upload"),
+     tabPanel("View plants", id="tab1", icon = icon("leaf"),
+              fluidRow(
+                column(4,
+                       helpText("Choose the genotype and developmental stage to vizualise"),
+                       selectInput("img_genotype", label = "Genotype", choices = c("")),
+                       selectInput("img_stage", label = "Developmental stage", choices = c("")),
+                       tags$hr()
+                ),
+                column(7, 
+                       h4("Representative plant"),
+                       imageOutput("maize")
+                )
+              )
+     ),
+  tabPanel("Load data", id="tab1", icon = icon("upload"),
       fluidRow(
         column(4,
                helpText("Load the dataset you want to analyze. The Developmental Stages dataset is loaded by default")
