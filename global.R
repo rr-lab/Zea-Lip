@@ -37,3 +37,32 @@ cscale1 <- c("#b30000","#e34a33","#fc8d59","#fdcc8a")
 cscale2 <- c("#f1eef6","#d7b5d8","#df65b0","#dd1c77","#980043")
 cscale2 <- c("#a21d4d","lightgrey","#2a3e98")
 cscale3 <- c("#a1dab4","#41b6c4", "#2c7fb8", "#253494")
+
+
+
+mydata <- mtcars[, c(1,3,4,5,6,7)]
+cormat <- round(cor(mydata),2)
+
+
+
+heatmap <- function(corr.matrix){
+  #corr.matrix <- fit.results
+  dat <- melt(corr.matrix) 
+
+  plot1 <- ggplot(dat, aes(Var1, Var2)) + 
+    geom_tile(aes(fill = value)) + 
+    theme_classic() + 
+    theme(
+      axis.text.x = element_text(angle = 45, hjust = 1, size=12),
+      axis.text = element_text(size=12),
+      legend.text = element_text(size=10),
+      legend.title = element_text(size=10))+
+      #legend.position="none") +
+    # scale_fill_distiller(palette="Spectral")+
+    xlab("") + ylab("") + 
+    coord_fixed() + 
+    scale_fill_gradientn(colours=cscale, name="r-squared values")  
+  
+  plot1
+}
+

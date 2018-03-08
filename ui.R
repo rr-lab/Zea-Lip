@@ -3,7 +3,10 @@ library(shiny)
 
 # Define UI for application that draws a histogram
 shinyUI(fluidPage(
-                  
+           
+  
+  # Vizualize image ----------
+  
   # Application title
   navbarPage("Zea Lip, an atlas of glycerolipid content in maize",
      tabPanel("View plants", id="tab1", icon = icon("leaf"),
@@ -20,6 +23,10 @@ shinyUI(fluidPage(
                 )
               )
      ),
+     
+     
+ # Load data ----------     
+     
   tabPanel("Load data", id="tab1", icon = icon("upload"),
       fluidRow(
         column(4,
@@ -32,11 +39,16 @@ shinyUI(fluidPage(
         )
       )
     ),
+  
+  
+  # Boxplots ----------
+  
     tabPanel("Plot individual data", id="tab2", icon = icon('sliders'),
       fluidRow(
         column(3, 
                h4("Plot"),
                helpText("Choose the genotypes, variables, lipid classes and colours to map"),
+               checkboxInput("plot_sum", label = "Plot summed classes instead", value=F),
                selectInput("to_plot", label = "Grouping variable", choices = c("")),
                selectInput("to_plot_3", label = "Coloring variable", choices = c("")),
                tags$hr(),
@@ -57,6 +69,33 @@ shinyUI(fluidPage(
         )
       )
     ),
+  
+  
+  # Heatmaps ----------
+  
+  tabPanel("Correlation", id="tab2", icon = icon('bolt'),
+           fluidRow(
+             column(7, 
+                    selectInput("corr_to_plot", label = "Variable to plot", choices = c("r-squares", "Spearman", "Pearson")),
+                    plotOutput("correlation_heatmap"),#, click = "heatmap_click")             
+                    checkboxInput("correlation_individual", "Load individual data instead", value=F),
+                    checkboxInput("process_indiv_corr", "re-Process individual data", value=F)
+             ),
+             column(5,
+                    fluidRow(
+                      column(6,selectInput("variable_corr_1", label="X Variable", choices = c("Load datafile"))), 
+                      column(6,selectInput("variable_corr_2", label="Y Variable", choices = c("Load datafile"))) 
+                    ),
+                    plotOutput("correlation_plot"),#, click = "heatmap_click")     
+                    textOutput("corr_text")
+                    
+             )
+           )
+  ),
+  
+  
+  
+  # PCA ----------
     tabPanel("Principal component analysis", id="tab2", icon = icon('bullseye'),
        fluidRow(
          column(3, 
