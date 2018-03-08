@@ -452,7 +452,7 @@ shinyServer(
     output$pca_plot <- renderPlot({
       if(is.null(rs$lipids)){return()}
       
-      temp <- data
+      # temp <- data
       
       temp <- rs$lipids[rs$lipids$genotype %in% input$genotypes_to_plot_2,]
 
@@ -464,7 +464,6 @@ shinyServer(
       # Get the measurments
       vars <- input$variable_to_pca
       # vars <- unique(temp$variable)
-      print(vars)
 
       # change from lon to wide format
       if(is.null(vars)){
@@ -498,7 +497,7 @@ shinyServer(
       
       print(paste0("PC",input$to_plot_pca_y))
       
-      data[[input$to_plot_4]] <- factor(data[[input$to_plot_4]])
+      #data[[input$to_plot_4]] <- factor(data[[input$to_plot_4]])
       
       ggplot(data = pca.results) + 
         geom_point(aes_string(paste0("PC",input$to_plot_pca_x), paste0("PC",input$to_plot_pca_y), colour=input$to_plot_4)) +
