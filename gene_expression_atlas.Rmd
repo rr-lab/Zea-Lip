@@ -1,0 +1,47 @@
+---
+title: "expression_data"
+author: "Rubén Rellán Álvarez"
+date: "15/03/2018"
+output: html_document
+---
+
+Load a bunch of packages
+
+```{r}
+library(ggplot2)
+library(tidyr)
+library(dplyr)
+library(magrittr)
+library(readr)
+library(cowplot)
+```
+
+
+```{r setup, include=FALSE}
+tissue_exp <- read.delim("data/exp_atlas.txt", stringsAsFactors=FALSE) 
+
+# make tissue_exp long
+
+tissue_exp_long <- tissue_exp %>%
+	gather(tissue, expression_val, -gene_name, -chromosome, -position_left, -position_right) %>%
+  separate(tissue, c("main_tissue", "sec_tissue", "dev_stage"))
+
+tissue_exp_long_abbreviated <- tissue_exp_long %>%
+	select(gene_name, main_tissue, sec_tissue, dev_stage, expression_val)
+
+tissue_exp_long_leaf <- tissue_exp_long_abbreviated %>%
+	filter( main_tissue == "Leaf")
+
+write_csv(tissue_exp_long_leaf, "data/tissue_exp_long_leaf.csv")
+
+# load glycerolipd genes and add expression values
+
+glycerolipids <- read_csv("data/glycerolipid_pathway_genes.csv")
+
+glycerolipids_exp_values <- glycerolipids %>%
+	inner_join(tissue_exp_long_leaf, by = "gene_name")
+
+write_csv(glycerolipids, "data/glycerolipids_exp_val.csv")	
+
+```
+
