@@ -8,6 +8,7 @@ editor_options:
 ---
 
 
+
 Load the packages that we wil use.
 ```{r}
 library(ggplot2)
@@ -91,13 +92,14 @@ data %>%
   ggsave("output/PCs-LPCs.pdf")    
 
 data %>%
-  ggplot(aes(x = PCs, y = LPCs)) +
-  geom_point(aes(alpha = 0.3)) +
+  ggplot(aes(x = PCs, y = LPCs, colour = genotype)) +
+  geom_point() +
   geom_point(data = data_PT, colour = "blue")
   
 
 data_PT <- data %>% 
   filter(genotype == "PT")
+
 
 ```
 
