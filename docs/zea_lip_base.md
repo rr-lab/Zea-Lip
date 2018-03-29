@@ -6,7 +6,11 @@
 
 ## Abstract
 
-Glycerolipids are the predominant building block of plant membranes, are essential for plant growth and development and are involved in a variety of signalling and their relative abundances can change in response to several environmental factors. In an effort to catalog the composition of glycerolipids in an important crop like maize we used ultra high performance liquid chromatography coupled with quadrupole time of flight mass spectrometry to characterize the glycerolipid profile of samples of maize plants collected at 10 different vegetative developmental stages and 6 different leaf ages. We analyzed three different genotypes: B73, a temperate inbred, CML312, a tropical inbred and Palomero Toluqueño, an open pollinated variety landrace from the Mexican highlands. We analyzed a total of 150 samples from greenhouse grown plants and another extra 24 samples of a single developmental stage of plants from the three genotypes. Overall, genotype was the major driver of glycerolipid differences. Phosphatidylcholine and lyso-phosphatidylcholine genotypic differences were particularly high between B73 and Palomero Toluqueño. We designed a web interface to easily browse and compare glycerlolipid levels across tissues and genotypes.    
+Glycerolipids are the predominant building blocks of plant membranes, they are essential for plant growth and development.
+They are involved in a variety of signalling and their relative abundances can change in response to several environmental factors.
+In an effort to catalog the composition of glycerolipids in an important crop like maize, we used ultra high performance liquid chromatography coupled with quadrupole time of flight mass spectrometry to characterize the glycerolipid profile of samples of maize plants collected at 10 different vegetative developmental stages and 6 different leaf ages. 
+We analyzed three different genotypes: B73, a temperate inbred, CML312, a tropical inbred and Palomero Toluqueño, an open pollinated variety landrace from the Mexican highlands. From plants grown in greenhouse, 150 samples were analyzed and from a highland field, another extra 24 samples, of a single developmental stage from the three genotypes, were analyzed.
+Overall, genotype was the major driver of glycerolipid differences. Phosphatidylcholine and lyso-phosphatidylcholine genotypic differences were particularly high. We designed a web interface to easily browse and compare glycerlolipid levels across tissues and genotypes.    
 
 **Keywords**
 Maize, glycerolipids, natural variation, developmental stages,ultra high performance liquid chromatography, quadrupole time of flight mass spectrometry
@@ -14,7 +18,12 @@ Maize, glycerolipids, natural variation, developmental stages,ultra high perform
 ## Introduction
 
 In *Zea mays*, and monocots in general, the leaf differentiation occurs basipetally, having the less differentiated cells  in the tip and the most differentiated ones in the base (Sharman 1942; Nelson and Dengler 1997). This continuous developmental gradient represents a good model to investigate the lipid differentiation among leaves in different developmental stages and different zones within the leaves.
-In previous studies of maize global RNA sequencing it has been reported that there is a very contrasting expression pattern between tip and base of maize leaves in same or different developmental stages (Sekhon et al. 2011; Stelpflug et al. 2016).  Moreover, Li and collaborators found that based on morphological, anatomical and physiological characteristics maize leaf blade can be divided into four zones, which are representative samples for the study of photosynthetic differentiation in maize leaves (Li et al. 2010). Based on those two different approaches we defined three different developmental zones within maize leaves (Figure 1): tip, center and base..
+In previous studies of maize global RNA sequencing it has been reported that there is a very contrasting gene expression pattern between tip and base of maize leaves in same or different developmental stages (Sekhon et al. 2011).  Moreover, Li and collaborators found that B73 maize third leaf blade represents the full immature to mature transition of variation in morphological, anatomical and physiological characteristics. According to that, the leaf blade can be divided into four zones, which are representative samples for the study of photosynthetic differentiation in maize leaves (Li et al. 2010). 
+Based on those two different approaches we defined three different developmental zones within maize leaves (Figure 1): tip, center and base.
+
+
+
+
 
 
 ## Materials and Methods  
@@ -25,6 +34,10 @@ The plant material used in this study consisted of Mexi 5 Palomero Toluqueño (m
 After germination, the growth was daily measured in terms of number of emerging leaves and fully expanded leaves by plant (Figure A). The vegetative stage used describes the number of leaf counting the coleoptiles as the first one (Sharman 1942).  
 All blocks were harvested 58 days after planting (dap) of block 1, harvested tissue was immediately frozen in liquid nitrogen and stored at -80°C until extraction.  
 From block 1, leaves were sampled in three different zones: tip (T), center (C) and base (B), see Figure X. From each zone 50 mg of fresh blade tissue were collected for lipid extraction, excluding the mid rib. A list of all tissues sampled is listed in Table 1.
+
+![Figure1](https://github.com/rr-lab/zea_lip_base/blob/master/output/B73_leaf4_28dap_leaf_zones_ligular_zone.png)**Figure1. Developmental zones along a 4th leaf of a 28dap B73.**
+
+B73_leaf4_28dap_ScaleBar
 
 ** Table 1 **
 
@@ -152,7 +165,7 @@ A total of 171 lipid species were identified with lipid profiling. The lipid cla
 
 The average coefficient of variation of the sample pool, analyzed every 10 samples, was in average 9.7% and it ranged between 1.7 and 29.6 %. In the samples analyzed we observed a coefficient of variation  63.9% with a range between 22.7 and 222.8% across all tissues. By genotype, coefficients of variation were 51.9% in the case of B73 with a 14.6-192.8% range, 57.7 with 13.1-223.6% range in CML312 and 58.6% with a 14.0-137.1% range in PT. In the set of plants that were grown in the field coefficients of variation were 25.0% in the case of B73 with a 7.5-60.9% range, 30.6% with a 10.2-76.6% range in CML312 and 28.3 with a 9.1-156.2%.
 
-![FigureX](https://github.com/rr-lab/zea_lip_base/blob/master/output/3Genotypes_sum_lipid_classes_heatmap_lipid_class_average_Pearson_noBorders.png)**FigureX: Heatmap of the genotype-specific lipid profile detected with UHPLC-QTOF MS/MS, generated by Ward clustering algorithm based on Pearson's correlation.**
+![FigureX](https://github.com/rr-lab/zea_lip_base/blob/master/output/3Genotypes_sum_lipid_classes_heatmap_lipid_class_average_Pearson_noBorders.png)**FigureX. Heatmap of the genotype-specific lipid profile detected with UHPLC-QTOF MS/MS, generated by Ward clustering algorithm based on Pearson's correlation.**
 
 
 
