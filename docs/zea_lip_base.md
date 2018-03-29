@@ -152,5 +152,5 @@ A total of 171 lipid species were identified with lipid profiling. The lipid cla
 
 The average coefficient of variation of the sample pool, analyzed every 10 samples, was in average 9.7% and it ranged between 1.7 and 29.6 %. In the samples analyzed we observed a coefficient of variation  63.9% with a range between 22.7 and 222.8% across all tissues. By genotype, coefficients of variation were 51.9% in the case of B73 with a 14.6-192.8% range, 57.7 with 13.1-223.6% range in CML312 and 58.6% with a 14.0-137.1% range in PT. In the set of plants that were grown in the field coefficients of variation were 25.0% in the case of B73 with a 7.5-60.9% range, 30.6% with a 10.2-76.6% range in CML312 and 28.3 with a 9.1-156.2%.
 
-![FigureX](https://github.com/rr-lab/zea_lip_base/blob/master/output/3Genotypes_sum_lipid_classes_heatmap_lipid_class_average.png)**FigureX: Lipid class average per genotype**
+![FigureX](https://github.com/rr-lab/zea_lip_base/blob/master/output/3Genotypes_sum_lipid_classes_heatmap_lipid_class_average.png)![](./pic/pic1_50.png =100x20)**FigureX: Lipid class average per genotype**
 
