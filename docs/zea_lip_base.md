@@ -30,14 +30,23 @@ Based on those two different approaches we defined three different developmental
 
 ### Plant material and growth conditions
 
-The plant material used in this study consisted of Mexi 5 Palomero Toluqueño (mexican highland landrace), B73, a temperate inbred,  and CML312, a tropical line developed by CIMMYT. All seeds were weighed before planting. These varieties of maize were planted in a greenhouse in four different blocks, each block with 10 days of difference in between sowing dates. Within each block two replicates of each genotype wereincluded. A randomized block design was employed. The plants were watered with 500 mL of tap water every third day.
-After germination, the growth was daily measured in terms of number of emerging leaves and fully expanded leaves by plant (Figure A). The vegetative stage used describes the number of leaf counting the coleoptiles as the first one (Sharman 1942).  
-All blocks were harvested 58 days after planting (dap) of block 1, harvested tissue was immediately frozen in liquid nitrogen and stored at -80°C until extraction.  
-From block 1, leaves were sampled in three different zones: tip (T), center (C) and base (B), see Figure X. From each zone 50 mg of fresh blade tissue were collected for lipid extraction, excluding the mid rib. A list of all tissues sampled is listed in Table 1.
+The plant material used in this study consisted of Mexi 5 Palomero Toluqueño (mexican highland landrace), B73, a temperate inbred,  and CML312, a tropical line developed by CIMMYT. All seeds were weighed before planting (data not shown). These varieties of maize were planted in a greenhouse, in four different blocks, using a randomized block design. Each block was planted with 10 days of difference in between sowing dates. Within each block, two replicates of each genotype were included, the plants were watered with 500 mL of tap water every third day.
+After germination, the growth was daily measured in terms of number of emerging leaves and fully expanded leaves by plant (Figure 2). The vegetative stage used describes the number of leaf, counting the coleoptiles as the first one (Sharman 1942).  
+All blocks were harvested 58 days after planting (dap) of block 1, harvested tissue was immediately frozen in liquid nitrogen and stored at -80°C until lipid extraction.  
+From block 1, leaves were sampled in three different zones: tip (T), center (C) and base (B), see Figure 1. From each zone 50 mg of fresh blade tissue were collected for lipid extraction, excluding the mid rib, the ligule and the auricles. A list of all tissues sampled is listed in Table 1.
 
-![Figure1](https://github.com/rr-lab/zea_lip_base/blob/master/output/B73_leaf4_28dap_leaf_zones_ligular_zone.png)**Figure1. Developmental zones along a 4th leaf of a 28dap B73.**
+![Figure1](https://github.com/rr-lab/zea_lip_base/blob/master/output/B73_leaf4_28dap_leaf_zones_ligular_zone.png)**Figure1. Developmental zones along a B73 maize leaf.**
+This image corresponds to the 4th leaf of a B73 maize plant, 28 days after planting, grown in a greenhouse.
+We considered three developmental zones in the leaves to sample for lipid profiling, the base, the center and the tip.
+For the base sampling, we took 10 punches corresponding to around 50 mgof fresh tissue, along 5 cm distance, starting 1 cm above from the auricles and ligule to exclude them. 
+The tip was sampled from 2 cm below the tip, along a 5 cm distance, this to avoid the very first small region for taking exact punches (circles) to take the same weight for all samples.
+Finally, the center in short leaves was sampled considering a separation of 2 cm distance from the end of the base and the tip. For longer leaves distances of 10 and 20 cm in between base and tip to center were considered.
+For all samples, midrib was also avoided. 
 
-B73_leaf4_28dap_ScaleBar
+
+![Figure2](https://github.com/rr-lab/zea_lip_base/blob/master/output/Growth_rate_fully_average_expanded_leaves_per_genotype.png)**Figure2. Growth rate of B73, CML312 ans PT in greenhouse.**
+The average of fully expanded leaves per genotype per day were used to make this graph.
+
 
 ** Table 1 **
 
