@@ -44,7 +44,7 @@ Finally, the center in short leaves was sampled considering a separation of 2 cm
 For all samples, midrib was also avoided. 
 
 
-![Figure2](https://github.com/rr-lab/zea_lip_base/blob/master/output/Growth_rate_fully_average_expanded_leaves_per_genotype.png)**Figure2. Growth rate of B73, CML312 ans PT in greenhouse.**
+![Figure2](https://github.com/rr-lab/zea_lip_base/blob/master/output/Growth_rate_fully_average_expanded_leaves_per_genotype.png)**Figure2. Growth rate of B73, CML312 and PT in greenhouse.**
 The average of fully expanded leaves per genotype per day were used to make this graph.
 
 
@@ -127,12 +127,12 @@ The average of fully expanded leaves per genotype per day were used to make this
 | PT       | 9            | 49  | V8                  | 2          |
 
 Field samples were collected from plants grown in a CIMMYT experimental field located in Metepec, Mexico State, (19°13'28.7"N 99°32'51.6"W) within the Trans-Mexican volcanic belt. The experimental field is 2610 meters above sea level (masl), the range of average monthly temperatures along the year go from 5°C (41°F) to 21.5°C (70.7°F) with an average annual of 13.6°C (56.48°F). Its average annual precipitation is around 809mm (31.85in). Plants were planted in on April 5th, 2016 and were sampled for lipid analysis by June 9th 2016, when the plants were around the V5 developmental stage. Samples were taken from the tip of the S2 leaf (two leaves younger of the last leaf with a fully developed collar). Eight plants per genotype were sampled.  
-The average GDD for Metepec was 5.52 and the total GDD (over the length of the growing season) was 364.25. On the other hand, during this period the average daily precipitation (mm) was 1.6 while the total precipitation was 96.5mm (3.79in).
+The average GDD for Metepec was 5.52 and the total GDD (over the length of the growing season) was 364.25. On the other hand, during this period the average daily precipitation was 1.6 mm (0.06in) while the total precipitation was 96.5mm (3.79in).
 
 
 ### Lipid extraction  
 
-In the field, leaf tissue was collected when the plant were in the V3 - V6 stage. We tested using 50 mg wet weight leaf tissue for lipidome profiling, as this amount was deemed appropriate for Arabidopsis (Degenkolbe et al. 2012). Frozen material was homogenized in a tissue grinder Retsch (Haan, Germany) during 40 seconds at 30 1/s. After grinding all tubes were stored in liquid nitrogen.
+In the field, leaf tissue was collected when the plants were in the V3 - V6 stage. While in the greenhouse, plants were sampled as shown in Table 1. We collected 50 mg of wet weight leaf tissue for lipidome profiling, as this amount was deemed appropriate for Arabidopsis (Degenkolbe et al. 2012). Frozen material was homogenized in a tissue grinder Retsch (Haan, Germany) during 40 seconds at 30 1/s. After grinding all tubes were stored in liquid nitrogen.
 
 Lipid extraction used was reported by Matyash and collaborators (Matyash et al. 2008). First 225 μL of cold methanol (MeOH), previously prepared with a Quality Control (QC) mix, was added to each sample, always keeping MeOH on ice during the extraction. Each sample was vortexed for 10 seconds, keeping the rest of materials on ice. Then 750 μL of cold methyl tert-butyl ether (MTBE) were added, keeping MTBE on ice along all the process. Again each sample had to be vortexed for 10 seconds, followed by shaking each for 6 minutes at 4°C in the orbital mixer. After that, 188 μL of LC/MS grade water at room temperature (RT) were added, vortexing all the samples for 20 seconds.
 
@@ -148,12 +148,12 @@ According to the diversity and amount of lipid species identified under ESI (+) 
 
 ## Results
 
-In total we analyzed 150 samples from three genotypes at 10 different developmental stages from V4 to V14. We collected tissue from leaves of 6 different ages. In the three youngest blocks, the samples were collected along the leaf, but in the block with the most developed plants, the samples were collected at defined locations in the leave (tip, center, base) See Figure 1.
-In total around 2500 data points were collected and analyzed. We also analyzed set of 24 plants (8 per genotype) grown in the field and sampled at around V4 - V6 developmental stage.
+In total we analyzed 150 greenhouse samples from three genotypes at 10 different developmental stages from V4 to V14. We collected tissue from leaves of 6 different ages. For the three youngest blocks the samples were collected along the leaf, but in the block with the most developed plants, the samples were collected at defined locations in the leave (tip, center, base), see Figure 1.
+In total around 2500 data points were collected and analyzed. We also analyzed set of 24 plants (8 per genotype) grown in a highland field and sampled at around V3 - V6 developmental stage.
 
-A total of 171 lipid species were identified with lipid profiling. The lipid classes found are: cholesterol esters (CE), diacylglycerols (DG), non-hydroxyacyl sphingosines (CerNS), digalactosyldiacylglycerols (DGDG), glycosphingolipids (GlcCerNS), lysophosphatidylcholines (LPC), monogalactosyldiacylglycerols (MGDG), phosphatidylcholines (PC), phosphoethanolamines (PE), phosphatidylglycerols (PG), plasmenyl phosphatidylcholines (plasmenylPC), sphingomyelins (SM), sulfoquinovosyl diacylglycerols (SQDG) and triaglycerides (TG). See Table 1.
+A total of 171 lipid species were identified with lipid profiling. The lipid classes found were: cholesterol esters (CE), diacylglycerols (DG), non-hydroxyacyl sphingosines (CerNS), digalactosyldiacylglycerols (DGDG), glycosphingolipids (GlcCerNS), lysophosphatidylcholines (LPC), monogalactosyldiacylglycerols (MGDG), phosphatidylcholines (PC), phosphoethanolamines (PE), phosphatidylglycerols (PG), plasmenyl phosphatidylcholines (plasmenylPC), sphingomyelins (SM), sulfoquinovosyl diacylglycerols (SQDG) and triaglycerides (TG). See Table 1.
 
-**Table 1** Table S. Number of lipid species identified, within each lipid class, using UPLC-QTOF MS/MS positive mode ESI.
+**Table 2** Table 2. Number of lipid species identified, within each lipid class, using UHPLC-QTOF MS/MS ESI positive mode .
 
 | Lipid classes                   | Number of species |
 |---------------------------------|-------------------|
@@ -174,7 +174,9 @@ A total of 171 lipid species were identified with lipid profiling. The lipid cla
 
 The average coefficient of variation of the sample pool, analyzed every 10 samples, was in average 9.7% and it ranged between 1.7 and 29.6 %. In the samples analyzed we observed a coefficient of variation  63.9% with a range between 22.7 and 222.8% across all tissues. By genotype, coefficients of variation were 51.9% in the case of B73 with a 14.6-192.8% range, 57.7 with 13.1-223.6% range in CML312 and 58.6% with a 14.0-137.1% range in PT. In the set of plants that were grown in the field coefficients of variation were 25.0% in the case of B73 with a 7.5-60.9% range, 30.6% with a 10.2-76.6% range in CML312 and 28.3 with a 9.1-156.2%.
 
-![FigureX](https://github.com/rr-lab/zea_lip_base/blob/master/output/3Genotypes_sum_lipid_classes_heatmap_lipid_class_average_Pearson_noBorders.png)**FigureX. Heatmap of the genotype-specific lipid profile detected with UHPLC-QTOF MS/MS, generated by Ward clustering algorithm based on Pearson's correlation.**
+![FigureY](https://github.com/rr-lab/zea_lip_base/blob/master/output/3Genotypes_sum_lipid_classes_heatmap_lipid_class_average_Pearson_noBorders.png)**FigureY. Heatmap of the genotype-specific lipid profile detected with UHPLC-QTOF MS/MS, generated by Ward clustering algorithm based on Pearson's correlation.**
+
+![FigureZ](https://github.com/rr-lab/zea_lip_base/blob/master/LPC_18_2_PC_36_6_Greenhouse_vs_Field.jpg)**FigureZ. Comparison of LPC 18:2 and PC 36:6 (18:3, 18:3) between plants grown in greenhouse and highland field samples.**
 
 
 
