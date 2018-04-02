@@ -17,11 +17,15 @@ Maize, glycerolipids, natural variation, developmental stages,ultra high perform
 
 ## Introduction
 
-In *Zea mays*, and monocots in general, the leaf differentiation occurs basipetally, having the less differentiated cells  in the tip and the most differentiated ones in the base (Sharman 1942; Nelson and Dengler 1997). This continuous developmental gradient represents a good model to investigate the lipid differentiation among leaves in different developmental stages and different zones within the leaves.
-In previous studies of maize global RNA sequencing it has been reported that there is a very contrasting gene expression pattern between tip and base of maize leaves in same or different developmental stages (Sekhon et al. 2011).  Moreover, Li and collaborators found that B73 maize third leaf blade represents the full immature to mature transition of variation in morphological, anatomical and physiological characteristics. According to that, the leaf blade can be divided into four zones, which are representative samples for the study of photosynthetic differentiation in maize leaves (Li et al. 2010). 
+In *Zea mays*, and monocots in general, the leaf differentiation occurs basipetally, having the less differentiated cells  in the tip and the most differentiated ones in the base (Sharman 1942; Nelson and Dengler 1997). This continuous developmental gradient represents a good model for different developmental studies. 
+
+In previous studies of maize global RNA sequencing it has been reported that there is a very contrasting gene expression pattern between tip and base of maize leaves in same or different developmental stages (Sekhon et al. 2011). It has been reported that in unexpanded leaves, the base exhibits an exclusive proliferative, symmetric cell division (Facette et al, 2013). Moreover, Li and collaborators found that B73 maize third leaf blade represents the full immature to mature transition of variation in morphological, anatomical and physiological characteristics. According to that, the leaf blade can be divided into four zones, which are representative samples for the study of photosynthetic differentiation in maize leaves (Li et al. 2010). 
 Based on those two different approaches we defined three different developmental zones within maize leaves (Figure 1): tip, center and base.
 
+Here, we present a comparative lipid analysis across 3 maize genotypes (B73, CML312, PT), 10 different plant developmental stages (V4 - V14), 6 different leaf ages (leaf 4, 5, 7, 9, 11, 13) and 3 different developmental zones within the leaf (tip, center, base); all this from plants gron in greenhouse. We also analyzed these three genotypes grown in a highland conditions field, where we sampled leaf tissue around V3 - V6 developmental stage.  Using a Ultra High Performance Liquid Chromatography coupled to a Quadrupole Time of Flight Mass Spectrometry (UHPLC-QTOF MS/MS) on an ESI positive mode we were able to identify 171 molecular lipid species, within 14 lipid classes. 
+This study provides an insight in the distribution of lipids through maize leaf development. 
 
+ 
 
 
 
@@ -142,9 +146,9 @@ In order to separate the phases, all samples were centrifuged for 2 min at 14,00
 
 Dry samples were resuspended in 110 μL of MeOH-Toluene 90:10 (with CUDA 50 ng/mL). The rack of samples was vortexed at low speed for 20 s and then all tubes were sonicated at RT for 5 min. Aliquots of 50 µL per sample were transferred into an insert within an amber glass vial.
 
-Before start running samples a new column was set, it is recommended to change the column (Acquity UPLC C18 1.7μm 2.1x100 mm Column) (Waters; Milford, MA, USA) every 1000 samples. After the column change, the new one must be purged for 5 min to take air out. The UPLC column is coupled to a VanGuard pre-column (Acquity UPLC C18 1.7μm 2.1x5 mm Pre-column Waters), which is replaced after ~330 sample injections. Six “no sample injections” were injected at the beginning of each run to condition the column, followed by ten samples, one pool (made out of the mix of the second aliquot of all the samples contained per UHPLC plate) and one blank.
+Before start running samples a new column was set, it is recommended to change the column (Acquity UPLC C18 1.7μm 2.1x100 mm Column) (Waters; Milford, MA, USA) every 1000 samples. After the column change, the new one must be purged for 5 min to take air out. The UHPLC column is coupled to a VanGuard pre-column (Acquity UPLC C18 1.7μm 2.1x5 mm Pre-column Waters), which is replaced after ~330 sample injections. Six “no sample injections” were injected at the beginning of each run to condition the column, followed by ten samples, one pool (made out of the mix of the second aliquot of all the samples contained per UHPLC plate) and one blank.
 
-According to the diversity and amount of lipid species identified under ESI (+) and (-) during an optimization of lipid extraction and lipid analysis (data not shown), we selected ESI positive mode on Agilent® Ultra-Performance Liquid Chromatography and Quadrupole Time of Flight Mass Spectrometry (UPLC-QTOF MS/MS). The UPLC-QTOF MS/MS utilized were Agilent 1290 and Agilent 6530, respectivelu. We injected 1.67 μL per sample into UPLC-QTOF MS/MS ESI (+), the running time per sample was 15 min. 
+According to the diversity and amount of lipid species identified under ESI (+) and (-) during an optimization of lipid extraction and lipid analysis (data not shown), we selected ESI positive mode on Agilent® Ultra-Performance Liquid Chromatography and Quadrupole Time of Flight Mass Spectrometry (UHPLC-QTOF MS/MS). The UHPLC-QTOF MS/MS utilized were Agilent 1290 and Agilent 6530, respectively. We injected 1.67 μL per sample into UHPLC-QTOF MS/MS ESI (+), the running time per sample was 15 min. 
 
 ## Results
 
@@ -174,9 +178,11 @@ A total of 171 lipid species were identified with lipid profiling. The lipid cla
 
 The average coefficient of variation of the sample pool, analyzed every 10 samples, was in average 9.7% and it ranged between 1.7 and 29.6 %. In the samples analyzed we observed a coefficient of variation  63.9% with a range between 22.7 and 222.8% across all tissues. By genotype, coefficients of variation were 51.9% in the case of B73 with a 14.6-192.8% range, 57.7 with 13.1-223.6% range in CML312 and 58.6% with a 14.0-137.1% range in PT. In the set of plants that were grown in the field coefficients of variation were 25.0% in the case of B73 with a 7.5-60.9% range, 30.6% with a 10.2-76.6% range in CML312 and 28.3 with a 9.1-156.2%.
 
-![FigureY](https://github.com/rr-lab/zea_lip_base/blob/master/output/3Genotypes_sum_lipid_classes_heatmap_lipid_class_average_Pearson_noBorders.png)**FigureY. Heatmap of the genotype-specific lipid profile detected with UHPLC-QTOF MS/MS, generated by Ward clustering algorithm based on Pearson's correlation.**
+![FigureY](https://github.com/rr-lab/zea_lip_base/blob/master/output/3Genotypes_sum_lipid_classes_heatmap_lipid_class_average_Pearson_noBorders.png)
+**FigureY. Heatmap of the genotype-specific lipid profile detected with UHPLC-QTOF MS/MS, generated by Ward clustering algorithm based on Pearson's correlation.**
 
-![FigureZ](https://github.com/rr-lab/zea_lip_base/blob/master/LPC_18_2_PC_36_6_Greenhouse_vs_Field.jpg)**FigureZ. Comparison of LPC 18:2 and PC 36:6 (18:3, 18:3) between plants grown in greenhouse and highland field samples.**
+![FigureZ](https://github.com/rr-lab/zea_lip_base/blob/master/LPC_18_2_PC_36_6_Greenhouse_vs_Field.jpg)
+**FigureZ. Comparison of LPC 18:2 and PC 36:6 (18:3, 18:3) between plants grown in greenhouse and highland field samples.**
 
 
 
