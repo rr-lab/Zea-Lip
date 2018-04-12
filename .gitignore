@@ -16,6 +16,9 @@
 
 # RStudio files
 .Rproj.user/
+.Rproj.user/shared
+.Rproj.user/EFA497D2
+
 
 # produced vignettes
 vignettes/*.html

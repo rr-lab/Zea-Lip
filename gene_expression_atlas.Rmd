@@ -34,12 +34,14 @@ tissue_exp_long_leaf <- tissue_exp_long_abbreviated %>%
 
 write_csv(tissue_exp_long_leaf, "data/tissue_exp_long_leaf.csv")
 
+tissue_exp_long_leaf <- read_csv("data/tissue_exp_long_leaf.csv")
+
 # load glycerolipd genes and add expression values
 
 glycerolipids <- read_csv("data/glycerolipid_pathway_genes.csv")
 
 glycerolipids_exp_values <- glycerolipids %>%
-	inner_join(tissue_exp_long_leaf, by = "gene_name")
+	left_join(tissue_exp_long_leaf, by = "gene_name")
 
 write_csv(glycerolipids, "data/glycerolipids_exp_val.csv")	
 
