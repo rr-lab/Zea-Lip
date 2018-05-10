@@ -49,5 +49,9 @@ write_csv(glycerolipids_exp_values, "output/glycerolipids_exp_val.csv")
 
 glycerolipids_exp_val <- read_csv("output/glycerolipids_exp_val.csv")
 
+
+
 ```
+
+
 
