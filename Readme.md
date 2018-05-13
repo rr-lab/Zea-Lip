@@ -1,4 +1,4 @@
-*Zea Lip Base*: An atlas of glycerolipid species across development in maize B73, CML312 inbreds and Palomero Toluqueño landrace.
+*Zea Lip*: An atlas of glycerolipid species across development in maize B73, CML312 inbreds and Palomero Toluqueño landrace.
 -----------------------------
 
 Here we present a developmental atlas of maize glycerolipid species. We collected tissues from three  maize lines: B73, CML312 and Palomero Toluqueño at different developmental stages, leaf types and areas of the leaf. We then analyzed this tissues using HPLC-MS and identified 150 glycerolipid species.
@@ -30,3 +30,25 @@ final figures
 ### `scripts`
 
 scripts with data analysis.
+
+# Manuscript Outline  
+
+### Introduction
+
+### Results
+
+- Figure 1. Tissues analyzed + table. Text analyzing general patterns of the data. We still need to check if all compounds are present in all tissues/genotypes.  
+
+- Figure 2. PCA analysis. Show boxplots of most important variables. 
+Tables of 10 most importan variables to PC1 and PC2.  
+
+- Figure 3. Summary data by groups (PCs, DGs etc), ratios. 
+
+- Figure 4. Heatmaps correlations. Compare correlations between genotypes.
+
+- Figure 5. Expression data correlations.
+
+
+
+
+
