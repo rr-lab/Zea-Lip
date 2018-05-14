@@ -1,4 +1,4 @@
-*Zea Lip Base*: An atlas of glycerolipid species across development in maize B73, CML312 inbreds and Palomero Toluqueño landrace.
+*Zea Lip*: An atlas of glycerolipid species across development in maize B73, CML312 inbreds and Palomero Toluqueño landrace.
 ------------------------
 
 
@@ -56,6 +56,10 @@ The average of fully expanded leaves per genotype per day were used to make this
 
 
 **Table 1. Leaf tissue sampled for lipid analysis**
+
+<!---
+we need to add info about the samples that were taken along the leaf
+-->
 
 | Genotype | Sampled leaf | DAG | Developmental Stage | Replicates |
 |----------|--------------|-----|---------------------|------------|
