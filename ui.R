@@ -212,7 +212,40 @@ shinyUI(fluidPage(
                 plotOutput("pca_plot", height = 600)
          )
        )
-    )
+    ),
+
+ tabPanel("About", id="tab1", icon = icon("plus-circle"),
+          fluidRow(
+            column(3),
+            column(6,
+                   h4("What is the Zea Lip? "),
+                   helpText("Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
+                            sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+                            Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris 
+                            nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in "),
+                   actionButton(inputId='ab2', label="View source code", icon = icon("flask"), onclick ="window.open('https://github.com/rr-lab/zea_lip', '_blank')"),                                              
+                   tags$hr(),
+                   h4("How to contribute"),
+                   helpText("Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
+                            sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."),
+                   tags$hr(),
+                   h4("How to cite us"),
+                   tags$strong("Zea Lip: An atlas of glycerolipid species across development in maize B73, CML312 inbreds and Palomero Toluqueño landrace."),
+                   helpText("Karla Juárez-Núñez, Guillaume Lobet,  Rubén Rellán-Álvarez"),
+                   #actionButton(inputId='ab1', label="View paper", icon = icon("flask"), onclick ="window.open('http://link.springer.com/10.1007/s11104-015-2673-4', '_blank')"),                                              
+                   tags$hr(),
+                   h4("Licence"),
+                   helpText("Zea Lip is free to use and released under a GPL licence. It means that redistribution and use in source and binary forms, with or without modification, are permitted under the GNU General Public License v2 and provided that the following conditions are met:
+                            
+                            1. Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
+                            
+                            2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
+                            
+                            3. Neither the name of the copyright holder nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission."),                    
+                   tags$hr()                   
+                   )
+                   )
+          )
     
              
   )

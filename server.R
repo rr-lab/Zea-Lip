@@ -557,21 +557,38 @@ shinyServer(
     output$correlation_heatmap <- renderPlot({
       if(is.null(rs$fit.results)){return()}
     
-      if(input$correlation_individual_field){
-        if(input$corr_to_plot_field == "r-squares") print(heatmap(rs$fit.results.indiv))
-        else if(input$corr_to_plot_field == "Spearman") print(heatmap(rs$spearman.results.indiv))
+      if(input$correlation_individual){
+        if(input$corr_to_plot == "r-squares") print(heatmap(rs$fit.results.indiv))
+        else if(input$corr_to_plot == "Spearman") print(heatmap(rs$spearman.results.indiv))
         else  print(heatmap(rs$pearson.results.indiv))
       }else{
-        if(input$corr_to_plot_field == "r-squares") print(heatmap(rs$fit.results))
-        else if(input$corr_to_plot_field == "Spearman") print(heatmap(rs$spearman.results))
+        if(input$corr_to_plot == "r-squares") print(heatmap(rs$fit.results))
+        else if(input$corr_to_plot == "Spearman") print(heatmap(rs$spearman.results))
         else  print(heatmap(rs$pearson.results))
+      }
+    })  
+    
+    
+    ## > Heatmap -----
+    
+    output$correlation_heatmap_field <- renderPlot({
+      if(is.null(rs$fit.results.field)){return()}
+      
+      if(input$correlation_individual_field){
+        if(input$corr_to_plot_field == "r-squares") print(heatmap(rs$fit.results.indiv.field))
+        else if(input$corr_to_plot_field == "Spearman") print(heatmap(rs$spearman.results.indiv.field))
+        else  print(heatmap(rs$pearson.results.indiv.field))
+      }else{
+        if(input$corr_to_plot_field == "r-squares") print(heatmap(rs$fit.results.field))
+        else if(input$corr_to_plot_field == "Spearman") print(heatmap(rs$spearman.results.field))
+        else  print(heatmap(rs$pearson.results.field))
       }
     })  
     
     
     ## > Correlation -----
     
-    output$correlation_plot <- renderPlot({
+    output$correlation_plot_field <- renderPlot({
       if(is.null(rs$field_sum)){return()}
   
       
@@ -581,11 +598,11 @@ shinyServer(
         temp  <-  rs$field_sum 
       }
       temp  <-  temp %>%
-        filter(variable == input$variable_corr_1 | variable == input$variable_corr_2)%>%
+        filter(variable == input$variable_corr_1_field | variable == input$variable_corr_2_field)%>%
         spread(variable, value) 
-      temp$x = temp[[input$variable_corr_1]]
-      temp$y = temp[[input$variable_corr_2]]
-      temp$group = factor(temp[[input$to_plot_reg_3]])
+      temp$x = temp[[input$variable_corr_1_field]]
+      temp$y = temp[[input$variable_corr_2_field]]
+      temp$group = factor(temp[[input$to_plot_reg_3_field]])
       
       if(input$correlation_color_field){
         ggplot(temp, aes(x, y, colour=group)) + 
@@ -598,38 +615,19 @@ shinyServer(
       }
     })   
     
-    
-    ## > Heatmap -----
-    
-    output$correlation_heatmap_field <- renderPlot({
-      if(is.null(rs$fit.results.field)){return()}
-      
-      if(input$correlation_individual){
-        if(input$corr_to_plot == "r-squares") print(heatmap(rs$fit.results.indiv.field))
-        else if(input$corr_to_plot == "Spearman") print(heatmap(rs$spearman.results.indiv.field))
-        else  print(heatmap(rs$pearson.results.indiv.field))
-      }else{
-        if(input$corr_to_plot == "r-squares") print(heatmap(rs$fit.results.field))
-        else if(input$corr_to_plot == "Spearman") print(heatmap(rs$spearman.results.field))
-        else  print(heatmap(rs$pearson.results.field))
-      }
-    })  
+
     
     
     ## > Correlation -----
     
-    output$correlation_plot_field <- renderPlot({
+    output$correlation_plot <- renderPlot({
       if(is.null(rs$lipids_sum)){return()}
       
       
       if(input$correlation_individual){
         temp  <-  rs$lipids 
-        # x <- rs$lipids$value[rs$lipids$variable == input$variable_corr_1]
-        # y <- rs$lipids$value[rs$lipids$variable == input$variable_corr_2]
       }else{
         temp  <-  rs$lipids_sum 
-        # x <- rs$lipids_sum$value[rs$lipids_sum$variable == input$variable_corr_1]
-        # y <- rs$lipids_sum$value[rs$lipids_sum$variable == input$variable_corr_2]
       }
       temp  <-  temp %>%
         filter(variable == input$variable_corr_1 | variable == input$variable_corr_2)%>%
