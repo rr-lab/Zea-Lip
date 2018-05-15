@@ -477,13 +477,11 @@ shinyServer(
       
       if(!input$isboxplot){
         pl <- ggplot(temp, aes(x=var, y= value, color = var2)) +
-          geom_jitter(width = 0.25) + 
-          theme_classic()
+          geom_jitter(width = 0.25) 
           
       }else{
         pl <- ggplot(temp, aes(x=factor(var), y= value, color = factor(var2))) + 
-          geom_boxplot(width = 0.25) + 
-          theme_classic()
+          geom_boxplot(width = 0.25)
       }
       
       pl <- pl + 
@@ -515,13 +513,11 @@ shinyServer(
       if(!input$isboxplot_field){
         print("HELLO")
         pl <- ggplot(temp, aes(x=genotype, y= value, color = factor(genotype))) +
-          geom_jitter(width = 0.25) + 
-          theme_classic()
+          geom_jitter(width = 0.25)
         
       }else{
         pl <- ggplot(temp, aes(x=genotype, y= value, color =  factor(genotype))) + 
-          geom_boxplot(width = 0.25) + 
-          theme_classic()
+          geom_boxplot(width = 0.25)
       }
       
       pl <- pl + 
@@ -579,13 +575,11 @@ shinyServer(
       if(input$correlation_color){
         ggplot(temp, aes(x, y, colour=group)) + 
           geom_point() + 
-          geom_smooth(method="lm", se=F, lty=2) + 
-          theme_classic()
+          geom_smooth(method="lm", se=F, lty=2)
       }else{
         ggplot(temp, aes(x, y)) + 
           geom_point() + 
-          geom_smooth(method="lm", se=F, lty=2) + 
-          theme_classic()
+          geom_smooth(method="lm", se=F, lty=2)
       }
     })      
     
@@ -648,7 +642,6 @@ shinyServer(
       ggplot(data = pca.results) + 
         geom_point(aes_string(paste0("PC",input$to_plot_pca_x), paste0("PC",input$to_plot_pca_y), colour="group")) +
         stat_ellipse(aes_string(paste0("PC",input$to_plot_pca_x), paste0("PC",input$to_plot_pca_y), colour="group"), level = 0.9, size=1) + 
-        theme_bw() + 
         xlab(xl) + 
         ylab(yl) + 
         coord_fixed()

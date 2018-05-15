@@ -90,6 +90,7 @@ shinyUI(fluidPage(
         fluidRow(
           column(3, 
                  checkboxInput("plot_sum_field", label = "Plot summed classes instead", value=F),
+                 checkboxInput("add_greenhouse", label = "Add greenhouse data", value=F),
                  tags$hr(),
                  checkboxInput("isboxplot_field", label="Want boxplot instead?"),
                  tags$hr(),
