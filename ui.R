@@ -8,21 +8,31 @@ shinyUI(fluidPage(
     type="text/css",
     "#maize img {max-width: 100%; width: 100%; height: auto}"
   )),
+  
+  tags$head(tags$style(
+    type="text/css",
+    "#leaf img {max-width: 100%; width: 100%; height: auto}"
+  )),
   # Vizualize image ----------
   
   # Application title
   navbarPage("Zea Lip, an atlas of glycerolipid content in maize",
 
      tabPanel("View plants", id="tab1", icon = icon("leaf"),
-              # fluidRow(
-              #   column(4,
+              tabsetPanel(
+                tabPanel("Whole plant",
                        helpText("Choose the genotype and developmental stage to vizualise"),
                        selectInput("img_stage", label = "Day After Planting", choices = c(28, 40, 50, 58)),
                        tags$hr(),
-                # ),
-                # column(7, 
-                       h4("Representative plants for each genotype"),
-                       imageOutput("maize")
+
+                      h4("Representative plants for each genotype"),
+                      imageOutput("maize")
+                ),
+                tabPanel("Leaf",
+                      h4("Leaf sampling positions"),
+                      imageOutput("leaf")
+                )
+              )
               #   )
               # )
      ),
@@ -114,6 +124,10 @@ shinyUI(fluidPage(
   # Heatmaps ----------
   
   tabPanel("Correlation", id="tab2", icon = icon('bolt'),
+           
+     tabsetPanel(
+       tabPanel("Greenhouse data",
+            tags$hr(),
            fluidRow(
              column(7, 
                     selectInput("corr_to_plot", label = "Variable to plot", choices = c("r-squares", "Spearman", "Pearson")),
@@ -138,6 +152,35 @@ shinyUI(fluidPage(
                     )
              )
            )
+       ),
+       tabPanel("Field data",
+                tags$hr(),
+                fluidRow(
+                  column(7, 
+                         selectInput("corr_to_plot_field", label = "Variable to plot", choices = c("r-squares", "Spearman", "Pearson")),
+                         plotOutput("correlation_heatmap_field"),#, click = "heatmap_click")             
+                         checkboxInput("correlation_individual_field", "Load individual data instead", value=F),
+                         checkboxInput("process_indiv_corr_field", "re-Process individual data", value=F)
+                  ),
+                  column(5,
+                         fluidRow(
+                           column(6,selectInput("variable_corr_1_field", label="X Variable", choices = c("Load datafile"))), 
+                           column(6,selectInput("variable_corr_2_field", label="Y Variable", choices = c("Load datafile"))) 
+                         ),
+                         
+                         plotOutput("correlation_plot_field"),#, click = "heatmap_click")     
+                         tags$hr(),
+                         h4("Global correlation parameters"),
+                         textOutput("corr_text_field"),
+                         tags$hr(),
+                         fluidRow(
+                           column(6,selectInput("to_plot_reg_3_field", label = "Group by", choices = c("genotype"))),
+                           column(6,checkboxInput("correlation_color_field", "Correlation by group", value=F))
+                         )
+                  )
+                )
+       )
+     )
   ),
   
   

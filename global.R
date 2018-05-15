@@ -67,3 +67,78 @@ heatmap <- function(corr.matrix){
   plot1
 }
 
+
+getCorrelations <- function(data){
+  
+  variables <- unique(data$variable)
+  l1 = length(variables)
+  
+  fit.results <<- matrix(NA, ncol = l1, nrow = l1) 
+  colnames(fit.results) <- variables 
+  rownames(fit.results) <- variables
+  
+  pearson.results <<- matrix(NA, ncol = l1, nrow = l1) 
+  colnames(pearson.results) <- variables 
+  rownames(pearson.results) <- variables
+  
+  spearman.results <<- matrix(NA, ncol = l1, nrow = l1) 
+  colnames(spearman.results) <- variables 
+  rownames(spearman.results) <- variables
+  
+  fit.table <- NULL
+  
+  i <- 1
+  k <- 1
+  for(p in variables){
+    j <- 1
+    for(p1 in variables){
+      if(p != p1 & is.na(fit.results[j,i])){
+        
+        # MANOVA analysis to compare the plants
+        x <- data$value[data$variable == p]
+        y <- data$value[data$variable == p1]
+        
+        fit.results[j,i] <- summary(lm(y ~ x))$r.squared
+        fit.results[i,j] <- fit.results[j,i]
+        
+        pearson.results[j,i] <- rcorr(x, y, type = "pearson")[[1]][1,2]
+        pearson.results[i,j] <- pearson.results[j,i]
+        
+        spearman.results[j,i] <- rcorr(x, y, type = "spearman")[[1]][1,2]
+        spearman.results[i,j] <- spearman.results[j,i]
+        
+        
+        fit.table <- rbind(fit.table, data.table(line1 = p, line2=p1, 
+                                                 r2 = fit.results[j,i], 
+                                                 r.pvalue = summary(lm(y ~ x))$coefficients[2, 4],
+                                                 pearson = pearson.results[j,i],
+                                                 pearson.pvalue = rcorr(x, y, type = "pearson")[[3]][1,2],
+                                                 spearman = spearman.results[j,i],
+                                                 spearman.pvalue = rcorr(x, y, type = "spearman")[[3]][1,2]))
+        
+        fit.table <- rbind(fit.table, data.table(line1 = p1, line2=p, 
+                                                 r2 = fit.results[j,i], 
+                                                 r.pvalue = summary(lm(y ~ x))$coefficients[2, 4],
+                                                 pearson = pearson.results[j,i],
+                                                 pearson.pvalue = rcorr(x, y, type = "pearson")[[3]][1,2],
+                                                 spearman = spearman.results[j,i],
+                                                 spearman.pvalue = rcorr(x, y, type = "spearman")[[3]][1,2]))
+      }
+      j <- j+1
+    }
+    i <- i+1
+  }    
+  for(i in c(1:length(variables))){
+    fit.results[i,i] <- 1
+    pearson.results[i,i] <- 1
+    spearman.results[i,i] <- 1
+  }
+  
+  return(list(fit.table = fit.table, 
+              fit.results = fit.results, 
+              pearson.results = pearson.results, 
+              spearman.results = spearman.results))
+  
+}
+
+
