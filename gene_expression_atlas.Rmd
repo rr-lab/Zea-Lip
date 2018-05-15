@@ -36,6 +36,8 @@ nrow(tissue_exp_long)/length(unique(tissue_exp_long$gene_name))
 
 write_csv(tissue_exp_long_leaf, "data/tissue_exp_long_leaf.csv")
 
+tissue_exp_long_leaf <- read_csv("data/tissue_exp_long_leaf.csv")
+
 # load glycerolipd genes and add expression values
 
 glycerolipids <- read_csv("data/glycerolipid_pathway_genes.csv")
@@ -45,9 +47,17 @@ temp <- tissue_exp_long %>%
   filter(gene_name %in% glycerolipids$gene_name)
 
 glycerolipids_exp_values <- glycerolipids %>%
-	inner_join(tissue_exp_long_leaf, by = "gene_name")
+	left_join(tissue_exp_long_leaf, by = "gene_name")
 
-write_csv(glycerolipids, "data/glycerolipids_exp_val.csv")	
+write_csv(glycerolipids_exp_values, "output/glycerolipids_exp_val.csv")	
+
+# this file was edited in excel to add the common_dev_stage and common_age variables
+
+glycerolipids_exp_val <- read_csv("output/glycerolipids_exp_val.csv")
+
+
 
 ```
+
+
 

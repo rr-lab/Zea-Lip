@@ -1,4 +1,4 @@
-*Zea Lip Base*: An atlas of glycerolipid species across development in maize B73, CML312 inbreds and Palomero Toluqueño landrace.
+*Zea Lip*: An atlas of glycerolipid species across development in maize B73, CML312 inbreds and Palomero Toluqueño landrace.
 ------------------------
 
 
@@ -56,6 +56,10 @@ The average of fully expanded leaves per genotype per day were used to make this
 
 
 **Table 1. Leaf tissue sampled for lipid analysis**
+
+<!---
+we need to add info about the samples that were taken along the leaf
+-->
 
 | Genotype | Sampled leaf | DAG | Developmental Stage | Replicates |
 |----------|--------------|-----|---------------------|------------|
@@ -190,7 +194,7 @@ The average coefficient of variation of the sample pool, analyzed every 10 sampl
 ![Figure5](https://github.com/rr-lab/zea_lip_base/blob/master/output/Genotype_GreenhouseVSField_PCs_LPCSs_sPLSD_Loadings.jpg)
 **Figure5. Graph of the loadings of phosphatidylcholine species (PCs) and lysophosphatidylchline species (LPCs) from the plants grown in greenhouse and the ones grown in the highland field, left to right respectively.**
 
-![Figure6](https://github.com/rr-lab/zea_lip_base/blob/master/LPC_18_2_PC_36_6_Greenhouse_vs_Field.jpg)
+![Figure6](https://github.com/rr-lab/zea_lip/blob/master/figures/LPC_18_2_PC_36_6_Greenhouse_vs_Field.jpg)
 **Figure6. Comparison of LPC 18:2 and PC 36:6 (18:3, 18:3) between plants grown in greenhouse and highland field samples.**
 
 

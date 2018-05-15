@@ -56,15 +56,16 @@ data <- data %>%
   mutate(PELPC = PEs/LPCs) %>%
   mutate(PEPC = PEs/PCs)
 
-data <- data[, c(1:16, 25:198)]
+data <- data[, c(1:18, 27:201)]
 
 # make long data frame.
 
 data_long <- data %>%
-  gather(metabolite, intensity, -sample_id, -genotype, -block_number, -replica_number, -dev_stage, -dev_group, -leaf_number, -leaf_zone, -dag, -tissue_designation, -developmental_stage_dap, -dev_group)
+  gather(metabolite, intensity, -sample_id, -genotype, -block_number, -replica_number, -dev_stage, -dev_group, -common_dev_stage, -common_leaf_age, -leaf_number, -leaf_zone, -dag, -tissue_designation, -developmental_stage_dap, -dev_group)
 
-write_csv(data_long,"output/data_long.csv")
+write_csv(data_long,"output/lipid_data.csv")
 
+data_long <- read_csv("output/lipid_data.csv")
 
 # now let´s plot some of of summary data
 # this is how you do it for one single variable
