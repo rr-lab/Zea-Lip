@@ -187,29 +187,63 @@ shinyUI(fluidPage(
   
   # PCA ----------
     tabPanel("Principal component analysis", id="tab2", icon = icon('bullseye'),
-       fluidRow(
-         column(3, 
-                helpText("Principal component analysis of the whole dataset"),
-                selectInput("genotypes_to_plot_2", label="Genotypes to plot", choices = c("Load datafile"), 
-                            selected = NULL, multiple = TRUE, width="100%"),
-                selectInput("to_plot_4", label = "Colours to plot", choices = c("")),
-                selectInput("variable_to_pca", label="Variables NOT TO include in PCA", choices = c("Load datafile"), 
-                            selected = NULL, multiple = TRUE, width="100%"),
-                checkboxInput("pca_aggregated", "Use summed classes instead", value=F),
-                tags$hr()         
-        ),
-         column(7,
-                h4("Plot the principal component analysis"),
-                tags$hr(),
-                fluidRow(
-                  column(6, 
-                        selectInput("to_plot_pca_x", label = "PC to plot on X axis", choices = c(1:10))
-                  ),
-                  column(6, 
-                        selectInput("to_plot_pca_y", label = "PC to plot on Y axis", choices = c(1:10), selected = 2)
+             
+       tabsetPanel(
+         tabPanel("Greenhouse data",
+                  tags$hr(),
+                   fluidRow(
+                     column(3, 
+                            helpText("Principal component analysis of the whole dataset"),
+                            selectInput("genotypes_to_plot_2", label="Genotypes to plot", choices = c("Load datafile"), 
+                                        selected = NULL, multiple = TRUE, width="100%"),
+                            selectInput("to_plot_4", label = "Colours to plot", choices = c("")),
+                            selectInput("variable_to_pca", label="Variables NOT TO include in PCA", choices = c("Load datafile"), 
+                                        selected = NULL, multiple = TRUE, width="100%"),
+                            checkboxInput("pca_aggregated", "Use summed classes instead", value=F),
+                            tags$hr()         
+                    ),
+                     column(7,
+                            h4("Plot the principal component analysis"),
+                            tags$hr(),
+                            fluidRow(
+                              column(6, 
+                                    selectInput("to_plot_pca_x", label = "PC to plot on X axis", choices = c(1:10))
+                              ),
+                              column(6, 
+                                    selectInput("to_plot_pca_y", label = "PC to plot on Y axis", choices = c(1:10), selected = 2)
+                              )
+                            ),
+                            plotOutput("pca_plot", height = 600)
+                     )
+                   )
+         ),
+         tabPanel("Field data",
+                  tags$hr(),
+                  fluidRow(
+                    column(3, 
+                           helpText("Principal component analysis of the field dataset"),
+                           selectInput("genotypes_to_plot_2_field", label="Genotypes to plot", choices = c("Load datafile"), 
+                                       selected = NULL, multiple = TRUE, width="100%"),
+                           selectInput("to_plot_4_field", label = "Colours to plot", choices = c("")),
+                           selectInput("variable_to_pca_field", label="Variables NOT TO include in PCA", choices = c("Load datafile"), 
+                                       selected = NULL, multiple = TRUE, width="100%"),
+                           checkboxInput("pca_aggregated_field", "Use summed classes instead", value=F),
+                           tags$hr()         
+                    ),
+                    column(7,
+                           h4("Plot the principal component analysis"),
+                           tags$hr(),
+                           fluidRow(
+                             column(6, 
+                                    selectInput("to_plot_pca_x_field", label = "PC to plot on X axis", choices = c(1:10))
+                             ),
+                             column(6, 
+                                    selectInput("to_plot_pca_y_field", label = "PC to plot on Y axis", choices = c(1:10), selected = 2)
+                             )
+                           ),
+                           plotOutput("pca_plot_field", height = 600)
+                    )
                   )
-                ),
-                plotOutput("pca_plot", height = 600)
          )
        )
     ),

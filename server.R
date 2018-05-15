@@ -379,7 +379,19 @@ shinyServer(
       for(ct in vars) ct_options[[ct]] <- ct
       # cts  <- c("tot_root_length","n_laterals","tot_lat_length")
       updateSelectInput(session, "genotypes_to_plot_2", choices = ct_options, selected=sel) 
-    })     
+    })  
+    
+    
+    observe({
+      if(is.null(rs$field)){return()}
+      vars <- unique(rs$field$genotype)
+      ct_options <- list()
+      sel <- input$genotypes_to_plot_2_field
+      if(length(sel) == 0) sel = vars
+      for(ct in vars) ct_options[[ct]] <- ct
+      # cts  <- c("tot_root_length","n_laterals","tot_lat_length")
+      updateSelectInput(session, "genotypes_to_plot_2_field", choices = ct_options, selected=sel) 
+    })  
     
     observe({
       if(is.null(rs$lipids)){return()}
@@ -451,7 +463,19 @@ shinyServer(
       if(length(sel) == 0 | sel == "") sel = ct_options[1]
       # cts  <- c("tot_root_length","n_laterals","tot_lat_length")
       updateSelectInput(session, "to_plot_4", choices = ct_options, selected=sel) 
-    })  
+    }) 
+    
+    
+    observe({
+      if(is.null(rs$field)){return()}
+      vars <- colnames(rs$field)[c(2:10)]
+      ct_options <- list()
+      sel <- input$to_plot_4_field
+      for(ct in vars) ct_options[[ct]] <- ct
+      if(length(sel) == 0 | sel == "") sel = ct_options[1]
+      # cts  <- c("tot_root_length","n_laterals","tot_lat_length")
+      updateSelectInput(session, "to_plot_4_field", choices = ct_options, selected=sel) 
+    }) 
     
     observe({
       if(is.null(rs$lipids)){return()}
@@ -463,12 +487,23 @@ shinyServer(
       ct_options <- list()
       sel <- input$variable_to_pca
       for(ct in vars) ct_options[[ct]] <- ct
-      # if(is.null(sel)) sel = ct_options
-      # if(length(sel) == 0 | sel == "") sel = ct_options
-      
-      # cts  <- c("tot_root_length","n_laterals","tot_lat_length")
       updateSelectInput(session, "variable_to_pca", choices = ct_options, selected=sel) 
-    })     
+    }) 
+    
+    
+    
+    observe({
+      if(is.null(rs$field)){return()}
+      if(input$pca_aggregated_field){
+        vars <- unique(rs$field_sum$variable)
+      }else{
+        vars <- unique(rs$field$variable)
+      }
+      ct_options <- list()
+      sel <- input$variable_to_pca_field
+      for(ct in vars) ct_options[[ct]] <- ct
+      updateSelectInput(session, "variable_to_pca_field", choices = ct_options, selected=sel) 
+    }) 
     
     
     ### PLOTS -----
@@ -710,6 +745,59 @@ shinyServer(
       ggplot(data = pca.results) + 
         geom_point(aes_string(paste0("PC",input$to_plot_pca_x), paste0("PC",input$to_plot_pca_y), colour="group")) +
         stat_ellipse(aes_string(paste0("PC",input$to_plot_pca_x), paste0("PC",input$to_plot_pca_y), colour="group"), level = 0.9, size=1) + 
+        xlab(xl) + 
+        ylab(yl) + 
+        coord_fixed()
+      
+    })
+    
+    
+    
+    ## > PCA plot -----
+    output$pca_plot_field <- renderPlot({
+      if(is.null(rs$field)){return()}
+      
+      # temp <- data
+      if(input$pca_aggregated_field){
+        temp <- rs$field_sum[rs$field_sum$genotype %in% input$genotypes_to_plot_2_field,]
+      }else{
+        temp <- rs$field[rs$field$genotype %in% input$genotypes_to_plot_2_field,]
+      }
+      # get the categorial variables
+      inds <- c(1:(ncol(temp)-1))
+      all_cats <- temp[,inds]
+      cats <- colnames(all_cats)
+      
+      # Get the measurments
+      vars <- input$variable_to_pca_field
+      # vars <- unique(temp$variable)
+      
+      
+      # change from lon to wide format
+      if(is.null(vars)){
+        vars <- c("")
+      }
+      temp <- temp %>%
+        filter(!(variable %in% vars)) %>%
+        spread(variable, value)
+      
+      pca <- prcomp(temp[,-inds], retx = T, scale=T)  # Make the PCA
+      pca.results <- cbind(all_cats, data.frame(pca$x)[,])
+      
+      print(pca$rotation)
+      
+      vars <- apply(pca$x, 2, var)  
+      props <- round((vars / sum(vars) * 100), 1)
+      xl <- paste0("\nPrincipal Component ",input$to_plot_pca_x," (",props[as.numeric(input$to_plot_pca_x)],"%)")
+      yl <-paste0("Principal Component ",input$to_plot_pca_y," (",props[as.numeric(input$to_plot_pca_y)],"%)\n")
+      
+      print(paste0("PC",input$to_plot_pca_y))
+      
+      pca.results$group <- factor(pca.results[[input$to_plot_4_field]])
+      
+      ggplot(data = pca.results) + 
+        geom_point(aes_string(paste0("PC",input$to_plot_pca_x_field), paste0("PC",input$to_plot_pca_y_field), colour="group")) +
+        stat_ellipse(aes_string(paste0("PC",input$to_plot_pca_x_field), paste0("PC",input$to_plot_pca_y_field), colour="group"), level = 0.9, size=1) + 
         xlab(xl) + 
         ylab(yl) + 
         coord_fixed()
