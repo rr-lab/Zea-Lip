@@ -93,183 +93,174 @@ shinyServer(
           gather(variable, value, -ID, -genotype) 
         
         
+        corrs_data_sum <- getCorrelations(data_sum)
+        corrs_data <- getCorrelations(data)
+        corrs_field_sum <- getCorrelations(field_sum)
+        corrs_field <- getCorrelations(field)
         
-        fit.results <<- matrix(NA, ncol = l1, nrow = l1) 
-        colnames(fit.results) <- p.list 
-        rownames(fit.results) <- p.list
+        save(data, data_sum, field, field_sum, 
+             corrs_data_sum,
+             corrs_data,
+             corrs_field_sum,
+             corrs_field,
+             imgs, file = "www/all_lidip_data.RData")
         
-        pearson.results <<- matrix(NA, ncol = l1, nrow = l1) 
-        colnames(pearson.results) <- p.list 
-        rownames(pearson.results) <- p.list
         
-        spearman.results <<- matrix(NA, ncol = l1, nrow = l1) 
-        colnames(spearman.results) <- p.list 
-        rownames(spearman.results) <- p.list
-        
-        fit.table <- NULL
-        
-        i <- 1
-        k <- 1
-        for(p in p.list){
-          j <- 1
-          for(p1 in p.list){
-            if(p != p1 & is.na(fit.results[j,i])){
-              
-              # MANOVA analysis to compare the plants
-              x <- data_sum$value[data_sum$variable == p]
-              y <- data_sum$value[data_sum$variable == p1]
-              
-              fit.results[j,i] <- summary(lm(y ~ x))$r.squared
-              fit.results[i,j] <- fit.results[j,i]
-              
-              pearson.results[j,i] <- rcorr(x, y, type = "pearson")[[1]][1,2]
-              pearson.results[i,j] <- pearson.results[j,i]
-              
-              spearman.results[j,i] <- rcorr(x, y, type = "spearman")[[1]][1,2]
-              spearman.results[i,j] <- spearman.results[j,i]
-              
-              
-              fit.table <- rbind(fit.table, data.table(line1 = p, line2=p1, 
-                                                       r2 = fit.results[j,i], 
-                                                       r.pvalue = summary(lm(y ~ x))$coefficients[2, 4],
-                                                       pearson = pearson.results[j,i],
-                                                       pearson.pvalue = rcorr(x, y, type = "pearson")[[3]][1,2],
-                                                       spearman = spearman.results[j,i],
-                                                       spearman.pvalue = rcorr(x, y, type = "spearman")[[3]][1,2]))
-              fit.table <- rbind(fit.table, data.table(line1 = p1, line2=p, 
-                                                       r2 = fit.results[j,i], 
-                                                       r.pvalue = summary(lm(y ~ x))$coefficients[2, 4],
-                                                       pearson = pearson.results[j,i],
-                                                       pearson.pvalue = rcorr(x, y, type = "pearson")[[3]][1,2],
-                                                       spearman = spearman.results[j,i],
-                                                       spearman.pvalue = rcorr(x, y, type = "spearman")[[3]][1,2]))
-            }
-            j <- j+1
-          }
-          i <- i+1
-        }    
-        for(i in c(1:length(p.list))){
-          fit.results[i,i] <- 1
-          pearson.results[i,i] <- 1
-          spearman.results[i,i] <- 1
-        }
-        
-        if(input$process_indiv_corr){
-          
-          p.list <- unique(data$variable)
-          l1 <- length(p.list)
-    
-          fit.results.indiv <<- matrix(NA, ncol = l1, nrow = l1)
-          colnames(fit.results.indiv) <- p.list
-          rownames(fit.results.indiv) <- p.list
-    
-          pearson.results.indiv <<- matrix(NA, ncol = l1, nrow = l1)
-          colnames(pearson.results.indiv) <- p.list
-          rownames(pearson.results.indiv) <- p.list
-    
-          spearman.results.indiv <<- matrix(NA, ncol = l1, nrow = l1)
-          colnames(spearman.results.indiv) <- p.list
-          rownames(spearman.results.indiv) <- p.list
-    
-          fit.table.indiv <- NULL
-    
-          i <- 1
-          k <- 1
-          for(p in p.list){
-            j <- 1
-            for(p1 in p.list){
-              if(p != p1 & is.na(fit.results.indiv[j,i])){
-    
-                # MANOVA analysis to compare the plants
-                x <- data$value[data$variable == p]
-                y <- data$value[data$variable == p1]
-    
-                fit.results.indiv[j,i] <- summary(lm(y ~ x))$r.squared
-                fit.results.indiv[i,j] <- fit.results.indiv[j,i]
-    
-                pearson.results.indiv[j,i] <- rcorr(x, y, type = "pearson")[[1]][1,2]
-                pearson.results.indiv[i,j] <- pearson.results.indiv[j,i]
-    
-                spearman.results.indiv[j,i] <- rcorr(x, y, type = "spearman")[[1]][1,2]
-                spearman.results.indiv[i,j] <- spearman.results.indiv[j,i]
-    
-    
-                fit.table.indiv <- rbind(fit.table.indiv, data.table(line1 = p, line2=p1,
-                                                         r2 = fit.results.indiv[j,i],
-                                                         r.pvalue = summary(lm(y ~ x))$coefficients[2, 4],
-                                                         pearson = pearson.results.indiv[j,i],
-                                                         pearson.pvalue = rcorr(x, y, type = "pearson")[[3]][1,2],
-                                                         spearman = spearman.results.indiv[j,i],
-                                                         spearman.pvalue = rcorr(x, y, type = "spearman")[[3]][1,2]))
-              }
-              j <- j+1
-            }
-            i <- i+1
-          }
-          
-          save(spearman.results.indiv, fit.results.indiv, fit.table.indiv, pearson.results.indiv, file="www/indiv_corr.RData")
-        }
-        
-        load(file = "www/indiv_corr.RData")
-        
-        save(data, data_sum, field, field_sum, fit.table, fit.results,
-             pearson.results, pearson.results.indiv, fit.table.indiv, fit.results.indiv,
-             spearman.results, spearman.results.indiv, imgs, file = "www/lidip_data.RData")
+        # fit.results <<- matrix(NA, ncol = l1, nrow = l1) 
+        # colnames(fit.results) <- p.list 
+        # rownames(fit.results) <- p.list
+        # 
+        # pearson.results <<- matrix(NA, ncol = l1, nrow = l1) 
+        # colnames(pearson.results) <- p.list 
+        # rownames(pearson.results) <- p.list
+        # 
+        # spearman.results <<- matrix(NA, ncol = l1, nrow = l1) 
+        # colnames(spearman.results) <- p.list 
+        # rownames(spearman.results) <- p.list
+        # 
+        # fit.table <- NULL
+        # 
+        # i <- 1
+        # k <- 1
+        # for(p in p.list){
+        #   j <- 1
+        #   for(p1 in p.list){
+        #     if(p != p1 & is.na(fit.results[j,i])){
+        #       
+        #       # MANOVA analysis to compare the plants
+        #       x <- data_sum$value[data_sum$variable == p]
+        #       y <- data_sum$value[data_sum$variable == p1]
+        #       
+        #       fit.results[j,i] <- summary(lm(y ~ x))$r.squared
+        #       fit.results[i,j] <- fit.results[j,i]
+        #       
+        #       pearson.results[j,i] <- rcorr(x, y, type = "pearson")[[1]][1,2]
+        #       pearson.results[i,j] <- pearson.results[j,i]
+        #       
+        #       spearman.results[j,i] <- rcorr(x, y, type = "spearman")[[1]][1,2]
+        #       spearman.results[i,j] <- spearman.results[j,i]
+        #       
+        #       
+        #       fit.table <- rbind(fit.table, data.table(line1 = p, line2=p1, 
+        #                                                r2 = fit.results[j,i], 
+        #                                                r.pvalue = summary(lm(y ~ x))$coefficients[2, 4],
+        #                                                pearson = pearson.results[j,i],
+        #                                                pearson.pvalue = rcorr(x, y, type = "pearson")[[3]][1,2],
+        #                                                spearman = spearman.results[j,i],
+        #                                                spearman.pvalue = rcorr(x, y, type = "spearman")[[3]][1,2]))
+        #       fit.table <- rbind(fit.table, data.table(line1 = p1, line2=p, 
+        #                                                r2 = fit.results[j,i], 
+        #                                                r.pvalue = summary(lm(y ~ x))$coefficients[2, 4],
+        #                                                pearson = pearson.results[j,i],
+        #                                                pearson.pvalue = rcorr(x, y, type = "pearson")[[3]][1,2],
+        #                                                spearman = spearman.results[j,i],
+        #                                                spearman.pvalue = rcorr(x, y, type = "spearman")[[3]][1,2]))
+        #     }
+        #     j <- j+1
+        #   }
+        #   i <- i+1
+        # }    
+        # for(i in c(1:length(p.list))){
+        #   fit.results[i,i] <- 1
+        #   pearson.results[i,i] <- 1
+        #   spearman.results[i,i] <- 1
+        # }
+        # 
+        # if(input$process_indiv_corr){
+        #   
+        #   p.list <- unique(data$variable)
+        #   l1 <- length(p.list)
+        # 
+        #   fit.results.indiv <<- matrix(NA, ncol = l1, nrow = l1)
+        #   colnames(fit.results.indiv) <- p.list
+        #   rownames(fit.results.indiv) <- p.list
+        # 
+        #   pearson.results.indiv <<- matrix(NA, ncol = l1, nrow = l1)
+        #   colnames(pearson.results.indiv) <- p.list
+        #   rownames(pearson.results.indiv) <- p.list
+        # 
+        #   spearman.results.indiv <<- matrix(NA, ncol = l1, nrow = l1)
+        #   colnames(spearman.results.indiv) <- p.list
+        #   rownames(spearman.results.indiv) <- p.list
+        # 
+        #   fit.table.indiv <- NULL
+        # 
+        #   i <- 1
+        #   k <- 1
+        #   for(p in p.list){
+        #     j <- 1
+        #     for(p1 in p.list){
+        #       if(p != p1 & is.na(fit.results.indiv[j,i])){
+        # 
+        #         # MANOVA analysis to compare the plants
+        #         x <- data$value[data$variable == p]
+        #         y <- data$value[data$variable == p1]
+        # 
+        #         fit.results.indiv[j,i] <- summary(lm(y ~ x))$r.squared
+        #         fit.results.indiv[i,j] <- fit.results.indiv[j,i]
+        # 
+        #         pearson.results.indiv[j,i] <- rcorr(x, y, type = "pearson")[[1]][1,2]
+        #         pearson.results.indiv[i,j] <- pearson.results.indiv[j,i]
+        # 
+        #         spearman.results.indiv[j,i] <- rcorr(x, y, type = "spearman")[[1]][1,2]
+        #         spearman.results.indiv[i,j] <- spearman.results.indiv[j,i]
+        # 
+        # 
+        #         fit.table.indiv <- rbind(fit.table.indiv, data.table(line1 = p, line2=p1,
+        #                                                  r2 = fit.results.indiv[j,i],
+        #                                                  r.pvalue = summary(lm(y ~ x))$coefficients[2, 4],
+        #                                                  pearson = pearson.results.indiv[j,i],
+        #                                                  pearson.pvalue = rcorr(x, y, type = "pearson")[[3]][1,2],
+        #                                                  spearman = spearman.results.indiv[j,i],
+        #                                                  spearman.pvalue = rcorr(x, y, type = "spearman")[[3]][1,2]))
+        #       }
+        #       j <- j+1
+        #     }
+        #     i <- i+1
+        #   }
+        #   
+        #   save(spearman.results.indiv, fit.results.indiv, fit.table.indiv, pearson.results.indiv, file="www/indiv_corr.RData")
+        # }
+        # 
+        # load(file = "www/indiv_corr.RData")
+        # 
+
     }
       
-      load("www/lidip_data.RData")
+      load("www/all_lidip_data.RData")
+      
       rs$lipids <- data
       rs$lipids_sum <- data_sum
       
       rs$field <- field
       rs$field_sum <- field_sum
       
-      rs$fit.table <- fit.table
-      rs$pearson.results <- pearson.results
-      rs$spearman.results <- spearman.results
-      rs$fit.results <- fit.results
+      rs$fit.table <- corrs_data_sum$fit.table
+      rs$pearson.results <- corrs_data_sum$pearson.results
+      rs$spearman.results <- corrs_data_sum$spearman.results
+      rs$fit.results <- corrs_data_sum$fit.results
       
-      rs$fit.table.indiv <- fit.table.indiv
-      rs$pearson.results.indiv <- pearson.results.indiv
-      rs$spearman.results.indiv <- spearman.results.indiv
-      rs$fit.results.indiv <- fit.results.indiv
+      rs$fit.table.indiv <- corrs_data$fit.table.indiv
+      rs$pearson.results.indiv <- corrs_data$pearson.results.indiv
+      rs$spearman.results.indiv <- corrs_data$spearman.results.indiv
+      rs$fit.results.indiv <- corrs_data$fit.results.indiv
+      
+      rs$fit.table.field <- corrs_field_sum$fit.table
+      rs$pearson.results.field <- corrs_field_sum$pearson.results
+      rs$spearman.results.field <- corrs_field_sum$spearman.results
+      rs$fit.results.field <- corrs_field_sum$fit.results
+      
+      rs$fit.table.indiv.field <- corrs_field$fit.table.indiv
+      rs$pearson.results.indiv.field <- corrs_field$pearson.results.indiv
+      rs$spearman.results.indiv.field <- corrs_field$spearman.results.indiv
+      rs$fit.results.indiv.field <- corrs_field$fit.results.indiv
+      
+      
       rs$imgs <- imgs
     })
     
 
     ### UI commands ---- 
-    # Update the user interface item based on the data
-
-    
-    # Get the click inside the soil graph
-    # observe({
-    #   if(is.null(rs$fit.results)){return()}
-    #   temp <- melt(rs$fit.results)
-    #   # Because it's a ggplot2, we don't need to supply xvar or yvar; if this
-    #   # were a base graphics plot, we'd need those.
-    #   
-    #   print(input$heatmap_click)
-    #   x <- input$heatmap_click$x
-    #   y <- input$heatmap_click$y
-    #   
-    #   x <- x * ncol(rs$fit.results)
-    #   print(rownames(rs$fit.results)[floor(x)])
-    #   print(input$heatmap_click$x)
-    #   print(x)
-    #   print(floor(x))
-    #   #print("...")
-    #   y <- y * ncol(rs$fit.results)
-    #   #print(colnames(rs$fit.results)[floor(y)])
-    #   #print(y)
-    #   #print(floor(y))
-    #   
-    #   print("------")
-    #   
-    #   #sel <- nearPoints(temp, input$heatmap_click, allRows = T)
-    #   #print(sel)
-    #   # paste0(sel$order, " / ", sel$type)
-    # })     
-    # 
     
     observe({
       if(is.null(rs$lipids_sum)){return()}
@@ -293,6 +284,32 @@ shinyServer(
       for(ct in vars) ct_options[[ct]] <- ct
       # cts  <- c("tot_root_length","n_laterals","tot_lat_length")
       updateSelectInput(session, "variable_corr_2", choices = ct_options, selected=sel) 
+    }) 
+    
+    
+    
+    observe({
+      if(is.null(rs$field_sum)){return()}
+      if(input$correlation_individual_field) vars <- unique(rs$field$variable)
+      else vars <- unique(rs$field_sum$variable)
+      ct_options <- list()
+      sel <- input$variable_corr_1_field
+      if(nchar(sel) == 0) sel = vars[1]
+      for(ct in vars) ct_options[[ct]] <- ct
+      # cts  <- c("tot_root_length","n_laterals","tot_lat_length")
+      updateSelectInput(session, "variable_corr_1_field", choices = ct_options, selected=sel) 
+    }) 
+    
+    observe({
+      if(is.null(rs$field_sum)){return()}
+      if(input$correlation_individual_field) vars <- unique(rs$field$variable)
+      else vars <- unique(rs$field_sum$variable)
+      ct_options <- list()
+      sel <- input$variable_corr_2_field
+      if(nchar(sel) == 0) sel = vars[2]
+      for(ct in vars) ct_options[[ct]] <- ct
+      # cts  <- c("tot_root_length","n_laterals","tot_lat_length")
+      updateSelectInput(session, "variable_corr_2_field", choices = ct_options, selected=sel) 
     }) 
     
     
@@ -362,7 +379,19 @@ shinyServer(
       for(ct in vars) ct_options[[ct]] <- ct
       # cts  <- c("tot_root_length","n_laterals","tot_lat_length")
       updateSelectInput(session, "genotypes_to_plot_2", choices = ct_options, selected=sel) 
-    })     
+    })  
+    
+    
+    observe({
+      if(is.null(rs$field)){return()}
+      vars <- unique(rs$field$genotype)
+      ct_options <- list()
+      sel <- input$genotypes_to_plot_2_field
+      if(length(sel) == 0) sel = vars
+      for(ct in vars) ct_options[[ct]] <- ct
+      # cts  <- c("tot_root_length","n_laterals","tot_lat_length")
+      updateSelectInput(session, "genotypes_to_plot_2_field", choices = ct_options, selected=sel) 
+    })  
     
     observe({
       if(is.null(rs$lipids)){return()}
@@ -422,7 +451,8 @@ shinyServer(
       if(length(sel) == 0 | sel == "") sel = ct_options[1]
       # cts  <- c("tot_root_length","n_laterals","tot_lat_length")
       updateSelectInput(session, "to_plot_reg_3", choices = ct_options, selected=sel) 
-    })      
+    })   
+    
     
     observe({
       if(is.null(rs$lipids)){return()}
@@ -433,7 +463,19 @@ shinyServer(
       if(length(sel) == 0 | sel == "") sel = ct_options[1]
       # cts  <- c("tot_root_length","n_laterals","tot_lat_length")
       updateSelectInput(session, "to_plot_4", choices = ct_options, selected=sel) 
-    })  
+    }) 
+    
+    
+    observe({
+      if(is.null(rs$field)){return()}
+      vars <- colnames(rs$field)[c(2:10)]
+      ct_options <- list()
+      sel <- input$to_plot_4_field
+      for(ct in vars) ct_options[[ct]] <- ct
+      if(length(sel) == 0 | sel == "") sel = ct_options[1]
+      # cts  <- c("tot_root_length","n_laterals","tot_lat_length")
+      updateSelectInput(session, "to_plot_4_field", choices = ct_options, selected=sel) 
+    }) 
     
     observe({
       if(is.null(rs$lipids)){return()}
@@ -445,12 +487,23 @@ shinyServer(
       ct_options <- list()
       sel <- input$variable_to_pca
       for(ct in vars) ct_options[[ct]] <- ct
-      # if(is.null(sel)) sel = ct_options
-      # if(length(sel) == 0 | sel == "") sel = ct_options
-      
-      # cts  <- c("tot_root_length","n_laterals","tot_lat_length")
       updateSelectInput(session, "variable_to_pca", choices = ct_options, selected=sel) 
-    })     
+    }) 
+    
+    
+    
+    observe({
+      if(is.null(rs$field)){return()}
+      if(input$pca_aggregated_field){
+        vars <- unique(rs$field_sum$variable)
+      }else{
+        vars <- unique(rs$field$variable)
+      }
+      ct_options <- list()
+      sel <- input$variable_to_pca_field
+      for(ct in vars) ct_options[[ct]] <- ct
+      updateSelectInput(session, "variable_to_pca_field", choices = ct_options, selected=sel) 
+    }) 
     
     
     ### PLOTS -----
@@ -477,13 +530,13 @@ shinyServer(
       
       if(!input$isboxplot){
         pl <- ggplot(temp, aes(x=var, y= value, color = var2)) +
-          geom_jitter(width = 0.25) + 
-          theme_classic()
+          geom_jitter(width = 0.25) +
+          stat_summary(fun.y = "mean", fun.ymin = "mean", fun.ymax = "mean", size = 0.25,
+                       geom = "crossbar")
           
       }else{
         pl <- ggplot(temp, aes(x=factor(var), y= value, color = factor(var2))) + 
-          geom_boxplot(width = 0.25) + 
-          theme_classic()
+          geom_boxplot(width = 0.25)
       }
       
       pl <- pl + 
@@ -515,13 +568,13 @@ shinyServer(
       if(!input$isboxplot_field){
         print("HELLO")
         pl <- ggplot(temp, aes(x=genotype, y= value, color = factor(genotype))) +
-          geom_jitter(width = 0.25) + 
-          theme_classic()
+          geom_jitter(width = 0.25) +
+          stat_summary(fun.y = "mean", fun.ymin = "mean", fun.ymax = "mean", size = 0.25,
+                       geom = "crossbar")
         
       }else{
         pl <- ggplot(temp, aes(x=genotype, y= value, color =  factor(genotype))) + 
-          geom_boxplot(width = 0.25) + 
-          theme_classic()
+          geom_boxplot(width = 0.25)
       }
       
       pl <- pl + 
@@ -551,20 +604,65 @@ shinyServer(
     })  
     
     
+    ## > Heatmap -----
+    
+    output$correlation_heatmap_field <- renderPlot({
+      if(is.null(rs$fit.results.field)){return()}
+      
+      if(input$correlation_individual_field){
+        if(input$corr_to_plot_field == "r-squares") print(heatmap(rs$fit.results.indiv.field))
+        else if(input$corr_to_plot_field == "Spearman") print(heatmap(rs$spearman.results.indiv.field))
+        else  print(heatmap(rs$pearson.results.indiv.field))
+      }else{
+        if(input$corr_to_plot_field == "r-squares") print(heatmap(rs$fit.results.field))
+        else if(input$corr_to_plot_field == "Spearman") print(heatmap(rs$spearman.results.field))
+        else  print(heatmap(rs$pearson.results.field))
+      }
+    })  
+    
+    
+    ## > Correlation -----
+    
+    output$correlation_plot_field <- renderPlot({
+      if(is.null(rs$field_sum)){return()}
+  
+      
+      if(input$correlation_individual_field){
+        temp  <-  rs$field 
+      }else{
+        temp  <-  rs$field_sum 
+      }
+      temp  <-  temp %>%
+        filter(variable == input$variable_corr_1_field | variable == input$variable_corr_2_field)%>%
+        spread(variable, value) 
+      temp$x = temp[[input$variable_corr_1_field]]
+      temp$y = temp[[input$variable_corr_2_field]]
+      temp$group = factor(temp[[input$to_plot_reg_3_field]])
+      
+      if(input$correlation_color_field){
+        ggplot(temp, aes(x, y, colour=group)) + 
+          geom_point() + 
+          geom_smooth(method="lm", se=F, lty=2)
+      }else{
+        ggplot(temp, aes(x, y)) + 
+          geom_point() + 
+          geom_smooth(method="lm", se=F, lty=2)
+      }
+    })   
+    
+
+    
+    
     ## > Correlation -----
     
     output$correlation_plot <- renderPlot({
       if(is.null(rs$lipids_sum)){return()}
-  
+      
       
       if(input$correlation_individual){
         temp  <-  rs$lipids 
-        # x <- rs$lipids$value[rs$lipids$variable == input$variable_corr_1]
-        # y <- rs$lipids$value[rs$lipids$variable == input$variable_corr_2]
       }else{
         temp  <-  rs$lipids_sum 
-        # x <- rs$lipids_sum$value[rs$lipids_sum$variable == input$variable_corr_1]
-        # y <- rs$lipids_sum$value[rs$lipids_sum$variable == input$variable_corr_2]
       }
       temp  <-  temp %>%
         filter(variable == input$variable_corr_1 | variable == input$variable_corr_2)%>%
@@ -579,15 +677,14 @@ shinyServer(
       if(input$correlation_color){
         ggplot(temp, aes(x, y, colour=group)) + 
           geom_point() + 
-          geom_smooth(method="lm", se=F, lty=2) + 
-          theme_classic()
+          geom_smooth(method="lm", se=F, lty=2)
       }else{
         ggplot(temp, aes(x, y)) + 
           geom_point() + 
-          geom_smooth(method="lm", se=F, lty=2) + 
-          theme_classic()
+          geom_smooth(method="lm", se=F, lty=2)
       }
-    })      
+    })   
+    
     
     
     ## > PCA plot -----
@@ -648,7 +745,59 @@ shinyServer(
       ggplot(data = pca.results) + 
         geom_point(aes_string(paste0("PC",input$to_plot_pca_x), paste0("PC",input$to_plot_pca_y), colour="group")) +
         stat_ellipse(aes_string(paste0("PC",input$to_plot_pca_x), paste0("PC",input$to_plot_pca_y), colour="group"), level = 0.9, size=1) + 
-        theme_bw() + 
+        xlab(xl) + 
+        ylab(yl) + 
+        coord_fixed()
+      
+    })
+    
+    
+    
+    ## > PCA plot -----
+    output$pca_plot_field <- renderPlot({
+      if(is.null(rs$field)){return()}
+      
+      # temp <- data
+      if(input$pca_aggregated_field){
+        temp <- rs$field_sum[rs$field_sum$genotype %in% input$genotypes_to_plot_2_field,]
+      }else{
+        temp <- rs$field[rs$field$genotype %in% input$genotypes_to_plot_2_field,]
+      }
+      # get the categorial variables
+      inds <- c(1:(ncol(temp)-1))
+      all_cats <- temp[,inds]
+      cats <- colnames(all_cats)
+      
+      # Get the measurments
+      vars <- input$variable_to_pca_field
+      # vars <- unique(temp$variable)
+      
+      
+      # change from lon to wide format
+      if(is.null(vars)){
+        vars <- c("")
+      }
+      temp <- temp %>%
+        filter(!(variable %in% vars)) %>%
+        spread(variable, value)
+      
+      pca <- prcomp(temp[,-inds], retx = T, scale=T)  # Make the PCA
+      pca.results <- cbind(all_cats, data.frame(pca$x)[,])
+      
+      print(pca$rotation)
+      
+      vars <- apply(pca$x, 2, var)  
+      props <- round((vars / sum(vars) * 100), 1)
+      xl <- paste0("\nPrincipal Component ",input$to_plot_pca_x," (",props[as.numeric(input$to_plot_pca_x)],"%)")
+      yl <-paste0("Principal Component ",input$to_plot_pca_y," (",props[as.numeric(input$to_plot_pca_y)],"%)\n")
+      
+      print(paste0("PC",input$to_plot_pca_y))
+      
+      pca.results$group <- factor(pca.results[[input$to_plot_4_field]])
+      
+      ggplot(data = pca.results) + 
+        geom_point(aes_string(paste0("PC",input$to_plot_pca_x_field), paste0("PC",input$to_plot_pca_y_field), colour="group")) +
+        stat_ellipse(aes_string(paste0("PC",input$to_plot_pca_x_field), paste0("PC",input$to_plot_pca_y_field), colour="group"), level = 0.9, size=1) + 
         xlab(xl) + 
         ylab(yl) + 
         coord_fixed()
@@ -693,6 +842,18 @@ shinyServer(
     }, deleteFile = FALSE)
     
     
+    # image2 sends pre-rendered images
+    output$leaf <- renderImage({
+      
+      return(list(
+        src = paste0("www/imgs/leaf_zones.png"),
+        contentType = "image/jpg",
+        alt = "Face"
+      ))
+      
+    }, deleteFile = FALSE)
+    
+    
     
     ### TEXT --------
     
@@ -706,7 +867,19 @@ shinyServer(
                     "  ||  ","Spearman coefficient = ",round(temp$spearman,3))
       return(HTML(txt))
       
-    })  
+    })
+    
+    
+    output$corr_text_field <- renderText({
+      if(is.null(rs$fit.table.field)){return()}
+      temp <- rs$fit.table.field %>%
+        filter(line1 == input$variable_corr_1_field & line2 == input$variable_corr_2_field)
+      
+      txt  = paste0("r-squared = ",round(temp$r2,3),"  ||  ","Pearson coefficient = ",round(temp$pearson,3),
+                    "  ||  ","Spearman coefficient = ",round(temp$spearman,3))
+      return(HTML(txt))
+      
+    })
     
     
     ### DOWNLOAD --------
