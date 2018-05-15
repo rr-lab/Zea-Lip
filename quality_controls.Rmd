@@ -15,6 +15,7 @@ library(readr)
 library(tidyverse)
 library(ggfortify)
 library(cowplot)
+library(sparkline)
 ```
 
 Embed plots, for example:
@@ -37,10 +38,6 @@ co.var <- function(x) (100*sd(x)/mean(x))
 qc_covar <- qc %>%
   summarise_each(funs(co.var))
 
-qc_sum <- qc_long %>%
-  group_by(metabolite)
-  summarise_each(funs(mean, sd, var))
-
 
 qc_covar_t <- t(qc_covar)
 
@@ -60,7 +57,204 @@ qc_long %>%
   filter(metabolite == "LPC _18_2") %>%
   ggplot(aes(x = pool_id, y = intensity)) +
   geom_point() +
+  ylim(0, 1000000)
   geom_smooth()
 
 ```
+
+sparlines example
+
+```{r}
+x = rnorm(10)
+y = rnorm(10)
+| Stock | Sparkline         | Boxplot  
+|-------|-------------------|--------
+| x     | `r sparkline(x)`  | `r sparkline(x, type ='box')`
+| y     | `r sparkline(y)`  | `r sparkline(y, type ='box')`
+```
+
+
+
+
+with sparklines
+
+```{r}
+
+
+| Compound | sparkline | boxplot |
+|----------------------------------|----------------------------------------------------|-----------------------------------------------------------------|
+| Acylcarnitine_12_1 | `r sparkline(qc$Acylcarnitine_12_1)` | `r sparkline(qc$Acylcarnitine_12_1,type = 'box')` |
+| Acylcarnitine_15_3 | `r sparkline(qc$Acylcarnitine_15_3)` | `r sparkline(qc$Acylcarnitine_15_3,type = 'box')` |
+| BMP_37_7_BMP_15_1_22_6 | `r sparkline(qc$BMP_37_7_BMP_15_1_22_6)` | `r sparkline(qc$BMP_37_7_BMP_15_1_22_6,type = 'box')` |
+| CE_20_3 | `r sparkline(qc$CE_20_3)` | `r sparkline(qc$CE_20_3,type = 'box')` |
+| CerNS_36_3_d18_2_18_1 | `r sparkline(qc$CerNS_36_3_d18_2_18_1)` | `r sparkline(qc$CerNS_36_3_d18_2_18_1,type = 'box')` |
+| CerNS_38_3_d18_2_20_1 | `r sparkline(qc$CerNS_38_3_d18_2_20_1)` | `r sparkline(qc$CerNS_38_3_d18_2_20_1,type = 'box')` |
+| DG_36_4 | `r sparkline(qc$DG_36_4)` | `r sparkline(qc$DG_36_4,type = 'box')` |
+| DG_34_2_DG_16_0_18_2 | `r sparkline(qc$DG_34_2_DG_16_0_18_2)` | `r sparkline(qc$DG_34_2_DG_16_0_18_2,type = 'box')` |
+| DG_34_3_DG_16_0_18_3 | `r sparkline(qc$DG_34_3_DG_16_0_18_3)` | `r sparkline(qc$DG_34_3_DG_16_0_18_3,type = 'box')` |
+| DG_34_4_DG_16_1_18_3 | `r sparkline(qc$DG_34_4_DG_16_1_18_3)` | `r sparkline(qc$DG_34_4_DG_16_1_18_3,type = 'box')` |
+| DG_36_4_DG_18_2_18_2 | `r sparkline(qc$DG_36_4_DG_18_2_18_2)` | `r sparkline(qc$DG_36_4_DG_18_2_18_2,type = 'box')` |
+| DG_36_5_DG_18_2_18_3 | `r sparkline(qc$DG_36_5_DG_18_2_18_3)` | `r sparkline(qc$DG_36_5_DG_18_2_18_3,type = 'box')` |
+| DG_36_6_DG_18_3_18_3 | `r sparkline(qc$DG_36_6_DG_18_3_18_3)` | `r sparkline(qc$DG_36_6_DG_18_3_18_3,type = 'box')` |
+| DGDG_32_0_DGDG_16_0_16_0 | `r sparkline(qc$DGDG_32_0_DGDG_16_0_16_0)` | `r sparkline(qc$DGDG_32_0_DGDG_16_0_16_0,type = 'box')` |
+| DGDG_32_1_DGDG_16_0_16_1 | `r sparkline(qc$DGDG_32_1_DGDG_16_0_16_1)` | `r sparkline(qc$DGDG_32_1_DGDG_16_0_16_1,type = 'box')` |
+| DGDG_34_0_DGDG_16_0_18_0 | `r sparkline(qc$DGDG_34_0_DGDG_16_0_18_0)` | `r sparkline(qc$DGDG_34_0_DGDG_16_0_18_0,type = 'box')` |
+| DGDG_34_1_DGDG_16_0_18_1 | `r sparkline(qc$DGDG_34_1_DGDG_16_0_18_1)` | `r sparkline(qc$DGDG_34_1_DGDG_16_0_18_1,type = 'box')` |
+| DGDG_34_2_DGDG_16_0_18_2 | `r sparkline(qc$DGDG_34_2_DGDG_16_0_18_2)` | `r sparkline(qc$DGDG_34_2_DGDG_16_0_18_2,type = 'box')` |
+| DGDG_34_4_DGDG_16_1_18_3 | `r sparkline(qc$DGDG_34_4_DGDG_16_1_18_3)` | `r sparkline(qc$DGDG_34_4_DGDG_16_1_18_3,type = 'box')` |
+| DGDG_35_2_DGDG_17_0_18_2 | `r sparkline(qc$DGDG_35_2_DGDG_17_0_18_2)` | `r sparkline(qc$DGDG_35_2_DGDG_17_0_18_2,type = 'box')` |
+| DGDG_35_3_DGDG_17_0_18_3 | `r sparkline(qc$DGDG_35_3_DGDG_17_0_18_3)` | `r sparkline(qc$DGDG_35_3_DGDG_17_0_18_3,type = 'box')` |
+| DGDG_35_6_DGDG_17_2_18_4 | `r sparkline(qc$DGDG_35_6_DGDG_17_2_18_4)` | `r sparkline(qc$DGDG_35_6_DGDG_17_2_18_4,type = 'box')` |
+| DGDG_36_2_DGDG_18_0_18_2 | `r sparkline(qc$DGDG_36_2_DGDG_18_0_18_2)` | `r sparkline(qc$DGDG_36_2_DGDG_18_0_18_2,type = 'box')` |
+| DGDG_36_3_DGDG_18_0_18_3 | `r sparkline(qc$DGDG_36_3_DGDG_18_0_18_3)` | `r sparkline(qc$DGDG_36_3_DGDG_18_0_18_3,type = 'box')` |
+| DGDG_36_4_DGDG_18_1_18_3 | `r sparkline(qc$DGDG_36_4_DGDG_18_1_18_3)` | `r sparkline(qc$DGDG_36_4_DGDG_18_1_18_3,type = 'box')` |
+| DGDG_36_6_DGDG_18_3_18_3 | `r sparkline(qc$DGDG_36_6_DGDG_18_3_18_3)` | `r sparkline(qc$DGDG_36_6_DGDG_18_3_18_3,type = 'box')` |
+| DGDG_38_2_DGDG_20_0_18_2 | `r sparkline(qc$DGDG_38_2_DGDG_20_0_18_2)` | `r sparkline(qc$DGDG_38_2_DGDG_20_0_18_2,type = 'box')` |
+| DGDG_38_5_DGDG_20_1_18_4 | `r sparkline(qc$DGDG_38_5_DGDG_20_1_18_4)` | `r sparkline(qc$DGDG_38_5_DGDG_20_1_18_4,type = 'box')` |
+| DGDG_38_6_DGDG_18_3_20_3 | `r sparkline(qc$DGDG_38_6_DGDG_18_3_20_3)` | `r sparkline(qc$DGDG_38_6_DGDG_18_3_20_3,type = 'box')` |
+| DGDG_40_2_DGDG_22_0_18_2 | `r sparkline(qc$DGDG_40_2_DGDG_22_0_18_2)` | `r sparkline(qc$DGDG_40_2_DGDG_22_0_18_2,type = 'box')` |
+| DGDG_42_2_DGDG_24_0_18_2 | `r sparkline(qc$DGDG_42_2_DGDG_24_0_18_2)` | `r sparkline(qc$DGDG_42_2_DGDG_24_0_18_2,type = 'box')` |
+| DGDG_42_3_DGDG_24_0_18_3 | `r sparkline(qc$DGDG_42_3_DGDG_24_0_18_3)` | `r sparkline(qc$DGDG_42_3_DGDG_24_0_18_3,type = 'box')` |
+| DGDG_43_3_DGDG_25_0_18_3 | `r sparkline(qc$DGDG_43_3_DGDG_25_0_18_3)` | `r sparkline(qc$DGDG_43_3_DGDG_25_0_18_3,type = 'box')` |
+| DGDG_44_2_DGDG_26_0_18_2 | `r sparkline(qc$DGDG_44_2_DGDG_26_0_18_2)` | `r sparkline(qc$DGDG_44_2_DGDG_26_0_18_2,type = 'box')` |
+| GlcCerNS_34_3_d18_2_16_1 | `r sparkline(qc$GlcCerNS_34_3_d18_2_16_1)` | `r sparkline(qc$GlcCerNS_34_3_d18_2_16_1,type = 'box')` |
+| GlcCerNS_36_3_d18_2_18_1 | `r sparkline(qc$GlcCerNS_36_3_d18_2_18_1)` | `r sparkline(qc$GlcCerNS_36_3_d18_2_18_1,type = 'box')` |
+| GlcCerNS_40_3_d18_2_22_1 | `r sparkline(qc$GlcCerNS_40_3_d18_2_22_1)` | `r sparkline(qc$GlcCerNS_40_3_d18_2_22_1,type = 'box')` |
+| GlcCerNS_42_3_d18_2_24_1 | `r sparkline(qc$GlcCerNS_42_3_d18_2_24_1)` | `r sparkline(qc$GlcCerNS_42_3_d18_2_24_1,type = 'box')` |
+| LPC_16_0 | `r sparkline(qc$LPC_16_0)` | `r sparkline(qc$LPC_16_0,type = 'box')` |
+| LPC_18_0 | `r sparkline(qc$LPC_18_0)` | `r sparkline(qc$LPC_18_0,type = 'box')` |
+| LPC_18_1 | `r sparkline(qc$LPC_18_1)` | `r sparkline(qc$LPC_18_1,type = 'box')` |
+| LPC_18_2 | `r sparkline(qc$LPC_18_2)` | `r sparkline(qc$LPC_18_2,type = 'box')` |
+| LPC_18 | `r sparkline(qc$LPC_18)` | `r sparkline(qc$LPC_18,type = 'box')` |
+| LPC_20_5 | `r sparkline(qc$LPC_20_5)` | `r sparkline(qc$LPC_20_5,type = 'box')` |
+| LysoPC_18_1 | `r sparkline(qc$LysoPC_18_1)` | `r sparkline(qc$LysoPC_18_1,type = 'box')` |
+| LysoPC_18_2 | `r sparkline(qc$LysoPC_18_2)` | `r sparkline(qc$LysoPC_18_2,type = 'box')` |
+| MGDG_34_1_MGDG_16_0_18_1 | `r sparkline(qc$MGDG_34_1_MGDG_16_0_18_1)` | `r sparkline(qc$MGDG_34_1_MGDG_16_0_18_1,type = 'box')` |
+| MGDG_34_2_MGDG_16_0_18_2 | `r sparkline(qc$MGDG_34_2_MGDG_16_0_18_2)` | `r sparkline(qc$MGDG_34_2_MGDG_16_0_18_2,type = 'box')` |
+| MGDG_34_3_MGDG_16_0_18_3 | `r sparkline(qc$MGDG_34_3_MGDG_16_0_18_3)` | `r sparkline(qc$MGDG_34_3_MGDG_16_0_18_3,type = 'box')` |
+| MGDG_34_4_MGDG_16_1_18_3 | `r sparkline(qc$MGDG_34_4_MGDG_16_1_18_3)` | `r sparkline(qc$MGDG_34_4_MGDG_16_1_18_3,type = 'box')` |
+| MGDG_34_6_MGDG_16_3_18_3 | `r sparkline(qc$MGDG_34_6_MGDG_16_3_18_3)` | `r sparkline(qc$MGDG_34_6_MGDG_16_3_18_3,type = 'box')` |
+| MGDG_35_3_MGDG_17_0_18_3 | `r sparkline(qc$MGDG_35_3_MGDG_17_0_18_3)` | `r sparkline(qc$MGDG_35_3_MGDG_17_0_18_3,type = 'box')` |
+| MGDG_36_3_MGDG_18_1_18_2 | `r sparkline(qc$MGDG_36_3_MGDG_18_1_18_2)` | `r sparkline(qc$MGDG_36_3_MGDG_18_1_18_2,type = 'box')` |
+| MGDG_36_4_MGDG_18_2_18_2 | `r sparkline(qc$MGDG_36_4_MGDG_18_2_18_2)` | `r sparkline(qc$MGDG_36_4_MGDG_18_2_18_2,type = 'box')` |
+| MGDG_36_6_MGDG_18_3_18_3 | `r sparkline(qc$MGDG_36_6_MGDG_18_3_18_3)` | `r sparkline(qc$MGDG_36_6_MGDG_18_3_18_3,type = 'box')` |
+| MGDG_36_7_MGDG_18_3_18_4 | `r sparkline(qc$MGDG_36_7_MGDG_18_3_18_4)` | `r sparkline(qc$MGDG_36_7_MGDG_18_3_18_4,type = 'box')` |
+| MGDG_38_1_MGDG_16_0_22_1 | `r sparkline(qc$MGDG_38_1_MGDG_16_0_22_1)` | `r sparkline(qc$MGDG_38_1_MGDG_16_0_22_1,type = 'box')` |
+| MGDG_38_5_MGDG_20_2_18_3 | `r sparkline(qc$MGDG_38_5_MGDG_20_2_18_3)` | `r sparkline(qc$MGDG_38_5_MGDG_20_2_18_3,type = 'box')` |
+| MGDG_38_6_MGDG_18_3_20_3 | `r sparkline(qc$MGDG_38_6_MGDG_18_3_20_3)` | `r sparkline(qc$MGDG_38_6_MGDG_18_3_20_3,type = 'box')` |
+| PC_31_0 | `r sparkline(qc$PC_31_0)` | `r sparkline(qc$PC_31_0,type = 'box')` |
+| PC_32_0 | `r sparkline(qc$PC_32_0)` | `r sparkline(qc$PC_32_0,type = 'box')` |
+| PC_32_1 | `r sparkline(qc$PC_32_1)` | `r sparkline(qc$PC_32_1,type = 'box')` |
+| PC_32_2 | `r sparkline(qc$PC_32_2)` | `r sparkline(qc$PC_32_2,type = 'box')` |
+| PC_33_2 | `r sparkline(qc$PC_33_2)` | `r sparkline(qc$PC_33_2,type = 'box')` |
+| PC_34_0 | `r sparkline(qc$PC_34_0)` | `r sparkline(qc$PC_34_0,type = 'box')` |
+| PC_34_1 | `r sparkline(qc$PC_34_1)` | `r sparkline(qc$PC_34_1,type = 'box')` |
+| PC_34_2 | `r sparkline(qc$PC_34_2)` | `r sparkline(qc$PC_34_2,type = 'box')` |
+| PC_34_4 | `r sparkline(qc$PC_34_4)` | `r sparkline(qc$PC_34_4,type = 'box')` |
+| PC_35_2 | `r sparkline(qc$PC_35_2)` | `r sparkline(qc$PC_35_2,type = 'box')` |
+| PC_36_1 | `r sparkline(qc$PC_36_1)` | `r sparkline(qc$PC_36_1,type = 'box')` |
+| PC_36_2 | `r sparkline(qc$PC_36_2)` | `r sparkline(qc$PC_36_2,type = 'box')` |
+| PC_36 | `r sparkline(qc$PC_36)` | `r sparkline(qc$PC_36,type = 'box')` |
+| PC_36_4 | `r sparkline(qc$PC_36_4)` | `r sparkline(qc$PC_36_4,type = 'box')` |
+| PC_36_5 | `r sparkline(qc$PC_36_5)` | `r sparkline(qc$PC_36_5,type = 'box')` |
+| PC_38_2 | `r sparkline(qc$PC_38_2)` | `r sparkline(qc$PC_38_2,type = 'box')` |
+| PC_38 | `r sparkline(qc$PC_38)` | `r sparkline(qc$PC_38,type = 'box')` |
+| PC_38_5 | `r sparkline(qc$PC_38_5)` | `r sparkline(qc$PC_38_5,type = 'box')` |
+| PC_34_2_PC_16_0_18_2 | `r sparkline(qc$PC_34_2_PC_16_0_18_2)` | `r sparkline(qc$PC_34_2_PC_16_0_18_2,type = 'box')` |
+| PC_34_3_PC_16_0_18_3 | `r sparkline(qc$PC_34_3_PC_16_0_18_3)` | `r sparkline(qc$PC_34_3_PC_16_0_18_3,type = 'box')` |
+| PC_36_5_PC_18_2_18_3 | `r sparkline(qc$PC_36_5_PC_18_2_18_3)` | `r sparkline(qc$PC_36_5_PC_18_2_18_3,type = 'box')` |
+| PC_36_6_PC_18_2_18_4 | `r sparkline(qc$PC_36_6_PC_18_2_18_4)` | `r sparkline(qc$PC_36_6_PC_18_2_18_4,type = 'box')` |
+| PC_36_6_PC_18_3_18_3 | `r sparkline(qc$PC_36_6_PC_18_3_18_3)` | `r sparkline(qc$PC_36_6_PC_18_3_18_3,type = 'box')` |
+| PC_38_4_PC_18_2_20_2 | `r sparkline(qc$PC_38_4_PC_18_2_20_2)` | `r sparkline(qc$PC_38_4_PC_18_2_20_2,type = 'box')` |
+| PC_38_5_PC_20_2_18_3 | `r sparkline(qc$PC_38_5_PC_20_2_18_3)` | `r sparkline(qc$PC_38_5_PC_20_2_18_3,type = 'box')` |
+| PC_42_3_PC_16_1_26_2 | `r sparkline(qc$PC_42_3_PC_16_1_26_2)` | `r sparkline(qc$PC_42_3_PC_16_1_26_2,type = 'box')` |
+| PE_34_2 | `r sparkline(qc$PE_34_2)` | `r sparkline(qc$PE_34_2,type = 'box')` |
+| PE_34_1_PE_16_0_18_1 | `r sparkline(qc$PE_34_1_PE_16_0_18_1)` | `r sparkline(qc$PE_34_1_PE_16_0_18_1,type = 'box')` |
+| PE_34_4_PE_16_1_18_3 | `r sparkline(qc$PE_34_4_PE_16_1_18_3)` | `r sparkline(qc$PE_34_4_PE_16_1_18_3,type = 'box')` |
+| PE_36_2_PE_18_0_18_2 | `r sparkline(qc$PE_36_2_PE_18_0_18_2)` | `r sparkline(qc$PE_36_2_PE_18_0_18_2,type = 'box')` |
+| PE_36_3_PE_18_0_18_3 | `r sparkline(qc$PE_36_3_PE_18_0_18_3)` | `r sparkline(qc$PE_36_3_PE_18_0_18_3,type = 'box')` |
+| PE_36_5_PE_18_2_18_3 | `r sparkline(qc$PE_36_5_PE_18_2_18_3)` | `r sparkline(qc$PE_36_5_PE_18_2_18_3,type = 'box')` |
+| PE_36_6_PE_18_3_18_3 | `r sparkline(qc$PE_36_6_PE_18_3_18_3)` | `r sparkline(qc$PE_36_6_PE_18_3_18_3,type = 'box')` |
+| PE_38_7_PE_22_3_16_4 | `r sparkline(qc$PE_38_7_PE_22_3_16_4)` | `r sparkline(qc$PE_38_7_PE_22_3_16_4,type = 'box')` |
+| PE_42_2_PE_21_1_21_1 | `r sparkline(qc$PE_42_2_PE_21_1_21_1)` | `r sparkline(qc$PE_42_2_PE_21_1_21_1,type = 'box')` |
+| PE_42_3_PE_26_0_16_3 | `r sparkline(qc$PE_42_3_PE_26_0_16_3)` | `r sparkline(qc$PE_42_3_PE_26_0_16_3,type = 'box')` |
+| PG_2_0_PG_16_0_16_0 | `r sparkline(qc$PG_2_0_PG_16_0_16_0)` | `r sparkline(qc$PG_2_0_PG_16_0_16_0,type = 'box')` |
+| PG_32_1_PG_16_0_16_1 | `r sparkline(qc$PG_32_1_PG_16_0_16_1)` | `r sparkline(qc$PG_32_1_PG_16_0_16_1,type = 'box')` |
+| PG_34_2_PG_16_0_18_2 | `r sparkline(qc$PG_34_2_PG_16_0_18_2)` | `r sparkline(qc$PG_34_2_PG_16_0_18_2,type = 'box')` |
+| PG_34_3_PG_16_0_18_3 | `r sparkline(qc$PG_34_3_PG_16_0_18_3)` | `r sparkline(qc$PG_34_3_PG_16_0_18_3,type = 'box')` |
+| PG_34_4_PG_16_0_18_4 | `r sparkline(qc$PG_34_4_PG_16_0_18_4)` | `r sparkline(qc$PG_34_4_PG_16_0_18_4,type = 'box')` |
+| PG_34_4_PG_16_1_18_3 | `r sparkline(qc$PG_34_4_PG_16_1_18_3)` | `r sparkline(qc$PG_34_4_PG_16_1_18_3,type = 'box')` |
+| PG_34_5_PG_16_1_18_4 | `r sparkline(qc$PG_34_5_PG_16_1_18_4)` | `r sparkline(qc$PG_34_5_PG_16_1_18_4,type = 'box')` |
+| PG_36_6_PG_18_3_18_3 | `r sparkline(qc$PG_36_6_PG_18_3_18_3)` | `r sparkline(qc$PG_36_6_PG_18_3_18_3,type = 'box')` |
+| Plasmenyl-PC_32_2_PC_P-14_0_18_2 | `r sparkline(qc$Plasmenyl-PC_32_2_PC_P-14_0_18_2)` | `r sparkline(qc$Plasmenyl-PC_32_2_PC_P-14_0_18_2,type = 'box')` |
+| Plasmenyl-PC_35_2_PC_P-14_0_21_2 | `r sparkline(qc$Plasmenyl-PC_35_2_PC_P-14_0_21_2)` | `r sparkline(qc$Plasmenyl-PC_35_2_PC_P-14_0_21_2,type = 'box')` |
+| Plasmenyl-PC_36_2_PC_P-14_0_22_2 | `r sparkline(qc$Plasmenyl-PC_36_2_PC_P-14_0_22_2)` | `r sparkline(qc$Plasmenyl-PC_36_2_PC_P-14_0_22_2,type = 'box')` |
+| SM_d40_1 | `r sparkline(qc$SM_d40_1)` | `r sparkline(qc$SM_d40_1,type = 'box')` |
+| SM_39_10_SM_d17_3_22_7 | `r sparkline(qc$SM_39_10_SM_d17_3_22_7)` | `r sparkline(qc$SM_39_10_SM_d17_3_22_7,type = 'box')` |
+| SM_39_9_SM_d16_3_23_6 | `r sparkline(qc$SM_39_9_SM_d16_3_23_6)` | `r sparkline(qc$SM_39_9_SM_d16_3_23_6,type = 'box')` |
+| SM_40_4_SM_d16_2_24_2 | `r sparkline(qc$SM_40_4_SM_d16_2_24_2)` | `r sparkline(qc$SM_40_4_SM_d16_2_24_2,type = 'box')` |
+| SM_40_5_SM_d16_1_24_4 | `r sparkline(qc$SM_40_5_SM_d16_1_24_4)` | `r sparkline(qc$SM_40_5_SM_d16_1_24_4,type = 'box')` |
+| SQDG_32_0_SQDG_16_0_16_1 | `r sparkline(qc$SQDG_32_0_SQDG_16_0_16_1)` | `r sparkline(qc$SQDG_32_0_SQDG_16_0_16_1,type = 'box')` |
+| SQDG_34_0_SQDG_16_0_18_1 | `r sparkline(qc$SQDG_34_0_SQDG_16_0_18_1)` | `r sparkline(qc$SQDG_34_0_SQDG_16_0_18_1,type = 'box')` |
+| SQDG_34_2_SQDG_16_0_18_3 | `r sparkline(qc$SQDG_34_2_SQDG_16_0_18_3)` | `r sparkline(qc$SQDG_34_2_SQDG_16_0_18_3,type = 'box')` |
+| SQDG_35_2_SQDG_17_0_18_3 | `r sparkline(qc$SQDG_35_2_SQDG_17_0_18_3)` | `r sparkline(qc$SQDG_35_2_SQDG_17_0_18_3,type = 'box')` |
+| SQDG_36_2_SQDG_18_0_18_3 | `r sparkline(qc$SQDG_36_2_SQDG_18_0_18_3)` | `r sparkline(qc$SQDG_36_2_SQDG_18_0_18_3,type = 'box')` |
+| SQDG_42_1_SQDG_16_0_16_0 | `r sparkline(qc$SQDG_42_1_SQDG_16_0_16_0)` | `r sparkline(qc$SQDG_42_1_SQDG_16_0_16_0,type = 'box')` |
+| SQDG_45_1_SQDG_18_2_18_2 | `r sparkline(qc$SQDG_45_1_SQDG_18_2_18_2)` | `r sparkline(qc$SQDG_45_1_SQDG_18_2_18_2,type = 'box')` |
+| TG_14_0_14_0_14_0 | `r sparkline(qc$TG_14_0_14_0_14_0)` | `r sparkline(qc$TG_14_0_14_0_14_0,type = 'box')` |
+| TG_46_0 | `r sparkline(qc$TG_46_0)` | `r sparkline(qc$TG_46_0,type = 'box')` |
+| TG_46_1 | `r sparkline(qc$TG_46_1)` | `r sparkline(qc$TG_46_1,type = 'box')` |
+| TG_46_2 | `r sparkline(qc$TG_46_2)` | `r sparkline(qc$TG_46_2,type = 'box')` |
+| TG_48_0 | `r sparkline(qc$TG_48_0)` | `r sparkline(qc$TG_48_0,type = 'box')` |
+| TG_48_1 | `r sparkline(qc$TG_48_1)` | `r sparkline(qc$TG_48_1,type = 'box')` |
+| TG_48_2 | `r sparkline(qc$TG_48_2)` | `r sparkline(qc$TG_48_2,type = 'box')` |
+| TG_49_0 | `r sparkline(qc$TG_49_0)` | `r sparkline(qc$TG_49_0,type = 'box')` |
+| TG_49_1 | `r sparkline(qc$TG_49_1)` | `r sparkline(qc$TG_49_1,type = 'box')` |
+| TG_49_2 | `r sparkline(qc$TG_49_2)` | `r sparkline(qc$TG_49_2,type = 'box')` |
+| TG_49 | `r sparkline(qc$TG_49)` | `r sparkline(qc$TG_49,type = 'box')` |
+| TG_50_0 | `r sparkline(qc$TG_50_0)` | `r sparkline(qc$TG_50_0,type = 'box')` |
+| TG_50_5 | `r sparkline(qc$TG_50_5)` | `r sparkline(qc$TG_50_5,type = 'box')` |
+| TG_52 | `r sparkline(qc$TG_52)` | `r sparkline(qc$TG_52,type = 'box')` |
+| TG_52_4 | `r sparkline(qc$TG_52_4)` | `r sparkline(qc$TG_52_4,type = 'box')` |
+| TG_52_5 | `r sparkline(qc$TG_52_5)` | `r sparkline(qc$TG_52_5,type = 'box')` |
+| TG_53_2 | `r sparkline(qc$TG_53_2)` | `r sparkline(qc$TG_53_2,type = 'box')` |
+| TG_54 | `r sparkline(qc$TG_54)` | `r sparkline(qc$TG_54,type = 'box')` |
+| TG_54_4 | `r sparkline(qc$TG_54_4)` | `r sparkline(qc$TG_54_4,type = 'box')` |
+| TG_54_5 | `r sparkline(qc$TG_54_5)` | `r sparkline(qc$TG_54_5,type = 'box')` |
+| TG_54_6 | `r sparkline(qc$TG_54_6)` | `r sparkline(qc$TG_54_6,type = 'box')` |
+| TG_54_8 | `r sparkline(qc$TG_54_8)` | `r sparkline(qc$TG_54_8,type = 'box')` |
+| TG_56 | `r sparkline(qc$TG_56)` | `r sparkline(qc$TG_56,type = 'box')` |
+| TG_56_6 | `r sparkline(qc$TG_56_6)` | `r sparkline(qc$TG_56_6,type = 'box')` |
+| TG_58_6 | `r sparkline(qc$TG_58_6)` | `r sparkline(qc$TG_58_6,type = 'box')` |
+| TG_46_TG_12_1_12_1_22_1 | `r sparkline(qc$TG_46_TG_12_1_12_1_22_1)` | `r sparkline(qc$TG_46_TG_12_1_12_1_22_1,type = 'box')` |
+| TG_46_7_TG_14_2_15_3_17_2 | `r sparkline(qc$TG_46_7_TG_14_2_15_3_17_2)` | `r sparkline(qc$TG_46_7_TG_14_2_15_3_17_2,type = 'box')` |
+| TG_48_3_TG_14_0_16_0_18_3 | `r sparkline(qc$TG_48_3_TG_14_0_16_0_18_3)` | `r sparkline(qc$TG_48_3_TG_14_0_16_0_18_3,type = 'box')` |
+| TG_48_5_TG_12_0_18_2_18_3 | `r sparkline(qc$TG_48_5_TG_12_0_18_2_18_3)` | `r sparkline(qc$TG_48_5_TG_12_0_18_2_18_3,type = 'box')` |
+| TG_50_1_TG_16_0_16_0_18_1 | `r sparkline(qc$TG_50_1_TG_16_0_16_0_18_1)` | `r sparkline(qc$TG_50_1_TG_16_0_16_0_18_1,type = 'box')` |
+| TG_50_2_TG_16_0_16_0_18_2 | `r sparkline(qc$TG_50_2_TG_16_0_16_0_18_2)` | `r sparkline(qc$TG_50_2_TG_16_0_16_0_18_2,type = 'box')` |
+| TG_50_3_TG_16_0_16_0_18_3 | `r sparkline(qc$TG_50_3_TG_16_0_16_0_18_3)` | `r sparkline(qc$TG_50_3_TG_16_0_16_0_18_3,type = 'box')` |
+| TG_52_1_TG_16_0_18_0_18_1 | `r sparkline(qc$TG_52_1_TG_16_0_18_0_18_1)` | `r sparkline(qc$TG_52_1_TG_16_0_18_0_18_1,type = 'box')` |
+| TG_52_2_TG_16_0_18_1_18_1 | `r sparkline(qc$TG_52_2_TG_16_0_18_1_18_1)` | `r sparkline(qc$TG_52_2_TG_16_0_18_1_18_1,type = 'box')` |
+| TG_52_3_TG_16_0_18_1_18_2 | `r sparkline(qc$TG_52_3_TG_16_0_18_1_18_2)` | `r sparkline(qc$TG_52_3_TG_16_0_18_1_18_2,type = 'box')` |
+| TG_52_4_TG_16_0_18_2_18_2 | `r sparkline(qc$TG_52_4_TG_16_0_18_2_18_2)` | `r sparkline(qc$TG_52_4_TG_16_0_18_2_18_2,type = 'box')` |
+| TG_52_5_TG_16_0_18_2_18_3 | `r sparkline(qc$TG_52_5_TG_16_0_18_2_18_3)` | `r sparkline(qc$TG_52_5_TG_16_0_18_2_18_3,type = 'box')` |
+| TG_52_6_TG_16_0_18_3_18_3 | `r sparkline(qc$TG_52_6_TG_16_0_18_3_18_3)` | `r sparkline(qc$TG_52_6_TG_16_0_18_3_18_3,type = 'box')` |
+| TG_53_14_TG_16_5_16_5_21_4 | `r sparkline(qc$TG_53_14_TG_16_5_16_5_21_4)` | `r sparkline(qc$TG_53_14_TG_16_5_16_5_21_4,type = 'box')` |
+| TG_53_5_TG_17_0_18_2_18_3 | `r sparkline(qc$TG_53_5_TG_17_0_18_2_18_3)` | `r sparkline(qc$TG_53_5_TG_17_0_18_2_18_3,type = 'box')` |
+| TG_54_1_TG_18_0_18_0_18_1 | `r sparkline(qc$TG_54_1_TG_18_0_18_0_18_1)` | `r sparkline(qc$TG_54_1_TG_18_0_18_0_18_1,type = 'box')` |
+| TG_54_2_TG_18_0_18_1_18_1 | `r sparkline(qc$TG_54_2_TG_18_0_18_1_18_1)` | `r sparkline(qc$TG_54_2_TG_18_0_18_1_18_1,type = 'box')` |
+| TG_54_4_TG_18_1_18_1_18_2 | `r sparkline(qc$TG_54_4_TG_18_1_18_1_18_2)` | `r sparkline(qc$TG_54_4_TG_18_1_18_1_18_2,type = 'box')` |
+| TG_54_5_TG_18_1_18_2_18_2 | `r sparkline(qc$TG_54_5_TG_18_1_18_2_18_2)` | `r sparkline(qc$TG_54_5_TG_18_1_18_2_18_2,type = 'box')` |
+| TG_54_7_TG_18_2_18_2_18_3 | `r sparkline(qc$TG_54_7_TG_18_2_18_2_18_3)` | `r sparkline(qc$TG_54_7_TG_18_2_18_2_18_3,type = 'box')` |
+| TG_54_9_TG_18_3_18_3_18_3 | `r sparkline(qc$TG_54_9_TG_18_3_18_3_18_3)` | `r sparkline(qc$TG_54_9_TG_18_3_18_3_18_3,type = 'box')` |
+| TG_55_2_TG_16_0_18_1_21_1 | `r sparkline(qc$TG_55_2_TG_16_0_18_1_21_1)` | `r sparkline(qc$TG_55_2_TG_16_0_18_1_21_1,type = 'box')` |
+| TG_56_4_TG_18_2_18_2_20_0 | `r sparkline(qc$TG_56_4_TG_18_2_18_2_20_0)` | `r sparkline(qc$TG_56_4_TG_18_2_18_2_20_0,type = 'box')` |
+| TG_56_5_TG_18_2_18_3_20_0 | `r sparkline(qc$TG_56_5_TG_18_2_18_3_20_0)` | `r sparkline(qc$TG_56_5_TG_18_2_18_3_20_0,type = 'box')` |
+| TG_56_6_TG_18_2_18_2_20_2 | `r sparkline(qc$TG_56_6_TG_18_2_18_2_20_2)` | `r sparkline(qc$TG_56_6_TG_18_2_18_2_20_2,type = 'box')` |
+| TG_56_7_TG_18_2_18_3_20_2 | `r sparkline(qc$TG_56_7_TG_18_2_18_3_20_2)` | `r sparkline(qc$TG_56_7_TG_18_2_18_3_20_2,type = 'box')` |
+| TG_58_15_TG_14_3_22_6_22_6 | `r sparkline(qc$TG_58_15_TG_14_3_22_6_22_6)` | `r sparkline(qc$TG_58_15_TG_14_3_22_6_22_6,type = 'box')` |
+
+```
+
+
 

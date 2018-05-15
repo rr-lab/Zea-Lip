@@ -71,18 +71,13 @@ data_long <- read_csv("output/lipid_data.csv")
 # this is how you do it for one single variable
 
 data %>%
-  ggplot(aes(x = genotype, y = PCLPC, color = genotype)) +
+  ggplot(aes(x = genotype, y = MGDG_36_6_18_3_18_3, color = genotype)) +
   geom_jitter(width = 0.25, size = 3) +
-  ylim(0,50) +
+  #ylim(0,25) +
   stat_summary(fun.y = "mean", fun.ymin = "mean", fun.ymax = "mean", size = 0.25,
                geom = "crossbar")
-  ggsave("output/PCLPC.pdf")  
+  ggsave("output/MGDG_36_6_18_3_18_3.pdf")  
   
-  
-data %>%
-  ggplot(aes(x = genotype, y = LPC_18_3, colour = genotype)) +
-  geom_jitter(width = 0.3) +
-  geom_pointrange(aes(ymin = lower, ymax = upper))
 
 
 data %>%
@@ -93,9 +88,10 @@ data %>%
   ggsave("output/PCs-LPCs.pdf")    
 
 data %>%
-  ggplot(aes(x = PCs, y = LPCs, colour = genotype)) +
-  geom_point() +
-  geom_point(data = data_PT, colour = "blue")
+  ggplot(aes(x = PCs/LPCs, y = LPCs, colour = genotype)) +
+  geom_point(aes(alpha = 0.8)) +
+  #geom_point(data = data_PT, colour = "blue") +
+  xlim(0, 40)
   
 
 data_PT <- data %>% 
@@ -169,7 +165,7 @@ write_csv(data_sum, "output/sum_data_geno_leaf_number.csv")
 
 # we first create a new data frame just with the numerical values
 
-pca_data <- data[, c(11:178)]
+pca_data <- data[, c(13:181)]
 
 pca_data <- data.frame(pca_data)
 
@@ -201,7 +197,7 @@ write.csv(loadings_short, "output/loadings_short.csv")
 
 autoplot(prcomp(pca_data), data = data, colour = "dag")
 
-autoplot(prcomp(pca_data, center = TRUE, scale. = TRUE), data = data, colour = "genotype", size = 3, alpha = "leaf_number", x = 1, y = 2) +
+autoplot(prcomp(pca_data, center = TRUE, scale. = TRUE), data = data, colour = "genotype"), size = 3, alpha = "leaf_number", x = 1, y = 2) +
   ggplot2::ggsave("output/PCA_main.pdf", useDingbats = FALSE)
 
 autoplot(prcomp(pca_data), data = data, colour = "genotype")
