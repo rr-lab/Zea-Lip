@@ -39,8 +39,8 @@ After germination, the growth was daily measured in terms of number of emerging 
 All blocks were harvested 58 days after planting (dap) of block 1, harvested tissue was immediately frozen in liquid nitrogen and stored at -80°C until lipid extraction.  
 From block 1, leaves were sampled in three different zones: tip (T), center (C) and base (B), see Figure 1. From each zone 50 mg of fresh blade tissue were collected for lipid extraction, excluding the mid rib, the ligule and the auricles. A list of all tissues sampled is listed in Table 1.
 
-![Figure1](../output/B73_leaf4_28dap_leaf_zones_ligular_zone.png)
-**Figure1. Developmental zones along a B73 maize leaf.**
+![Figure1](https://github.com/rr-lab/zea_lip/blob/master/figures/Figure%201.png)
+**Figure1. B73, CML312 and PT plants acrossed a developmental gradient.**
 
 This image corresponds to the 4th leaf of a B73 maize plant, 28 days after planting, grown in a greenhouse.
 We considered three developmental zones in the leaves to sample for lipid profiling, the base, the center and the tip.
