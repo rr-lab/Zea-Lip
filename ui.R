@@ -74,7 +74,6 @@ shinyUI(fluidPage(
         fluidRow(
           column(3, 
                  helpText("Choose the genotypes, variables, lipid classes and colours to map"),
-                 checkboxInput("plot_sum", label = "Plot summed classes instead", value=F),
                  selectInput("to_plot", label = "Grouping variable", choices = c("")),
                  selectInput("to_plot_3", label = "Coloring variable", choices = c("")),
                  tags$hr(),
@@ -90,6 +89,7 @@ shinyUI(fluidPage(
                  )
           ),
           column(8,
+                 checkboxInput("plot_sum", label = "Plot summed classes instead", value=F),
                  selectInput("to_plot_2", label = "Variable to plot", choices = c("")),
                  plotOutput("my_plot")
           )
@@ -99,9 +99,8 @@ shinyUI(fluidPage(
         tags$hr(),               
         fluidRow(
           column(3, 
-                 checkboxInput("plot_sum_field", label = "Plot summed classes instead", value=F),
-                 checkboxInput("add_greenhouse", label = "Add greenhouse data", value=F),
-                 tags$hr(),
+                 #checkboxInput("add_greenhouse", label = "Add greenhouse data", value=F),
+                 #tags$hr(),
                  checkboxInput("isboxplot_field", label="Want boxplot instead?"),
                  tags$hr(),
                  checkboxInput("more_filters_field", label="More filters?", value = F),
@@ -112,6 +111,7 @@ shinyUI(fluidPage(
                  )
           ),
           column(8,
+                 checkboxInput("plot_sum_field", label = "Plot summed classes instead", value=F),
                  selectInput("to_plot_2_field", label = "Variable to plot", choices = c("")),
                  plotOutput("my_plot_field")
           )
@@ -132,8 +132,8 @@ shinyUI(fluidPage(
              column(7, 
                     selectInput("corr_to_plot", label = "Variable to plot", choices = c("r-squares", "Spearman", "Pearson")),
                     plotOutput("correlation_heatmap"),#, click = "heatmap_click")             
-                    checkboxInput("correlation_individual", "Load individual data instead", value=F),
-                    checkboxInput("process_indiv_corr", "re-Process individual data", value=F)
+                    checkboxInput("correlation_individual", "Load individual data instead", value=F)#,
+                    # checkboxInput("process_indiv_corr", "re-Process individual data", value=F)
              ),
              column(5,
                     fluidRow(
@@ -159,8 +159,8 @@ shinyUI(fluidPage(
                   column(7, 
                          selectInput("corr_to_plot_field", label = "Variable to plot", choices = c("r-squares", "Spearman", "Pearson")),
                          plotOutput("correlation_heatmap_field"),#, click = "heatmap_click")             
-                         checkboxInput("correlation_individual_field", "Load individual data instead", value=F),
-                         checkboxInput("process_indiv_corr_field", "re-Process individual data", value=F)
+                         checkboxInput("correlation_individual_field", "Load individual data instead", value=F)#,
+                         # checkboxInput("process_indiv_corr_field", "re-Process individual data", value=F)
                   ),
                   column(5,
                          fluidRow(
@@ -200,7 +200,9 @@ shinyUI(fluidPage(
                             selectInput("variable_to_pca", label="Variables NOT TO include in PCA", choices = c("Load datafile"), 
                                         selected = NULL, multiple = TRUE, width="100%"),
                             checkboxInput("pca_aggregated", "Use summed classes instead", value=F),
-                            tags$hr()         
+                            tags$hr()  ,
+                            numericInput("n_loadings", "Number of components:", 10, min = 1, max = 100),
+                            plotOutput("loadings_plot")
                     ),
                      column(7,
                             h4("Plot the principal component analysis"),
@@ -228,7 +230,9 @@ shinyUI(fluidPage(
                            selectInput("variable_to_pca_field", label="Variables NOT TO include in PCA", choices = c("Load datafile"), 
                                        selected = NULL, multiple = TRUE, width="100%"),
                            checkboxInput("pca_aggregated_field", "Use summed classes instead", value=F),
-                           tags$hr()         
+                           tags$hr(),
+                           numericInput("n_loadings_field", "Number of components:", 10, min = 1, max = 100),
+                           plotOutput("loadings_plot_field")
                     ),
                     column(7,
                            h4("Plot the principal component analysis"),

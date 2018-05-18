@@ -604,7 +604,7 @@ shinyServer(
     })  
     
     
-    ## > Heatmap -----
+    ## > Heatmap field -----
     
     output$correlation_heatmap_field <- renderPlot({
       if(is.null(rs$fit.results.field)){return()}
@@ -621,7 +621,7 @@ shinyServer(
     })  
     
     
-    ## > Correlation -----
+    ## > Correlation field -----
     
     output$correlation_plot_field <- renderPlot({
       if(is.null(rs$field_sum)){return()}
@@ -730,14 +730,12 @@ shinyServer(
       pca <- prcomp(temp[,-inds], retx = T, scale=T)  # Make the PCA
       pca.results <- cbind(all_cats, data.frame(pca$x)[,])
       
-      print(pca$rotation)
-      
       vars <- apply(pca$x, 2, var)  
       props <- round((vars / sum(vars) * 100), 1)
+      
+      rs$props <- props
       xl <- paste0("\nPrincipal Component ",input$to_plot_pca_x," (",props[as.numeric(input$to_plot_pca_x)],"%)")
       yl <-paste0("Principal Component ",input$to_plot_pca_y," (",props[as.numeric(input$to_plot_pca_y)],"%)\n")
-      
-      print(paste0("PC",input$to_plot_pca_y))
       
       #data[[input$to_plot_4]] <- factor(data[[input$to_plot_4]])
       pca.results$group <- factor(pca.results[[input$to_plot_4]])
@@ -753,7 +751,7 @@ shinyServer(
     
     
     
-    ## > PCA plot -----
+    ## > PCA plot field -----
     output$pca_plot_field <- renderPlot({
       if(is.null(rs$field)){return()}
       
@@ -784,14 +782,11 @@ shinyServer(
       pca <- prcomp(temp[,-inds], retx = T, scale=T)  # Make the PCA
       pca.results <- cbind(all_cats, data.frame(pca$x)[,])
       
-      print(pca$rotation)
-      
       vars <- apply(pca$x, 2, var)  
       props <- round((vars / sum(vars) * 100), 1)
+      rs$props_field <- props
       xl <- paste0("\nPrincipal Component ",input$to_plot_pca_x," (",props[as.numeric(input$to_plot_pca_x)],"%)")
       yl <-paste0("Principal Component ",input$to_plot_pca_y," (",props[as.numeric(input$to_plot_pca_y)],"%)\n")
-      
-      print(paste0("PC",input$to_plot_pca_y))
       
       pca.results$group <- factor(pca.results[[input$to_plot_4_field]])
       
@@ -805,7 +800,34 @@ shinyServer(
     })
     
     
+    ## > PCA loadings field -----
+    output$loadings_plot_field <- renderPlot({
+      if(is.null(rs$props_field)){return()}
+      
+      temp <- as.array(rs$props_field)[1:input$n_loadings_field]
+      
+      data.frame(id = c(1:length(temp)), val = temp) %>% 
+        ggplot(aes(id, val)) + 
+        geom_line(size=1) +
+        geom_point(shape=21, colour = "black", fill = "white", size = 2, stroke = 2) + 
+        xlab("Component number [-]") + 
+        ylab("Contribution [%]")
+      
+    })
+    
+    ## > PCA loadings field -----
+    output$loadings_plot <- renderPlot({
+      if(is.null(rs$props)){return()}
+      
+      temp <- as.array(rs$props)[1:input$n_loadings]
 
+      data.frame(id = c(1:length(temp)), val = temp) %>% 
+        ggplot(aes(id, val)) + 
+          geom_line(size=1) +
+          geom_point(shape=21, colour = "black", fill = "white", size = 2, stroke = 2) + 
+          xlab("Component number [-]") + 
+          ylab("Contribution [%]")
+    })
     
     
     ### TABLE -----
