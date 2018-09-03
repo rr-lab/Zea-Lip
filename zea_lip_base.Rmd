@@ -97,6 +97,10 @@ data %>%
 data_PT <- data %>% 
   filter(genotype == "PT")
 
+data %>%
+  ggplot(aes(x = genotype, y = PC_32_2, colour = genotype)) +
+  geom_point()
+  geom_quasirandom(alpha = 0.02)
 
 ```
 
@@ -112,7 +116,7 @@ list <- colnames(data[, 11:191])
 
 # and then we run this code
 
-pdf(file=paste0("output/by_genotype.pdf"))
+pdf(file=paste0("output/by_genotype_2.pdf"))
    lapply(list, function(i)ggplot(data, aes_string(x="genotype", y= i, color = "genotype")) + geom_jitter(width = 0.25))
 dev.off()
 
