@@ -49,9 +49,14 @@ The tip was sampled from 2 cm below the tip, along a 5 cm distance, this to avoi
 Finally, the center in short leaves was sampled considering a separation of 2 cm distance from the end of the base and the tip. For longer leaves distances of 10 and 20 cm in between base and tip to center were considered.
 For all samples, midrib was also avoided. 
 
+![Figure2](https://github.com/rr-lab/zea_lip/blob/master/figures/figure_2/3Genotypes_DevStages_AllCompounds_PLSDA.png)
+**Figure2. PLSD analysis of lipid profiling data.
 
-![Figure2](../output/Growth_rate_fully_average_expanded_leaves_per_genotype.png)
-**Figure2. Growth rate of B73, CML312 and PT in greenhouse.**
+Here we can observe that the major source of lipid variation is explained by the genotype.
+According to the loading of the PLS analysis, the lipid species that have a major effect explaining the variation on PC1 are shown in the table above.  
+
+![Figure](../output/Growth_rate_fully_average_expanded_leaves_per_genotype.png)
+**Figure. Growth rate of B73, CML312 and PT in greenhouse.**
 The average of fully expanded leaves per genotype per day were used to make this graph.
 
 
