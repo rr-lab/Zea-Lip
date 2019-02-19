@@ -33,6 +33,8 @@ scripts with data analysis.
 
 # Manuscript Outline  
 
+https://docs.google.com/document/d/1DJSuOG00NRG-zFrtNSyxSxVWbd4kW9SGacIzzcvHCLs/edit
+
 ### Introduction
 
 ### Results
