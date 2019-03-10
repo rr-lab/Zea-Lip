@@ -4,6 +4,26 @@
 
 *Karla Juárez-Núñez, Guillaume Lobet,  Rubén Rellán-Álvarez*
 
+
+# Manuscript Outline  
+
+https://docs.google.com/document/d/1DJSuOG00NRG-zFrtNSyxSxVWbd4kW9SGacIzzcvHCLs/edit
+
+### Introduction
+
+### Results
+
+- Figure 1. Tissues analyzed + table. Text analyzing general patterns of the data. We still need to check if all compounds are present in all tissues/genotypes.  
+
+- Figure 2. PCA analysis. Show boxplots of most important variables. 
+Tables of 10 most importan variables to PC1 and PC2.  
+
+- Figure 3. Summary data by groups (PCs, DGs etc), ratios. 
+
+- Figure 4. Heatmaps correlations. Compare correlations between genotypes.
+
+- Figure 5. Expression data correlations.
+
 ## Abstract
 
 Glycerolipids are the predominant building blocks of plant membranes, they are essential for plant growth and development.
