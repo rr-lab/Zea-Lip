@@ -3,7 +3,7 @@
 
 Here we present a developmental atlas of maize glycerolipid species. We collected tissues from three  maize lines: B73, CML312 and Palomero Toluqueño at different developmental stages, leaf types and areas of the leaf. We then analyzed this tissues using HPLC-MS and identified 171 glycerolipid species.
 
-Data can be visualized in this online application Link goes here
+We are working on an online application for easy visualization of data. On the meanwhile you can download the repository and run the shinny application locally in your computer.
 
 
 In this repository you can find these different folders. **This is still  a work in progress**
