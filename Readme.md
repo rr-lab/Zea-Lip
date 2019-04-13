@@ -1,3 +1,6 @@
+[![DOI](https://zenodo.org/badge/108458619.svg)](https://zenodo.org/badge/latestdoi/108458619)
+
+
 *Zea Lip*: An atlas of glycerolipid species across development in maize B73, CML312 inbreds and Palomero Toluqueño landrace.
 -----------------------------
 
