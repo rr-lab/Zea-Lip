@@ -1,0 +1,12 @@
+name: zea-lip
+title:
+username:
+account: rellan-ncsu
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 862131
+bundleId: 2010632
+url: https://rrlab.shinyapps.io/zea-lip/
+when: 1555276739.53524
+asMultiple: FALSE
+asStatic: FALSE

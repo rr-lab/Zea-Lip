@@ -26,6 +26,8 @@ tissue_exp_long <- tissue_exp %>%
 	gather(tissue, expression_val, -gene_name, -chromosome, -position_left, -position_right) %>%
   separate(tissue, c("main_tissue", "sec_tissue", "dev_stage"))
 
+write_csv(tissue_exp_long,"output/B73_gene_expression_atlas.csv")
+
 tissue_exp_long_abbreviated <- tissue_exp_long %>%
 	select(gene_name, main_tissue, sec_tissue, dev_stage, expression_val)
 
@@ -59,5 +61,13 @@ glycerolipids_exp_val <- read_csv("output/glycerolipids_exp_val.csv")
 
 ```
 
+```{r}
+tissue_exp_long %>%
+  filter(gene_name == "GRMZM2G481755") %>%
+  filter(expression_val > 100) %>%
+  ggplot(aes(x = expression_val, y = reorder(tissue, expression_val))) +
+  geom_point() + 
+  theme_cowplot(size = 8)
+```
 
 

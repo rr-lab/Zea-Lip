@@ -530,8 +530,8 @@ shinyServer(
       
       if(!input$isboxplot){
         pl <- ggplot(temp, aes(x=var, y= value, color = var2)) +
-          geom_jitter(width = 0.25) +
-          stat_summary(fun.y = "mean", fun.ymin = "mean", fun.ymax = "mean", size = 0.25,
+          geom_jitter(width = 0.25, size = 3) +
+          stat_summary(fun.y = "mean", fun.ymin = "mean", fun.ymax = "mean", size = 0.5,
                        geom = "crossbar")
           
       }else{
@@ -568,8 +568,8 @@ shinyServer(
       if(!input$isboxplot_field){
         print("HELLO")
         pl <- ggplot(temp, aes(x=genotype, y= value, color = factor(genotype))) +
-          geom_jitter(width = 0.25) +
-          stat_summary(fun.y = "mean", fun.ymin = "mean", fun.ymax = "mean", size = 0.25,
+          geom_jitter(width = 0.25, size = 3) +
+          stat_summary(fun.y = "mean", fun.ymin = "mean", fun.ymax = "mean", size = 0.5,
                        geom = "crossbar")
         
       }else{
@@ -809,7 +809,7 @@ shinyServer(
       data.frame(id = c(1:length(temp)), val = temp) %>% 
         ggplot(aes(id, val)) + 
         geom_line(size=1) +
-        geom_point(shape=21, colour = "black", fill = "white", size = 2, stroke = 2) + 
+        geom_point(shape=21, colour = "black", fill = "white", size = 4, stroke = 2) + 
         xlab("Component number [-]") + 
         ylab("Contribution [%]")
       
@@ -824,7 +824,7 @@ shinyServer(
       data.frame(id = c(1:length(temp)), val = temp) %>% 
         ggplot(aes(id, val)) + 
           geom_line(size=1) +
-          geom_point(shape=21, colour = "black", fill = "white", size = 2, stroke = 2) + 
+          geom_point(shape=21, colour = "black", fill = "white", size = 4, stroke = 2) + 
           xlab("Component number [-]") + 
           ylab("Contribution [%]")
     })
