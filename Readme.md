@@ -1,9 +1,12 @@
+[![DOI](https://zenodo.org/badge/108458619.svg)](https://zenodo.org/badge/latestdoi/108458619)
+
+
 *Zea Lip*: An atlas of glycerolipid species across development in maize B73, CML312 inbreds and Palomero Toluqueño landrace.
 -----------------------------
 
 Here we present a developmental atlas of maize glycerolipid species. We collected tissues from three  maize lines: B73, CML312 and Palomero Toluqueño at different developmental stages, leaf types and areas of the leaf. We then analyzed this tissues using HPLC-MS and identified 171 glycerolipid species.
 
-We are working on an online application for easy visualization of data. On the meanwhile you can download the repository and run the shinny application locally in your computer.
+Check, search, browse and plot all the data using the [Zea Lip online app](https://rrlab.shinyapps.io/zea-lip/). 
 
 
 In this repository you can find these different folders. **This is still  a work in progress**
