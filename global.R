@@ -28,6 +28,7 @@ library(Hmisc)
 library(DT)
 library(shinyBS)
 library(data.table)
+library(reshape2)
 #library(plotly)
 library(gridExtra)
 library(ggrepel)
@@ -48,22 +49,21 @@ cormat <- round(cor(mydata),2)
 
 heatmap <- function(corr.matrix){
   #corr.matrix <- fit.results
-  dat <- melt(corr.matrix) 
+  dat <- reshape2::melt(corr.matrix)
 
-  plot1 <- ggplot(dat, aes(Var1, Var2)) + 
-    geom_tile(aes(fill = value)) + 
-    theme_classic() + 
+  plot1 <- ggplot(dat, aes(Var1, Var2)) +
+    geom_tile(aes(fill = value)) +
+    theme_classic() +
     theme(
-      axis.text.x = element_text(angle = 45, hjust = 1, size=12),
-      axis.text = element_text(size=12),
+      axis.text.x = element_blank(),
+      axis.text.y = element_blank(),
+      axis.ticks = element_blank(),
       legend.text = element_text(size=10),
       legend.title = element_text(size=10))+
-      #legend.position="none") +
-    # scale_fill_distiller(palette="Spectral")+
-    xlab("") + ylab("") + 
-    coord_fixed() + 
-    scale_fill_gradientn(colours=cscale, name="r-squared values")  
-  
+    xlab("") + ylab("") +
+    coord_fixed() +
+    scale_fill_gradientn(colours=cscale, name="Correlation values")
+
   plot1
 }
 

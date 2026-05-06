@@ -1,3 +1,5 @@
+#### REMOVE LEAF 14 - B73
+
 
 # This is the server logic for a Shiny web application.
 # You can find out more about building applications with Shiny here:
@@ -6,6 +8,36 @@
 #
 
 library(shiny)
+library(viridis)
+
+# Publishing figure ------------------------------------------------------
+figures_theme <- list(
+  
+  ## --- theme ----------------------------------------------------------------
+  theme_minimal(base_size = 16) +
+    theme(
+      plot.title      = element_text(size = 14, face = "bold",
+                                     hjust = .5, margin = margin(b = 10)),
+      axis.title.x    = element_text(size = 18, face = "bold"),
+      axis.title.y    = element_text(size = 18, face = "bold"),
+      axis.text.x     = element_text(size = 18, colour = "black"),
+      axis.text.y     = element_text(size = 18, colour = "black"),
+      axis.line       = element_line(colour = "black"),
+      panel.grid      = element_blank(),
+      legend.position = "top",
+      legend.title    = element_blank(),
+      legend.text     = element_text(size = 16),
+      plot.margin     = margin(15, 15, 15, 15)
+    ),
+  
+  ## --- discrete Viridis palette for colour & fill --------------------------
+  scale_colour_viridis_d(option = "D", end = .85),
+  scale_fill_viridis_d(  option = "D", end = .85),
+  
+  ## --- nicer legend keys ----------------------------------------------------
+  guides(colour = guide_legend(override.aes = list(size = 5)),
+         fill   = guide_legend(override.aes = list(size = 5)))
+)
 
 shinyServer(
   function(input, output, clientData, session) {  
@@ -18,8 +50,8 @@ shinyServer(
     observe({
     
       if(1==2){    
-        data <-  read_csv("www/data_dev_stages.csv")
-        field <-  read_csv("www/data_field_long.csv")
+        data <-  read_csv("www/ZeaLip_mTIC_metadata_AB (2).csv")
+        #field <-  read_csv("www/data_field_long.csv")
         expressions <- read_csv("www/tissue_exp_long_leaf.csv") %>% 
           mutate(dev_stage = as.numeric(gsub("[^0-9]", "", dev_stage)) ) %>% 
           # filter(sec_tissue == "Pooled") %>% 
@@ -36,14 +68,15 @@ shinyServer(
         # sums of different classes of lipids 
         
         data_sum <- data %>%
-          mutate(LPCs = rowSums(data[,57:62])) %>%
-          mutate(PCs = rowSums(data[,76:101])) %>%
-          mutate(PEs = rowSums(data[,102:112])) %>%
-          mutate(PGs = rowSums(data[,113:120])) %>%
-          mutate(SQDGs = rowSums(data[,129:135])) %>%
-          mutate(TGs = rowSums(data[,136:187])) %>%
-          mutate(DGs = rowSums(data[,25:52])) %>%
-          mutate(MGDGs = rowSums(data[,63:74])) 
+          mutate(LPCs = rowSums(data[,56:62])) %>%
+          mutate(PCs = rowSums(data[,76:96])) %>%
+          mutate(PEs = rowSums(data[,97:107])) %>%
+          mutate(PGs = rowSums(data[,108:115])) %>%
+          mutate(SQDGs = rowSums(data[,117:125])) %>%
+          mutate(TGs = rowSums(data[,128:170])) %>%
+          mutate(DGs = rowSums(data[,39:49])) %>%
+          mutate(MGDGs = rowSums(data[,64:75])) %>%
+          mutate(DGDGs = rowSums(data[20:38]))
         
         # ratios
         
@@ -52,7 +85,7 @@ shinyServer(
           mutate(PELPC = PEs/LPCs) %>%
           mutate(PEPC = PEs/PCs)
         
-        data_sum <- data_sum[, c(1:10, 188:199)]      
+        #data_sum <- data_sum[, c(1:11)]      
         
         data_sum <- melt(data_sum, id=c("sample_id", "genotype", "block_number", "replica_number", 
                                 "dev_stage", "dev_group", "leaf_number", "leaf_zone", "dag", 
@@ -67,42 +100,42 @@ shinyServer(
         l1 <- length(p.list)
         
         
-        field <- read_csv("www/field_data_short.csv")
-        
-        # sums of different classes of lipids 
-        
-        field_sum <- field %>%
-          mutate(LPCs = rowSums(field[,34:38])) %>%
-          mutate(PCs = rowSums(field[,52:74])) %>%
-          mutate(PEs = rowSums(field[,75:79])) %>%
-          mutate(PGs = rowSums(field[,80:85])) %>%
-          mutate(SQDGs = rowSums(field[,92:98])) %>%
-          mutate(TGs = rowSums(field[,99:116])) %>%
-          mutate(DGs = rowSums(field[,11:30])) %>%
-          mutate(MGDGs = rowSums(field[,39:51])) %>%
-          mutate(PCLPC = PCs/LPCs) %>%
-          mutate(PELPC = PEs/LPCs) %>%
-          mutate(PEPC = PEs/PCs)
-        
-        field_sum <- field_sum[, c(1:2, 123:133)]
-        
-        field_sum <- field_sum %>%
-          gather(variable, value, -ID, -genotype) 
-        
-        field <- field %>%
-          gather(variable, value, -ID, -genotype) 
+        # field <- read_csv("www/field_data_short.csv")
+        # 
+        # # sums of different classes of lipids 
+        # 
+        # field_sum <- field %>%
+        #   mutate(LPCs = rowSums(field[,34:38])) %>%
+        #   mutate(PCs = rowSums(field[,52:74])) %>%
+        #   mutate(PEs = rowSums(field[,75:79])) %>%
+        #   mutate(PGs = rowSums(field[,80:85])) %>%
+        #   mutate(SQDGs = rowSums(field[,92:98])) %>%
+        #   mutate(TGs = rowSums(field[,99:116])) %>%
+        #   mutate(DGs = rowSums(field[,11:30])) %>%
+        #   mutate(MGDGs = rowSums(field[,39:51])) %>%
+        #   mutate(PCLPC = PCs/LPCs) %>%
+        #   mutate(PELPC = PEs/LPCs) %>%
+        #   mutate(PEPC = PEs/PCs)
+        # 
+        # field_sum <- field_sum[, c(1:2, 123:133)]
+        # 
+        # field_sum <- field_sum %>%
+        #   gather(variable, value, -ID, -genotype) 
+        # 
+        # field <- field %>%
+        #   gather(variable, value, -ID, -genotype) 
         
         
         corrs_data_sum <- getCorrelations(data_sum)
         corrs_data <- getCorrelations(data)
-        corrs_field_sum <- getCorrelations(field_sum)
-        corrs_field <- getCorrelations(field)
+        # corrs_field_sum <- getCorrelations(field_sum)
+        # corrs_field <- getCorrelations(field)
         
-        save(data, data_sum, field, field_sum, 
+        save(data, data_sum, #field, field_sum, 
              corrs_data_sum,
              corrs_data,
-             corrs_field_sum,
-             corrs_field,
+             # corrs_field_sum,
+             # corrs_field,
              imgs, file = "www/all_lidip_data.RData")
         
         
@@ -229,32 +262,33 @@ shinyServer(
       
       load("www/all_lidip_data.RData")
       
+      
       rs$lipids <- data
       rs$lipids_sum <- data_sum
       
-      rs$field <- field
-      rs$field_sum <- field_sum
+      #rs$field <- field
+      #rs$field_sum <- field_sum
       
       rs$fit.table <- corrs_data_sum$fit.table
       rs$pearson.results <- corrs_data_sum$pearson.results
       rs$spearman.results <- corrs_data_sum$spearman.results
       rs$fit.results <- corrs_data_sum$fit.results
       
-      rs$fit.table.indiv <- corrs_data$fit.table.indiv
-      rs$pearson.results.indiv <- corrs_data$pearson.results.indiv
-      rs$spearman.results.indiv <- corrs_data$spearman.results.indiv
-      rs$fit.results.indiv <- corrs_data$fit.results.indiv
+      rs$fit.table.indiv <- corrs_data$fit.table
+      rs$pearson.results.indiv <- corrs_data$pearson.results
+      rs$spearman.results.indiv <- corrs_data$spearman.results
+      rs$fit.results.indiv <- corrs_data$fit.results
       
-      rs$fit.table.field <- corrs_field_sum$fit.table
-      rs$pearson.results.field <- corrs_field_sum$pearson.results
-      rs$spearman.results.field <- corrs_field_sum$spearman.results
-      rs$fit.results.field <- corrs_field_sum$fit.results
-      
-      rs$fit.table.indiv.field <- corrs_field$fit.table.indiv
-      rs$pearson.results.indiv.field <- corrs_field$pearson.results.indiv
-      rs$spearman.results.indiv.field <- corrs_field$spearman.results.indiv
-      rs$fit.results.indiv.field <- corrs_field$fit.results.indiv
-      
+      #rs$fit.table.field <- corrs_field_sum$fit.table
+      #rs$pearson.results.field <- corrs_field_sum$pearson.results
+      # rs$spearman.results.field <- corrs_field_sum$spearman.results
+      # rs$fit.results.field <- corrs_field_sum$fit.results
+      # 
+      # rs$fit.table.indiv.field <- corrs_field$fit.table.indiv
+      # rs$pearson.results.indiv.field <- corrs_field$pearson.results.indiv
+      # rs$spearman.results.indiv.field <- corrs_field$spearman.results.indiv
+      # rs$fit.results.indiv.field <- corrs_field$fit.results.indiv
+      # 
       
       rs$imgs <- imgs
     })
@@ -288,29 +322,29 @@ shinyServer(
     
     
     
-    observe({
-      if(is.null(rs$field_sum)){return()}
-      if(input$correlation_individual_field) vars <- unique(rs$field$variable)
-      else vars <- unique(rs$field_sum$variable)
-      ct_options <- list()
-      sel <- input$variable_corr_1_field
-      if(nchar(sel) == 0) sel = vars[1]
-      for(ct in vars) ct_options[[ct]] <- ct
-      # cts  <- c("tot_root_length","n_laterals","tot_lat_length")
-      updateSelectInput(session, "variable_corr_1_field", choices = ct_options, selected=sel) 
-    }) 
+    # observe({
+    #   if(is.null(rs$field_sum)){return()}
+    #   if(input$correlation_individual_field) vars <- unique(rs$field$variable)
+    #   else vars <- unique(rs$field_sum$variable)
+    #   ct_options <- list()
+    #   sel <- input$variable_corr_1_field
+    #   if(nchar(sel) == 0) sel = vars[1]
+    #   for(ct in vars) ct_options[[ct]] <- ct
+    #   # cts  <- c("tot_root_length","n_laterals","tot_lat_length")
+    #   updateSelectInput(session, "variable_corr_1_field", choices = ct_options, selected=sel) 
+    # }) 
     
-    observe({
-      if(is.null(rs$field_sum)){return()}
-      if(input$correlation_individual_field) vars <- unique(rs$field$variable)
-      else vars <- unique(rs$field_sum$variable)
-      ct_options <- list()
-      sel <- input$variable_corr_2_field
-      if(nchar(sel) == 0) sel = vars[2]
-      for(ct in vars) ct_options[[ct]] <- ct
-      # cts  <- c("tot_root_length","n_laterals","tot_lat_length")
-      updateSelectInput(session, "variable_corr_2_field", choices = ct_options, selected=sel) 
-    }) 
+    # observe({
+    #   if(is.null(rs$field_sum)){return()}
+    #   if(input$correlation_individual_field) vars <- unique(rs$field$variable)
+    #   else vars <- unique(rs$field_sum$variable)
+    #   ct_options <- list()
+    #   sel <- input$variable_corr_2_field
+    #   if(nchar(sel) == 0) sel = vars[2]
+    #   for(ct in vars) ct_options[[ct]] <- ct
+    #   # cts  <- c("tot_root_length","n_laterals","tot_lat_length")
+    #   updateSelectInput(session, "variable_corr_2_field", choices = ct_options, selected=sel) 
+    # }) 
     
     
     # observe({
@@ -348,17 +382,17 @@ shinyServer(
       updateSelectInput(session, "genotypes_to_plot", choices = ct_options, selected=sel) 
     }) 
     
-    observe({
-      if(is.null(rs$field)){return()}
-      vars <- unique(rs$field$genotype)
-      ct_options <- list()
-      sel <- input$genotypes_to_plot_field
-      if(length(sel) == 0) sel = vars
-      for(ct in vars) ct_options[[ct]] <- ct
-      # cts  <- c("tot_root_length","n_laterals","tot_lat_length")
-      updateSelectInput(session, "genotypes_to_plot_field", choices = ct_options, selected=sel) 
-    })     
-    
+    # observe({
+    #   if(is.null(rs$field)){return()}
+    #   vars <- unique(rs$field$genotype)
+    #   ct_options <- list()
+    #   sel <- input$genotypes_to_plot_field
+    #   if(length(sel) == 0) sel = vars
+    #   for(ct in vars) ct_options[[ct]] <- ct
+    #   # cts  <- c("tot_root_length","n_laterals","tot_lat_length")
+    #   updateSelectInput(session, "genotypes_to_plot_field", choices = ct_options, selected=sel) 
+    # })     
+    # 
     observe({
       if(is.null(rs$lipids)){return()}
       vars <- unique(rs$lipids$leaf_zone)
@@ -382,16 +416,16 @@ shinyServer(
     })  
     
     
-    observe({
-      if(is.null(rs$field)){return()}
-      vars <- unique(rs$field$genotype)
-      ct_options <- list()
-      sel <- input$genotypes_to_plot_2_field
-      if(length(sel) == 0) sel = vars
-      for(ct in vars) ct_options[[ct]] <- ct
-      # cts  <- c("tot_root_length","n_laterals","tot_lat_length")
-      updateSelectInput(session, "genotypes_to_plot_2_field", choices = ct_options, selected=sel) 
-    })  
+    # observe({
+    #   if(is.null(rs$field)){return()}
+    #   vars <- unique(rs$field$genotype)
+    #   ct_options <- list()
+    #   sel <- input$genotypes_to_plot_2_field
+    #   if(length(sel) == 0) sel = vars
+    #   for(ct in vars) ct_options[[ct]] <- ct
+    #   # cts  <- c("tot_root_length","n_laterals","tot_lat_length")
+    #   updateSelectInput(session, "genotypes_to_plot_2_field", choices = ct_options, selected=sel) 
+    # })  
     
     observe({
       if(is.null(rs$lipids)){return()}
@@ -405,17 +439,17 @@ shinyServer(
       updateSelectInput(session, "to_plot_2", choices = ct_options, selected=sel) 
     }) 
     
-    observe({
-      if(is.null(rs$lipids)){return()}
-      if(input$plot_sum_field) vars <- unique(rs$field_sum$variable)
-      else vars <- unique(rs$field$variable)
-      ct_options <- list()
-      sel <- input$to_plot_2_field
-      for(ct in vars) ct_options[[ct]] <- ct
-      if(length(sel) == 0 | sel == "") sel = ct_options[1]
-      # cts  <- c("tot_root_length","n_laterals","tot_lat_length")
-      updateSelectInput(session, "to_plot_2_field", choices = ct_options, selected=sel) 
-    }) 
+    # observe({
+    #   if(is.null(rs$lipids)){return()}
+    #   if(input$plot_sum_field) vars <- unique(rs$field_sum$variable)
+    #   else vars <- unique(rs$field$variable)
+    #   ct_options <- list()
+    #   sel <- input$to_plot_2_field
+    #   for(ct in vars) ct_options[[ct]] <- ct
+    #   if(length(sel) == 0 | sel == "") sel = ct_options[1]
+    #   # cts  <- c("tot_root_length","n_laterals","tot_lat_length")
+    #   updateSelectInput(session, "to_plot_2_field", choices = ct_options, selected=sel) 
+    # }) 
     
     
     
@@ -466,16 +500,16 @@ shinyServer(
     }) 
     
     
-    observe({
-      if(is.null(rs$field)){return()}
-      vars <- colnames(rs$field)[c(2:10)]
-      ct_options <- list()
-      sel <- input$to_plot_4_field
-      for(ct in vars) ct_options[[ct]] <- ct
-      if(length(sel) == 0 | sel == "") sel = ct_options[1]
-      # cts  <- c("tot_root_length","n_laterals","tot_lat_length")
-      updateSelectInput(session, "to_plot_4_field", choices = ct_options, selected=sel) 
-    }) 
+    # observe({
+    #   if(is.null(rs$field)){return()}
+    #   vars <- colnames(rs$field)[c(2:10)]
+    #   ct_options <- list()
+    #   sel <- input$to_plot_4_field
+    #   for(ct in vars) ct_options[[ct]] <- ct
+    #   if(length(sel) == 0 | sel == "") sel = ct_options[1]
+    #   # cts  <- c("tot_root_length","n_laterals","tot_lat_length")
+    #   updateSelectInput(session, "to_plot_4_field", choices = ct_options, selected=sel) 
+    # }) 
     
     observe({
       if(is.null(rs$lipids)){return()}
@@ -492,18 +526,18 @@ shinyServer(
     
     
     
-    observe({
-      if(is.null(rs$field)){return()}
-      if(input$pca_aggregated_field){
-        vars <- unique(rs$field_sum$variable)
-      }else{
-        vars <- unique(rs$field$variable)
-      }
-      ct_options <- list()
-      sel <- input$variable_to_pca_field
-      for(ct in vars) ct_options[[ct]] <- ct
-      updateSelectInput(session, "variable_to_pca_field", choices = ct_options, selected=sel) 
-    }) 
+    # observe({
+    #   if(is.null(rs$field)){return()}
+    #   if(input$pca_aggregated_field){
+    #     vars <- unique(rs$field_sum$variable)
+    #   }else{
+    #     vars <- unique(rs$field$variable)
+    #   }
+    #   ct_options <- list()
+    #   sel <- input$variable_to_pca_field
+    #   for(ct in vars) ct_options[[ct]] <- ct
+    #   updateSelectInput(session, "variable_to_pca_field", choices = ct_options, selected=sel) 
+    # }) 
     
     
     ### PLOTS -----
@@ -532,11 +566,13 @@ shinyServer(
         pl <- ggplot(temp, aes(x=var, y= value, color = var2)) +
           geom_jitter(width = 0.25, size = 3) +
           stat_summary(fun.y = "mean", fun.ymin = "mean", fun.ymax = "mean", size = 0.5,
-                       geom = "crossbar")
+                       geom = "crossbar") +
+          figures_theme
           
       }else{
         pl <- ggplot(temp, aes(x=factor(var), y= value, color = factor(var2))) + 
-          geom_boxplot(width = 0.25)
+          geom_boxplot(width = 0.25) +
+          figures_theme
       }
       
       pl <- pl + 
@@ -548,41 +584,41 @@ shinyServer(
     }) 
     
     
-    output$my_plot_field <- renderPlot({
-      
-      if(is.null(rs$field_sum)){return()}
-      
-      if(input$plot_sum_field) temp <- rs$field_sum
-      else  temp <- rs$field
-
-      print(input$genotypes_to_plot_field)
-      temp  <- temp %>%
-        filter(genotype %in% input$genotypes_to_plot_field)%>%
-        filter(variable == input$to_plot_2_field)
-      # temp <- data
-      
-      temp$value <- as.numeric(temp$value)
-
-      print(str(temp))
-      
-      if(!input$isboxplot_field){
-        print("HELLO")
-        pl <- ggplot(temp, aes(x=genotype, y= value, color = factor(genotype))) +
-          geom_jitter(width = 0.25, size = 3) +
-          stat_summary(fun.y = "mean", fun.ymin = "mean", fun.ymax = "mean", size = 0.5,
-                       geom = "crossbar")
-        
-      }else{
-        pl <- ggplot(temp, aes(x=genotype, y= value, color =  factor(genotype))) + 
-          geom_boxplot(width = 0.25)
-      }
-      
-      pl <- pl + 
-        ylab(input$to_plot_2_field) + 
-        xlab("Genotype")
-      pl
-      
-    })     
+    # output$my_plot_field <- renderPlot({
+    #   
+    #   if(is.null(rs$field_sum)){return()}
+    #   
+    #   if(input$plot_sum_field) temp <- rs$field_sum
+    #   else  temp <- rs$field
+    # 
+    #   print(input$genotypes_to_plot_field)
+    #   temp  <- temp %>%
+    #     filter(genotype %in% input$genotypes_to_plot_field)%>%
+    #     filter(variable == input$to_plot_2_field)
+    #   # temp <- data
+    #   
+    #   temp$value <- as.numeric(temp$value)
+    # 
+    #   print(str(temp))
+    #   
+    #   if(!input$isboxplot_field){
+    #     print("HELLO")
+    #     pl <- ggplot(temp, aes(x=genotype, y= value, color = factor(genotype))) +
+    #       geom_jitter(width = 0.25, size = 3) +
+    #       stat_summary(fun.y = "mean", fun.ymin = "mean", fun.ymax = "mean", size = 0.5,
+    #                    geom = "crossbar")
+    #     
+    #   }else{
+    #     pl <- ggplot(temp, aes(x=genotype, y= value, color =  factor(genotype))) + 
+    #       geom_boxplot(width = 0.25)
+    #   }
+    #   
+    #   pl <- pl + 
+    #     ylab(input$to_plot_2_field) + 
+    #     xlab("Genotype")
+    #   pl
+    #   
+    # })     
     
     
       
@@ -591,7 +627,7 @@ shinyServer(
     
     output$correlation_heatmap <- renderPlot({
       if(is.null(rs$fit.results)){return()}
-    
+
       if(input$correlation_individual){
         if(input$corr_to_plot == "r-squares") print(heatmap(rs$fit.results.indiv))
         else if(input$corr_to_plot == "Spearman") print(heatmap(rs$spearman.results.indiv))
@@ -601,57 +637,89 @@ shinyServer(
         else if(input$corr_to_plot == "Spearman") print(heatmap(rs$spearman.results))
         else  print(heatmap(rs$pearson.results))
       }
+    })
+
+    ## > Correlation Table -----
+    output$correlation_table <- DT::renderDataTable({
+      if(is.null(rs$fit.results)){return()}
+
+      # Get the right correlation matrix based on user selection
+      if(input$correlation_individual){
+        if(input$corr_to_plot == "r-squares") corr_matrix <- rs$fit.results.indiv
+        else if(input$corr_to_plot == "Spearman") corr_matrix <- rs$spearman.results.indiv
+        else corr_matrix <- rs$pearson.results.indiv
+      }else{
+        if(input$corr_to_plot == "r-squares") corr_matrix <- rs$fit.results
+        else if(input$corr_to_plot == "Spearman") corr_matrix <- rs$spearman.results
+        else corr_matrix <- rs$pearson.results
+      }
+
+      # Convert matrix to long format for the table
+      corr_df <- reshape2::melt(corr_matrix)
+      colnames(corr_df) <- c("Variable 1", "Variable 2", "Value")
+      corr_df$Value <- round(corr_df$Value, 4)
+
+      # Remove self-correlations (diagonal)
+      corr_df <- corr_df[corr_df$`Variable 1` != corr_df$`Variable 2`, ]
+
+      DT::datatable(corr_df,
+                    options = list(
+                      pageLength = 10,
+                      scrollX = TRUE,
+                      order = list(list(2, 'desc'))
+                    ),
+                    filter = 'top',
+                    rownames = FALSE)
     })  
     
     
     ## > Heatmap field -----
     
-    output$correlation_heatmap_field <- renderPlot({
-      if(is.null(rs$fit.results.field)){return()}
-      
-      if(input$correlation_individual_field){
-        if(input$corr_to_plot_field == "r-squares") print(heatmap(rs$fit.results.indiv.field))
-        else if(input$corr_to_plot_field == "Spearman") print(heatmap(rs$spearman.results.indiv.field))
-        else  print(heatmap(rs$pearson.results.indiv.field))
-      }else{
-        if(input$corr_to_plot_field == "r-squares") print(heatmap(rs$fit.results.field))
-        else if(input$corr_to_plot_field == "Spearman") print(heatmap(rs$spearman.results.field))
-        else  print(heatmap(rs$pearson.results.field))
-      }
-    })  
+    # output$correlation_heatmap_field <- renderPlot({
+    #   if(is.null(rs$fit.results.field)){return()}
+    #   
+    #   if(input$correlation_individual_field){
+    #     if(input$corr_to_plot_field == "r-squares") print(heatmap(rs$fit.results.indiv.field))
+    #     else if(input$corr_to_plot_field == "Spearman") print(heatmap(rs$spearman.results.indiv.field))
+    #     else  print(heatmap(rs$pearson.results.indiv.field))
+    #   }else{
+    #     if(input$corr_to_plot_field == "r-squares") print(heatmap(rs$fit.results.field))
+    #     else if(input$corr_to_plot_field == "Spearman") print(heatmap(rs$spearman.results.field))
+    #     else  print(heatmap(rs$pearson.results.field))
+    #   }
+    # })  
     
     
     ## > Correlation field -----
     
-    output$correlation_plot_field <- renderPlot({
-      if(is.null(rs$field_sum)){return()}
-  
-      
-      if(input$correlation_individual_field){
-        temp  <-  rs$field 
-      }else{
-        temp  <-  rs$field_sum 
-      }
-      temp  <-  temp %>%
-        filter(variable == input$variable_corr_1_field | variable == input$variable_corr_2_field)%>%
-        spread(variable, value) 
-      temp$x = temp[[input$variable_corr_1_field]]
-      temp$y = temp[[input$variable_corr_2_field]]
-      temp$group = factor(temp[[input$to_plot_reg_3_field]])
-      
-      if(input$correlation_color_field){
-        ggplot(temp, aes(x, y, colour=group)) + 
-          geom_point() + 
-          geom_smooth(method="lm", se=F, lty=2)
-      }else{
-        ggplot(temp, aes(x, y)) + 
-          geom_point() + 
-          geom_smooth(method="lm", se=F, lty=2)
-      }
-    })   
+    # output$correlation_plot_field <- renderPlot({
+    #   if(is.null(rs$field_sum)){return()}
+    # 
+    #   
+    #   if(input$correlation_individual_field){
+    #     temp  <-  rs$field 
+    #   }else{
+    #     temp  <-  rs$field_sum 
+    #   }
+    #   temp  <-  temp %>%
+    #     filter(variable == input$variable_corr_1_field | variable == input$variable_corr_2_field)%>%
+    #     spread(variable, value) 
+    #   temp$x = temp[[input$variable_corr_1_field]]
+    #   temp$y = temp[[input$variable_corr_2_field]]
+    #   temp$group = factor(temp[[input$to_plot_reg_3_field]])
+    #   
+    #   if(input$correlation_color_field){
+    #     ggplot(temp, aes(x, y, colour=group)) + 
+    #       geom_point() + 
+    #       geom_smooth(method="lm", se=F, lty=2)
+    #   }else{
+    #     ggplot(temp, aes(x, y)) + 
+    #       geom_point() + 
+    #       geom_smooth(method="lm", se=F, lty=2)
+    #   }
+    # })   
     
 
-    
     
     ## > Correlation -----
     
@@ -677,11 +745,13 @@ shinyServer(
       if(input$correlation_color){
         ggplot(temp, aes(x, y, colour=group)) + 
           geom_point() + 
-          geom_smooth(method="lm", se=F, lty=2)
+          geom_smooth(method="lm", se=F, lty=2) +
+          figures_theme
       }else{
         ggplot(temp, aes(x, y)) + 
           geom_point() + 
-          geom_smooth(method="lm", se=F, lty=2)
+          geom_smooth(method="lm", se=F, lty=2) +
+          figures_theme
       }
     })   
     
@@ -727,7 +797,7 @@ shinyServer(
       
       # if(!is.null(remove)) temp <- temp[,-remove]
       
-      pca <- prcomp(temp[,-inds], retx = T, scale=T)  # Make the PCA
+      pca <- prcomp(temp[,-inds], retx = T, scale=F)  # Make the PCA
       pca.results <- cbind(all_cats, data.frame(pca$x)[,])
       
       vars <- apply(pca$x, 2, var)  
@@ -745,75 +815,76 @@ shinyServer(
         stat_ellipse(aes_string(paste0("PC",input$to_plot_pca_x), paste0("PC",input$to_plot_pca_y), colour="group"), level = 0.9, size=1) + 
         xlab(xl) + 
         ylab(yl) + 
-        coord_fixed()
+        coord_fixed() +
+        figures_theme
       
     })
     
     
     
     ## > PCA plot field -----
-    output$pca_plot_field <- renderPlot({
-      if(is.null(rs$field)){return()}
-      
-      # temp <- data
-      if(input$pca_aggregated_field){
-        temp <- rs$field_sum[rs$field_sum$genotype %in% input$genotypes_to_plot_2_field,]
-      }else{
-        temp <- rs$field[rs$field$genotype %in% input$genotypes_to_plot_2_field,]
-      }
-      # get the categorial variables
-      inds <- c(1:(ncol(temp)-1))
-      all_cats <- temp[,inds]
-      cats <- colnames(all_cats)
-      
-      # Get the measurments
-      vars <- input$variable_to_pca_field
-      # vars <- unique(temp$variable)
-      
-      
-      # change from lon to wide format
-      if(is.null(vars)){
-        vars <- c("")
-      }
-      temp <- temp %>%
-        filter(!(variable %in% vars)) %>%
-        spread(variable, value)
-      
-      pca <- prcomp(temp[,-inds], retx = T, scale=T)  # Make the PCA
-      pca.results <- cbind(all_cats, data.frame(pca$x)[,])
-      
-      vars <- apply(pca$x, 2, var)  
-      props <- round((vars / sum(vars) * 100), 1)
-      rs$props_field <- props
-      xl <- paste0("\nPrincipal Component ",input$to_plot_pca_x," (",props[as.numeric(input$to_plot_pca_x)],"%)")
-      yl <-paste0("Principal Component ",input$to_plot_pca_y," (",props[as.numeric(input$to_plot_pca_y)],"%)\n")
-      
-      pca.results$group <- factor(pca.results[[input$to_plot_4_field]])
-      
-      ggplot(data = pca.results) + 
-        geom_point(aes_string(paste0("PC",input$to_plot_pca_x_field), paste0("PC",input$to_plot_pca_y_field), colour="group")) +
-        stat_ellipse(aes_string(paste0("PC",input$to_plot_pca_x_field), paste0("PC",input$to_plot_pca_y_field), colour="group"), level = 0.9, size=1) + 
-        xlab(xl) + 
-        ylab(yl) + 
-        coord_fixed()
-      
-    })
+    # output$pca_plot_field <- renderPlot({
+    #   if(is.null(rs$field)){return()}
+    #   
+    #   # temp <- data
+    #   if(input$pca_aggregated_field){
+    #     temp <- rs$field_sum[rs$field_sum$genotype %in% input$genotypes_to_plot_2_field,]
+    #   }else{
+    #     temp <- rs$field[rs$field$genotype %in% input$genotypes_to_plot_2_field,]
+    #   }
+    #   # get the categorial variables
+    #   inds <- c(1:(ncol(temp)-1))
+    #   all_cats <- temp[,inds]
+    #   cats <- colnames(all_cats)
+    #   
+    #   # Get the measurments
+    #   vars <- input$variable_to_pca_field
+    #   # vars <- unique(temp$variable)
+    #   
+    #   
+    #   # change from lon to wide format
+    #   if(is.null(vars)){
+    #     vars <- c("")
+    #   }
+    #   temp <- temp %>%
+    #     filter(!(variable %in% vars)) %>%
+    #     spread(variable, value)
+    #   
+    #   pca <- prcomp(temp[,-inds], retx = T, scale=T)  # Make the PCA
+    #   pca.results <- cbind(all_cats, data.frame(pca$x)[,])
+    #   
+    #   vars <- apply(pca$x, 2, var)  
+    #   props <- round((vars / sum(vars) * 100), 1)
+    #   rs$props_field <- props
+    #   xl <- paste0("\nPrincipal Component ",input$to_plot_pca_x," (",props[as.numeric(input$to_plot_pca_x)],"%)")
+    #   yl <-paste0("Principal Component ",input$to_plot_pca_y," (",props[as.numeric(input$to_plot_pca_y)],"%)\n")
+    #   
+    #   pca.results$group <- factor(pca.results[[input$to_plot_4_field]])
+    #   
+    #   ggplot(data = pca.results) + 
+    #     geom_point(aes_string(paste0("PC",input$to_plot_pca_x_field), paste0("PC",input$to_plot_pca_y_field), colour="group")) +
+    #     stat_ellipse(aes_string(paste0("PC",input$to_plot_pca_x_field), paste0("PC",input$to_plot_pca_y_field), colour="group"), level = 0.9, size=1) + 
+    #     xlab(xl) + 
+    #     ylab(yl) + 
+    #     coord_fixed()
+    #   
+    # })
     
     
     ## > PCA loadings field -----
-    output$loadings_plot_field <- renderPlot({
-      if(is.null(rs$props_field)){return()}
-      
-      temp <- as.array(rs$props_field)[1:input$n_loadings_field]
-      
-      data.frame(id = c(1:length(temp)), val = temp) %>% 
-        ggplot(aes(id, val)) + 
-        geom_line(size=1) +
-        geom_point(shape=21, colour = "black", fill = "white", size = 4, stroke = 2) + 
-        xlab("Component number [-]") + 
-        ylab("Contribution [%]")
-      
-    })
+    # output$loadings_plot_field <- renderPlot({
+    #   if(is.null(rs$props_field)){return()}
+    #   
+    #   temp <- as.array(rs$props_field)[1:input$n_loadings_field]
+    #   
+    #   data.frame(id = c(1:length(temp)), val = temp) %>% 
+    #     ggplot(aes(id, val)) + 
+    #     geom_line(size=1) +
+    #     geom_point(shape=21, colour = "black", fill = "white", size = 4, stroke = 2) + 
+    #     xlab("Component number [-]") + 
+    #     ylab("Contribution [%]")
+    #   
+    # })
     
     ## > PCA loadings field -----
     output$loadings_plot <- renderPlot({
@@ -826,7 +897,8 @@ shinyServer(
           geom_line(size=1) +
           geom_point(shape=21, colour = "black", fill = "white", size = 4, stroke = 2) + 
           xlab("Component number [-]") + 
-          ylab("Contribution [%]")
+          ylab("Contribution [%]") +
+        figures_theme
     })
     
     
@@ -892,16 +964,16 @@ shinyServer(
     })
     
     
-    output$corr_text_field <- renderText({
-      if(is.null(rs$fit.table.field)){return()}
-      temp <- rs$fit.table.field %>%
-        filter(line1 == input$variable_corr_1_field & line2 == input$variable_corr_2_field)
-      
-      txt  = paste0("r-squared = ",round(temp$r2,3),"  ||  ","Pearson coefficient = ",round(temp$pearson,3),
-                    "  ||  ","Spearman coefficient = ",round(temp$spearman,3))
-      return(HTML(txt))
-      
-    })
+    # output$corr_text_field <- renderText({
+    #   if(is.null(rs$fit.table.field)){return()}
+    #   temp <- rs$fit.table.field %>%
+    #     filter(line1 == input$variable_corr_1_field & line2 == input$variable_corr_2_field)
+    #   
+    #   txt  = paste0("r-squared = ",round(temp$r2,3),"  ||  ","Pearson coefficient = ",round(temp$pearson,3),
+    #                 "  ||  ","Spearman coefficient = ",round(temp$spearman,3))
+    #   return(HTML(txt))
+    #   
+    # })
     
     
     ### DOWNLOAD --------
@@ -913,13 +985,13 @@ shinyServer(
       }
     )
     
-    output$download_dataset_field <- downloadHandler(
-      filename = function() {"zea_lipid_field_dataset.csv"},
-      content = function(file) {
-        temp <- rbind(rs$field, rs$field_sum)
-        write.csv(temp, file)
-      }
-    )
+    # output$download_dataset_field <- downloadHandler(
+    #   filename = function() {"zea_lipid_field_dataset.csv"},
+    #   content = function(file) {
+    #     temp <- rbind(rs$field, rs$field_sum)
+    #     write.csv(temp, file)
+    #   }
+    # )
     
     
     })
