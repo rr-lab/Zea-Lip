@@ -19,7 +19,7 @@ Samples were collected across 4 developmental stages, 6 leaves, and 3 leaf zones
 
 Check, search, browse and plot all the data using the **Zea Lip online app**:
 
-**https://rrlab.shinyapps.io/zea-lip/**
+**[Zea Lip](https://rrellan.shinyapps.io/Zea-Lip/)**
 
 ---
 
