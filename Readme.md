@@ -4,37 +4,63 @@
 *Zea Lip*: An atlas of glycerolipid species across development in maize B73, CML312 inbreds and Palomero Toluqueño landrace.
 -----------------------------
 
-Here we present a developmental atlas of maize glycerolipid species. We collected tissues from three  maize lines: B73, CML312 and Palomero Toluqueño at different developmental stages, leaf types and areas of the leaf. We then analyzed this tissues using HPLC-MS and identified 171 glycerolipid species.
+Here we present a developmental atlas of maize glycerolipid species profiled using ultra-high-performance liquid chromatography coupled with quadrupole time-of-flight mass spectrometry (UHPLC-QTOF MS/MS).
 
-Check, search, browse and plot all the data using the [Zea Lip online app](https://rrlab.shinyapps.io/zea-lip/). 
+We collected leaf tissue from three maize genotypes with diverse origins:
+- **B73** - a temperate inbred line
+- **CML312** - a subtropical inbred line
+- **Palomero Toluqueno (PT)** - an open-pollinated variety from the Mexican highlands
 
+Samples were collected across 4 developmental stages, 6 leaves, and 3 leaf zones (base, center, tip). We identified **149 molecular lipid species** within **14 lipid classes**.
 
-In this repository you can find these different folders. **This is still  a work in progress**
+---
+
+## Shiny App
+
+Check, search, browse and plot all the data using the **Zea Lip online app**:
+
+**https://rrlab.shinyapps.io/zea-lip/**
+
+---
+
+## Repository Structure
 
 ### `data`
-
-- Original raw HPLC-MS files.
+- Original raw HPLC-MS files
 - raw_data before loess batch normalization
-- data_loess_batch_normalized.
+- data_loess_batch_normalized
 - data_mtic_normalized
 - tidy_data (this is the dataset that is analyzed and discussed in the manuscript)
 
 ### `docs`
-
-- manuscript files
+- Manuscript files
 
 ### `figures`
-
-final figures
+- Final figures
 
 ### `output`
-
-- figures and data that can be generated directly from scripts
+- Figures and data that can be generated directly from scripts
 
 ### `scripts`
+- Scripts with data analysis
 
-scripts with data analysis.
+---
 
+## Citation
+
+If you use this data or application, please cite:
+
+**Zea Lip: An atlas of glycerolipid profiles across leaf development in maize**
+
+Allison C. Barnes*, Karla Juarez Nunez*, Guillaume Lobet, Nirwan Tandukar, Eric Jadidzadeh, Asher Pasha, Nicholas J. Provart, James B. Holland, Ruben Rellan-Alvarez
+
+*These authors contributed equally
+
+---
+
+## License
+
+Zea Lip is free to use and released under a GPL license.
 
 
 
