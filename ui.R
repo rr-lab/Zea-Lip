@@ -350,9 +350,11 @@ shinyUI(fluidPage(
                             mapped to the B73 v5 reference; v4 gene IDs were matched with the MaizeGDB crosswalk."),
                    h4("Caveats"),
                    helpText("Growth conditions, sampling times and plant ages differ between the datasets. Palomero Toluqueno has
-                            no counterpart in either atlas. HPC1 cannot be measured in the NAM data because its split v5 gene
-                            model receives no unambiguous reads. Leaf numbers follow the metadata leaf_number column; sample
-                            D13B14A is treated as leaf 4."),
+                            no counterpart in either atlas. In B73 v5, an antisense gene model (Zm00001eb121770) covers the
+                            single exon of HPC1 (Zm00001eb121780), so gene-level counts discard HPC1 reads; HPC1 values in the
+                            NAM data therefore come from kallisto transcript TPM. NAM pathway results also shift somewhat with
+                            the quantification method. Leaf numbers follow the metadata leaf_number column; sample D13B14A is
+                            treated as leaf 4."),
                    tags$hr()
             )
           )

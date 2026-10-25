@@ -1041,14 +1041,14 @@ shinyServer(
 
     output$gx_nam_plot <- renderPlot({
       temp <- gx$nam %>% filter(v4 == input$gx_gene, group != "mixed")
-      if(nrow(temp) == 0){return(gx_empty_plot("Not measurable in the NAM data\n(no v5 match, split gene model, or not expressed)"))}
-      pl <- ggplot(temp, aes(zone, logCPM, colour = group)) +
+      if(nrow(temp) == 0){return(gx_empty_plot("Not measurable in the NAM data\n(no v5 match or not expressed)"))}
+      pl <- ggplot(temp, aes(factor(zone, levels = c("base", "middle", "tip")), logCPM, colour = group)) +
         geom_line(aes(group = interaction(line, v5)), alpha = 0.25) +
         stat_summary(aes(group = group), fun = "mean", geom = "line", linewidth = 1.5) +
         stat_summary(aes(group = group), fun = "mean", geom = "point", size = 4) +
         figures_theme +
         theme(axis.text.y = element_text(size = 14)) +
-        labs(x = "Zone of the 10th leaf at V11", y = "log2 CPM", title = "NAM founders (Hufford et al. 2021)")
+        labs(x = "Zone of the 10th leaf at V11", y = unique(temp$unit), title = "NAM founders (Hufford et al. 2021)")
       if(n_distinct(temp$v5) > 1) pl <- pl + facet_wrap(~ v5)
       pl
     })
