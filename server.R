@@ -1145,36 +1145,53 @@ shinyServer(
                     language = list(emptyTable = "No candidate genes for this lipid")))
     })
 
-    output$gx_hpc1_plot <- renderPlot({
-      temp <- gx$stelpflug %>% filter(v4 == "Zm00001d039542")
-      ggplot(temp, aes(tissue, logCPM, colour = phase)) +
-        geom_jitter(width = 0.15, size = 2.5) +
-        stat_summary(fun = "mean", fun.min = "mean", fun.max = "mean", geom = "crossbar", width = 0.6, linewidth = 0.4) +
-        figures_theme +
-        theme(axis.text.x = element_text(size = 12, angle = 45, hjust = 1), axis.text.y = element_text(size = 14)) +
-        labs(x = NULL, y = "HPC1 log2 CPM", title = "HPC1 in the B73 leaf series")
+    gx_block_names <- c(NAM_B73 = "NAM B73 ~ Zea Lip B73 (leaf zones)",
+                        NAM_tropical = "NAM tropical ~ Zea Lip CML312 (leaf zones)",
+                        Stelpflug_V9 = "Stelpflug V9 ~ Zea Lip B73 (leaf positions)")
+
+    updateSelectInput(session, "gx_cor_lipid", choices = gx_lipid_names, selected = "PC")
+
+    gx_cor_rows <- reactive({
+      temp <- gx$correlations %>% filter(lipid == input$gx_cor_lipid)
+      if(isTRUE(input$gx_cor_linked)) temp <- temp %>% filter(linked)
+      temp %>% arrange(desc(abs(r)))
     })
 
-    output$gx_phase_plot <- renderPlot({
-      temp <- gx$zealip %>% filter(lipid == "ratio_PC/LPC") %>%
-        group_by(genotype, block_number, replica_number, dag, leaf_number) %>%
-        summarise(log2_value = mean(log2_value), .groups = "drop")
-      ggplot(temp, aes(leaf_number, log2_value, colour = genotype)) +
-        annotate("rect", xmin = 2.5, xmax = 4.5, ymin = -Inf, ymax = Inf, fill = "grey92") +
-        geom_jitter(width = 0.15, size = 2, alpha = 0.6) +
-        stat_summary(aes(group = genotype), fun = "mean", geom = "line", linewidth = 1.2) +
-        scale_x_continuous(breaks = c(3, 4, 6, 8, 10, 12)) +
-        figures_theme +
-        theme(axis.text.x = element_text(size = 14), axis.text.y = element_text(size = 14)) +
-        labs(x = "Leaf number (shaded: juvenile leaves)", y = "log2 PC / LPC", title = "Zea Lip PC/LPC by leaf position")
+    output$gx_cor_table <- DT::renderDataTable({
+      temp <- gx_cor_rows() %>%
+        transmute(Gene = v4, Enzyme = enzyme, r = round(r, 2), `perm p` = signif(perm_p, 2), FDR = signif(FDR, 2),
+                  `Linked pathway` = ifelse(linked, linked_modules, ""),
+                  `Expected direction` = ifelse(linked, ifelse(sign_matches, "yes", "no"), ""))
+      DT::datatable(temp, rownames = FALSE, selection = list(mode = "single", selected = 1),
+                    options = list(pageLength = 10, scrollX = TRUE))
     })
 
-    output$gx_phase_table <- DT::renderDataTable({
-      temp <- gx$phase %>%
-        transmute(Genotype = str_remove(contrast, "^adult_vs_juvenile_") %>% str_replace("_minus_", " minus "),
-                  Lipid = lipid, `log2 FC` = round(logFC, 2), `95% CI` = sprintf("%.2f to %.2f", CI.L, CI.R),
-                  p = signif(P.Value, 2))
-      DT::datatable(temp, rownames = FALSE, options = list(dom = "t", pageLength = 12))
+    output$gx_cor_plot <- renderPlot({
+      rows <- gx_cor_rows()
+      if(nrow(rows) == 0){return(gx_empty_plot("No genes in pathways linked to this lipid"))}
+      i <- input$gx_cor_table_rows_selected
+      if(length(i) == 0 || i > nrow(rows)) i <- 1
+      pick <- rows[i, ]
+      temp <- gx$cor_points %>%
+        filter((kind == "gene" & id == pick$v4) | (kind == "lipid" & id == pick$lipid)) %>%
+        select(kind, block, pos, atlas, z) %>%
+        pivot_wider(names_from = kind, values_from = z) %>%
+        mutate(lab = ifelse(block == "Stelpflug_V9", paste0("leaf ", str_remove(atlas, "V9_leaf")), atlas),
+               block = gx_block_names[block])
+      ggplot(temp, aes(gene, lipid, colour = block)) +
+        geom_hline(yintercept = 0, colour = "grey85") + geom_vline(xintercept = 0, colour = "grey85") +
+        geom_smooth(aes(group = 1), method = "lm", formula = y ~ x, se = FALSE, colour = "grey50", linewidth = 0.6) +
+        geom_point(size = 5) +
+        geom_text(aes(label = lab), size = 4.5, vjust = -1.2, colour = "grey20", show.legend = FALSE) +
+        scale_y_continuous(expand = expansion(mult = 0.18)) +
+        figures_theme +
+        theme(axis.text.x = element_text(size = 14), axis.text.y = element_text(size = 14),
+              legend.text = element_text(size = 12)) +
+        guides(colour = guide_legend(nrow = 2, override.aes = list(size = 5))) +
+        labs(x = paste(pick$v4, "expression (z within block)"),
+             y = paste(str_remove(pick$lipid, "^ratio_"), "(z within block)"),
+             title = sprintf("%s: r = %.2f, permutation p = %.3f", ifelse(is.na(pick$enzyme), pick$v4, pick$enzyme),
+                             pick$r, pick$perm_p))
     })
 
 
