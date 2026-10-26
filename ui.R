@@ -257,6 +257,126 @@ shinyUI(fluidPage(
        )
     ),
 
+  # Gene expression ----------
+  tabPanel("Gene expression", id="tab3", icon = icon("dna"),
+     tabsetPanel(
+       tabPanel("Gene explorer",
+          tags$hr(),
+          fluidRow(
+            column(3,
+                   helpText("Search a curated glycerolipid gene by ID or enzyme name. Expression comes from the
+                            Stelpflug et al. 2016 B73 leaf series and the NAM founders (Hufford et al. 2021),
+                            sampled at the base, middle and tip of the 10th leaf at V11."),
+                   selectizeInput("gx_gene", label = "Gene", choices = NULL, width = "100%"),
+                   htmlOutput("gx_gene_info"),
+                   tags$hr(),
+                   radioButtons("gx_lipid_axis", label = "Show linked Zea Lip lipids by",
+                                choices = c("Leaf zone" = "zone", "Leaf position" = "leaf"))
+            ),
+            column(9,
+                   fluidRow(
+                     column(6, plotOutput("gx_stelpflug_plot", height = 450)),
+                     column(6, plotOutput("gx_nam_plot", height = 450))
+                   ),
+                   tags$hr(),
+                   h4("Linked Zea Lip lipids"),
+                   helpText("Lipid classes linked a priori to this gene's pathway modules."),
+                   plotOutput("gx_lipid_plot", height = 450),
+                   tags$hr(),
+                   h4("Expression changes on the matched contrasts"),
+                   DT::dataTableOutput("gx_contrast_table")
+            )
+          )
+       ),
+       tabPanel("Pathways vs lipids",
+          tags$hr(),
+          helpText("Colour is signed -log10 p (red up, blue down). Labels give log2 fold change where p < 0.05; * marks FDR < 0.05.
+                   Pathway modules are tested against all expressed genes with limma camera."),
+          h4("Zea Lip lipid classes"),
+          plotOutput("gx_lipid_heatmap", height = 520),
+          tags$hr(),
+          h4("Pathway modules in the expression atlases"),
+          plotOutput("gx_module_heatmap", height = 620),
+          tags$hr(),
+          h4("Pathway to lipid concordance"),
+          helpText("Each row is one a priori pathway to lipid link in one matched comparison. A link is concordant when the
+                   lipid moved in the direction its pathway's expression predicts."),
+          DT::dataTableOutput("gx_concordance_table"),
+          tags$hr(),
+          fluidRow(column(4, selectInput("gx_module", label = "Genes in pathway module", choices = NULL, width = "100%"))),
+          DT::dataTableOutput("gx_module_genes")
+       ),
+       tabPanel("Lipid to genes",
+          tags$hr(),
+          fluidRow(
+            column(3,
+                   selectInput("gx_lipid", label = "Lipid class or ratio", choices = NULL),
+                   helpText("Candidate genes belong to a pathway linked to the lipid, change at FDR < 0.05 with
+                            log2 CPM > 1, and move in the direction that matches a nominally significant lipid change
+                            on the same axis.")
+            ),
+            column(9,
+                   h4("Lipid changes in Zea Lip"),
+                   DT::dataTableOutput("gx_lipid_table"),
+                   tags$hr(),
+                   h4("Candidate genes"),
+                   DT::dataTableOutput("gx_candidate_table")
+            )
+          )
+       ),
+       tabPanel("Gene-lipid correlations",
+          tags$hr(),
+          fluidRow(
+            column(3,
+                   selectInput("gx_cor_lipid", label = "Lipid class or ratio", choices = NULL),
+                   checkboxInput("gx_cor_linked", label = "Only genes in pathways linked to this lipid", value = FALSE),
+                   helpText("Each gene-lipid pair is compared across nine matched tissues in three blocks: NAM B73 leaf-10
+                            zones vs Zea Lip B73 zones (58-day-old plants), NAM tropical founders vs Zea Lip CML312 zones, and
+                            Stelpflug V9 leaves 8, 11 and 13 vs Zea Lip B73 leaves 8, 10 and 12 (49-day-old plants). Values are
+                            z-scored within each block, and p is an exact permutation p with positions shuffled within blocks.
+                            No pair passes FDR < 0.05, so treat these as examples.")
+            ),
+            column(9,
+                   plotOutput("gx_cor_plot", height = 420),
+                   helpText("Click a row to plot that gene."),
+                   DT::dataTableOutput("gx_cor_table")
+            )
+          )
+       ),
+       tabPanel("About this analysis",
+          fluidRow(
+            column(3),
+            column(6,
+                   h4("What this tab shows"),
+                   helpText("Zea Lip lipid changes are compared with expression of 597 curated glycerolipid genes
+                            (High-PC1 paper, Supplementary File 2) along three axes that both datasets sample: leaf zone
+                            (tip vs base), leaf position (per leaf up the plant) and genotype (CML312 vs B73, compared with
+                            tropical vs temperate NAM founders). The atlases are separate experiments, mostly B73, so this
+                            compares directions of change. It is not a sample-level correlation between genes and lipids."),
+                   h4("Gene-lipid correlations"),
+                   helpText("For each curated gene and lipid class, expression and lipid means are paired across nine matched
+                            tissues (leaf zones in B73 and in tropical lines vs CML312, and leaf positions in B73), z-scored within
+                            each of the three blocks, and correlated. With nine points these correlations are illustrative: about
+                            10% of pairs reach permutation p < 0.05 against about 5% expected by chance, none pass FDR, and strong
+                            correlations of pathway-linked genes go in the expected direction only about a third of the time."),
+                   h4("Data"),
+                   helpText("Stelpflug et al. 2016 B73 atlas (Expression Atlas E-MTAB-4342) and Hufford et al. 2021 NAM founders
+                            (E-MTAB-8633, B73 from E-MTAB-8628), re-analysed from per-run counts with voom/limma. NAM reads are
+                            mapped to the B73 v5 reference; v4 gene IDs were matched with the MaizeGDB crosswalk."),
+                   h4("Caveats"),
+                   helpText("Growth conditions, sampling times and plant ages differ between the datasets. Palomero Toluqueno has
+                            no counterpart in either atlas. In B73 v5, an antisense gene model (Zm00001eb121770) covers the
+                            single exon of HPC1 (Zm00001eb121780), so gene-level counts discard HPC1 reads; HPC1 values in the
+                            NAM data therefore come from kallisto transcript TPM. NAM pathway results also shift somewhat with
+                            the quantification method. Leaf numbers follow the metadata leaf_number column; sample D13B14A is
+                            treated as leaf 4."),
+                   tags$hr()
+            )
+          )
+       )
+     )
+  ),
+
  tabPanel("About", id="tab1", icon = icon("plus-circle"),
           fluidRow(
             column(3),

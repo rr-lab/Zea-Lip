@@ -976,6 +976,225 @@ shinyServer(
     # })
     
     
+    ### GENE EXPRESSION -----
+    # `gx` is loaded in global.R; see the About this analysis sub-tab for what each table holds.
+
+    gx_lipid_rows <- c("MGDG", "DGDG", "SQDG", "PG", "PC", "LPC", "PE", "PS", "DG", "TG",
+                       "ratio_MGDG/DGDG", "ratio_PC/LPC", "ratio_glyco/phospho")
+    gx_lipid_names <- setNames(gx_lipid_rows, str_remove(gx_lipid_rows, "^ratio_"))
+    gx_module_rows <- c(names(gx$modules), "All curated glycerolipid genes")
+    gx_labels <- gx$contrast_labels %>% mutate(label = factor(label, levels = unique(label)))
+
+    gx_empty_plot <- function(msg){
+      ggplot() + annotate("text", x = 0, y = 0, label = msg, size = 5) + theme_void()
+    }
+
+    gx_axis_names <- c(zone = "Leaf zone", leaf = "Leaf position", genotype = "Genotype", aging = "Leaf aging")
+
+    gx_signed_heatmap <- function(d){
+      d$axis <- factor(gx_axis_names[d$axis], levels = gx_axis_names)
+      ggplot(d, aes(label, row, fill = pmax(pmin(signed_p, 8), -8))) +
+        geom_tile(colour = "white", linewidth = 0.8) +
+        geom_text(aes(label = txt), size = 4) +
+        facet_grid(. ~ axis, scales = "free_x", space = "free_x") +
+        scale_fill_gradient2(low = cscale2[3], mid = cscale2[2], high = cscale2[1], limits = c(-8, 8),
+                             name = "signed -log10 p") +
+        scale_x_discrete(labels = function(x) str_wrap(x, 14)) +
+        theme_minimal(base_size = 14) +
+        theme(axis.text.x = element_text(size = 11, lineheight = 0.9, colour = "black"),
+              axis.text.y = element_text(colour = "black"), panel.grid = element_blank(),
+              strip.text = element_text(face = "bold", size = 14), legend.position = "bottom",
+              legend.key.width = unit(40, "pt")) +
+        labs(x = NULL, y = NULL)
+    }
+
+    updateSelectizeInput(session, "gx_gene", choices = setNames(gx$genes$v4, gx$genes$label),
+                         selected = "Zm00001d039542", server = TRUE)
+    updateSelectInput(session, "gx_module", choices = names(gx$modules), selected = "Galactolipid synthesis")
+    updateSelectInput(session, "gx_lipid", choices = gx_lipid_names, selected = "LPC")
+
+    gx_gene <- reactive({
+      gx$genes %>% filter(v4 == input$gx_gene)
+    })
+
+    output$gx_gene_info <- renderUI({
+      g <- gx_gene()
+      if(nrow(g) == 0){return()}
+      tagList(
+        tags$strong(g$enzyme), tags$br(),
+        "B73 v5: ", ifelse(is.na(g$v5), "no match", g$v5), tags$br(),
+        "Pathway modules: ", ifelse(is.na(g$modules), "none", g$modules), tags$br(),
+        tags$a(href = paste0("https://www.maizegdb.org/gene_center/gene/", g$v4), "MaizeGDB gene page", target = "_blank")
+      )
+    })
+
+    output$gx_stelpflug_plot <- renderPlot({
+      temp <- gx$stelpflug %>% filter(v4 == input$gx_gene)
+      if(nrow(temp) == 0){return(gx_empty_plot("Not expressed in the Stelpflug leaf series"))}
+      ggplot(temp, aes(tissue, logCPM, colour = phase)) +
+        geom_jitter(width = 0.15, size = 2.5) +
+        stat_summary(fun = "mean", fun.min = "mean", fun.max = "mean", geom = "crossbar", width = 0.6, linewidth = 0.4) +
+        figures_theme +
+        theme(axis.text.x = element_text(size = 12, angle = 45, hjust = 1), axis.text.y = element_text(size = 14)) +
+        labs(x = NULL, y = "log2 CPM", title = "B73 leaf series (Stelpflug et al. 2016)")
+    })
+
+    output$gx_nam_plot <- renderPlot({
+      temp <- gx$nam %>% filter(v4 == input$gx_gene, group != "mixed")
+      if(nrow(temp) == 0){return(gx_empty_plot("Not measurable in the NAM data\n(no v5 match or not expressed)"))}
+      pl <- ggplot(temp, aes(factor(zone, levels = c("base", "middle", "tip")), logCPM, colour = group)) +
+        geom_line(aes(group = interaction(line, v5)), alpha = 0.25) +
+        stat_summary(aes(group = group), fun = "mean", geom = "line", linewidth = 1.5) +
+        stat_summary(aes(group = group), fun = "mean", geom = "point", size = 4) +
+        figures_theme +
+        theme(axis.text.y = element_text(size = 14)) +
+        labs(x = "Zone of the 10th leaf at V11", y = unique(temp$unit), title = "NAM founders (Hufford et al. 2021)")
+      if(n_distinct(temp$v5) > 1) pl <- pl + facet_wrap(~ v5)
+      pl
+    })
+
+    output$gx_lipid_plot <- renderPlot({
+      g <- gx_gene()
+      mods <- if(nrow(g) == 0 || is.na(g$modules)) character(0) else strsplit(g$modules, "; ")[[1]]
+      lip <- unique(gx$pathway_lipid_map$lipid[gx$pathway_lipid_map$module %in% mods])
+      if(length(lip) == 0){return(gx_empty_plot("This gene's pathways have no a priori lipid link"))}
+      temp <- gx$zealip %>% filter(lipid %in% lip) %>% mutate(lipid = str_remove(lipid, "^ratio_"))
+      if(input$gx_lipid_axis == "zone"){
+        temp <- temp %>% filter(dag == 58) %>% mutate(x = factor(leaf_zone, levels = c("base", "center", "tip")))
+        x_lab <- "Leaf zone (58-day-old plants)"
+      }else{
+        temp <- temp %>% filter(dag >= 49) %>%
+          group_by(genotype, block_number, replica_number, dag, leaf_number, lipid) %>%
+          summarise(log2_value = mean(log2_value), .groups = "drop") %>%
+          mutate(x = factor(leaf_number))
+        x_lab <- "Leaf number (49- and 58-day-old plants, zones averaged)"
+      }
+      ggplot(temp, aes(x, log2_value, colour = genotype)) +
+        geom_jitter(width = 0.15, size = 2, alpha = 0.6) +
+        stat_summary(aes(group = genotype), fun = "mean", geom = "line", linewidth = 1.2) +
+        facet_wrap(~ lipid, scales = "free_y") +
+        figures_theme +
+        theme(axis.text.x = element_text(size = 14), axis.text.y = element_text(size = 14),
+              strip.text = element_text(size = 16, face = "bold")) +
+        labs(x = x_lab, y = "log2 abundance (mTIC)")
+    })
+
+    output$gx_contrast_table <- DT::renderDataTable({
+      temp <- gx$gene_contrasts %>% filter(v4 == input$gx_gene) %>%
+        inner_join(gx_labels, by = c("dataset" = "source", "contrast")) %>%
+        arrange(label) %>%
+        transmute(Contrast = label, Axis = axis, `v5 gene` = v5, `log2 FC` = round(logFC, 2),
+                  `mean log2 CPM` = round(AveExpr, 1), FDR = signif(FDR, 2))
+      DT::datatable(temp, rownames = FALSE, options = list(dom = "t", pageLength = 25))
+    })
+
+    output$gx_lipid_heatmap <- renderPlot({
+      temp <- gx$lipid_contrasts %>% filter(lipid %in% gx_lipid_rows) %>% select(-axis) %>%
+        inner_join(gx_labels %>% filter(source == "ZeaLip"), by = "contrast") %>%
+        mutate(row = factor(str_remove(lipid, "^ratio_"), levels = rev(names(gx_lipid_names))),
+               signed_p = sign(logFC) * -log10(P.Value),
+               txt = ifelse(P.Value < 0.05, sprintf("%+.2f%s", logFC, ifelse(FDR < 0.05, "*", "")), ""))
+      gx_signed_heatmap(temp)
+    })
+
+    output$gx_module_heatmap <- renderPlot({
+      temp <- gx$module_tests %>%
+        inner_join(gx_labels, by = c("dataset" = "source", "contrast")) %>%
+        mutate(row = factor(module, levels = rev(gx_module_rows)),
+               signed_p = ifelse(Direction == "Up", 1, -1) * -log10(P.Value),
+               txt = ifelse(P.Value < 0.05, sprintf("%+.2f%s", mean_logFC, ifelse(FDR < 0.05, "*", "")), ""))
+      gx_signed_heatmap(temp)
+    })
+
+    output$gx_concordance_table <- DT::renderDataTable({
+      temp <- gx$concordance %>%
+        transmute(Comparison = label, Pathway = module, Lipid = str_remove(lipid, "^ratio_"),
+                  `Pathway effect on lipid` = ifelse(sign == 1, "raises", "lowers"),
+                  `Lipid log2 FC` = round(lipid_logFC, 2), `Lipid p` = signif(lipid_P, 2),
+                  `Pathway direction` = Direction, `Pathway p` = signif(module_P, 2), Concordant = concordant)
+      DT::datatable(temp, rownames = FALSE, filter = "top", options = list(scrollX = TRUE, pageLength = 15))
+    })
+
+    output$gx_module_genes <- DT::renderDataTable({
+      if(is.null(input$gx_module) || !input$gx_module %in% names(gx$modules)){return()}
+      temp <- gx$gene_contrasts %>% filter(v4 %in% gx$modules[[input$gx_module]]) %>%
+        inner_join(gx_labels %>% filter(axis %in% c("zone", "leaf", "genotype")), by = c("dataset" = "source", "contrast")) %>%
+        group_by(v4, label) %>% slice_max(AveExpr, n = 1, with_ties = FALSE) %>% ungroup() %>%
+        mutate(value = sprintf("%+.2f%s", logFC, ifelse(FDR < 0.05, "*", ""))) %>%
+        select(v4, label, value) %>% arrange(label) %>%
+        pivot_wider(names_from = label, values_from = value) %>%
+        left_join(gx$genes %>% select(v4, enzyme), by = "v4") %>%
+        select(Gene = v4, Enzyme = enzyme, everything())
+      DT::datatable(temp, rownames = FALSE, caption = "log2 fold change; * FDR < 0.05",
+                    options = list(scrollX = TRUE, pageLength = 15))
+    })
+
+    output$gx_lipid_table <- DT::renderDataTable({
+      temp <- gx$lipid_contrasts %>% filter(lipid == input$gx_lipid) %>% select(-axis) %>%
+        inner_join(gx_labels %>% filter(source == "ZeaLip"), by = "contrast") %>% arrange(label) %>%
+        transmute(Contrast = label, Axis = axis, `log2 FC` = round(logFC, 2),
+                  `95% CI` = sprintf("%.2f to %.2f", CI.L, CI.R), p = signif(P.Value, 2), FDR = signif(FDR, 2))
+      DT::datatable(temp, rownames = FALSE, options = list(dom = "t"))
+    })
+
+    output$gx_candidate_table <- DT::renderDataTable({
+      temp <- gx$candidates %>% filter(lipid == input$gx_lipid) %>%
+        transmute(Comparison = label, Atlas = dataset, Pathway = module, Gene = v4, Enzyme = enzyme_descriptors,
+                  `Gene log2 FC` = round(logFC, 2), `log2 CPM` = round(AveExpr, 1), FDR = signif(FDR, 2))
+      DT::datatable(temp, rownames = FALSE, options = list(scrollX = TRUE, pageLength = 15,
+                    language = list(emptyTable = "No candidate genes for this lipid")))
+    })
+
+    gx_block_names <- c(NAM_B73 = "NAM B73 ~ Zea Lip B73 (leaf zones)",
+                        NAM_tropical = "NAM tropical ~ Zea Lip CML312 (leaf zones)",
+                        Stelpflug_V9 = "Stelpflug V9 ~ Zea Lip B73 (leaf positions)")
+
+    updateSelectInput(session, "gx_cor_lipid", choices = gx_lipid_names, selected = "PC")
+
+    gx_cor_rows <- reactive({
+      temp <- gx$correlations %>% filter(lipid == input$gx_cor_lipid)
+      if(isTRUE(input$gx_cor_linked)) temp <- temp %>% filter(linked)
+      temp %>% arrange(desc(abs(r)))
+    })
+
+    output$gx_cor_table <- DT::renderDataTable({
+      temp <- gx_cor_rows() %>%
+        transmute(Gene = v4, Enzyme = enzyme, r = round(r, 2), `perm p` = signif(perm_p, 2), FDR = signif(FDR, 2),
+                  `Linked pathway` = ifelse(linked, linked_modules, ""),
+                  `Expected direction` = ifelse(linked, ifelse(sign_matches, "yes", "no"), ""))
+      DT::datatable(temp, rownames = FALSE, selection = list(mode = "single", selected = 1),
+                    options = list(pageLength = 10, scrollX = TRUE))
+    })
+
+    output$gx_cor_plot <- renderPlot({
+      rows <- gx_cor_rows()
+      if(nrow(rows) == 0){return(gx_empty_plot("No genes in pathways linked to this lipid"))}
+      i <- input$gx_cor_table_rows_selected
+      if(length(i) == 0 || i > nrow(rows)) i <- 1
+      pick <- rows[i, ]
+      temp <- gx$cor_points %>%
+        filter((kind == "gene" & id == pick$v4) | (kind == "lipid" & id == pick$lipid)) %>%
+        select(kind, block, pos, atlas, z) %>%
+        pivot_wider(names_from = kind, values_from = z) %>%
+        mutate(lab = ifelse(block == "Stelpflug_V9", paste0("leaf ", str_remove(atlas, "V9_leaf")), atlas),
+               block = gx_block_names[block])
+      ggplot(temp, aes(gene, lipid, colour = block)) +
+        geom_hline(yintercept = 0, colour = "grey85") + geom_vline(xintercept = 0, colour = "grey85") +
+        geom_smooth(aes(group = 1), method = "lm", formula = y ~ x, se = FALSE, colour = "grey50", linewidth = 0.6) +
+        geom_point(size = 5) +
+        geom_text(aes(label = lab), size = 4.5, vjust = -1.2, colour = "grey20", show.legend = FALSE) +
+        scale_y_continuous(expand = expansion(mult = 0.18)) +
+        figures_theme +
+        theme(axis.text.x = element_text(size = 14), axis.text.y = element_text(size = 14),
+              legend.text = element_text(size = 12)) +
+        guides(colour = guide_legend(nrow = 2, override.aes = list(size = 5))) +
+        labs(x = paste(pick$v4, "expression (z within block)"),
+             y = paste(str_remove(pick$lipid, "^ratio_"), "(z within block)"),
+             title = sprintf("%s: r = %.2f, permutation p = %.3f", ifelse(is.na(pick$enzyme), pick$v4, pick$enzyme),
+                             pick$r, pick$perm_p))
+    })
+
+
     ### DOWNLOAD --------
     output$download_dataset <- downloadHandler(
       filename = function() {"zea_lipid_dataset.csv"},

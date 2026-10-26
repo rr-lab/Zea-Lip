@@ -40,6 +40,10 @@ cscale2 <- c("#f1eef6","#d7b5d8","#df65b0","#dd1c77","#980043")
 cscale2 <- c("#a21d4d","lightgrey","#2a3e98")
 cscale3 <- c("#a1dab4","#41b6c4", "#2c7fb8", "#253494")
 
+# Gene expression tab: curated glycerolipid genes in the Stelpflug B73 and NAM leaf atlases,
+# written by glycerolipid_expression/scripts/07_export_for_shiny.R in the analysis project
+gx <- readRDS("www/glycerolipid_expression.rds")
+
 
 
 mydata <- mtcars[, c(1,3,4,5,6,7)]
