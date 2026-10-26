@@ -1,0 +1,10 @@
+name: Zea-Lip
+title: Zea Lip
+username: gemmalab
+account: gemmalab
+server: connect.posit.cloud
+hostUrl: https://api.connect.posit.cloud/v1
+appId: 01a17585-b481-47eb-f1b5-a69f7da492d5
+bundleId:
+url: https://connect.posit.cloud/gemmalab/content/01a17585-b481-47eb-f1b5-a69f7da492d5
+version: 1
